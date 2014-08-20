@@ -23,8 +23,9 @@ int isJumping = 0; // Check if character is jumping. 0 = Not jumping, 1 = Jumpin
 int hasbeenStabbed = 0; // Check if character has been stabbed by a needle/spike to determine if spikes need to be re rendered
 int hasbeenDamaged = 0; // Check if character was damaged. If yes, need to re-render HP. All to prevent flickering ); 0 = No change, 1 = Changed
 int bossStatus = 0; // Check what the boss is currently doing. 0 = Standing, 1 = Using skill1, 2 = using skill2. 
-int isBossLevel = 0; //Check if it is a boss level. 0 = No, 1 = Yep.
 int treasure = 0;//Treasure :DD
+int isBossLevel = 0; //Check if it is a boss level. 0 = No, 1 = Boss, 2= Fishy
+
 double canJump = 0; // Check if you have jumped in the past 0.8 ms
 double jumpDelay = 0; // delay between y coordinate change while jumping
 double fallDelay = 0; // delay between falling (no delay for initial fall)
@@ -51,6 +52,8 @@ struct bossAttack {
 
 bossAttack meteor;
 bossAttack splint;
+bossAttack laser;
+bossAttack weights;
 
 //menu ~ Gabriel Wong
 
@@ -646,44 +649,172 @@ void renderHP() // displays amount of HP player still has.
 	std::cout << "          ";
 }
 
+void pianusStand1()
+{
+	gotoXY(65, 7);	std::cout << "                        :?              ";
+	gotoXY(65, 8);	std::cout << "                      ~+?III=           ";
+	gotoXY(65, 9);	std::cout << "                 ,,=:~+=~++?I,          ";
+	gotoXY(65, 10);	std::cout << "           7777I??+=~~~~==~=+??         ";
+	gotoXY(65, 11);	std::cout << "        IIIIII??+~~::::::::~~=+?        ";
+	gotoXY(65, 12);	std::cout << "       7III?===~~:::::::::::::::        ";
+	gotoXY(65, 13);	std::cout << "       =+++==+=~~::::::::::::,,,::      ";
+	gotoXY(65, 14);	std::cout << "      ++++++===~~:::::::::?+++,,,,,,    ";
+	gotoXY(65, 15);	std::cout << "      =++++===~~:::::::::~==+++,:,,,    ";
+	gotoXY(65, 16);	std::cout << "    :=++++====~~?+=~::::,:::~==,,,,,,   ";
+	gotoXY(65, 17);	std::cout << " ??IIII?~~==~~~:,~~~::::,,,:~==,,,,     ";
+	gotoXY(65, 18);	std::cout << " IIIIII?:~:~:::::,+:,::::,,,,,,,,,,,,   ";
+	gotoXY(65, 19);	std::cout << "~~=====~~::::~:~:~::::::~,,,,,,,,,,,,,, ";
+	gotoXY(65, 20);	std::cout << "     +===~::~~~~~~~~~::~,:~+:,,,,,,,,,, ";
+	gotoXY(65, 21);	std::cout << "       +++++=~~~~~~~~~~,~==++++,,,,,,,, ";
+}
+
+void pianusStand2()
+{
+	gotoXY(65, 7);	std::cout << "                        :?              ";
+	gotoXY(65, 8);	std::cout << "                      ~+?III=           ";
+	gotoXY(65, 9);	std::cout << "                 ,,=:~+=~++?I,          ";
+	gotoXY(65, 10);	std::cout << "           7777I??+=~~~~==~=+??         ";
+	gotoXY(65, 11);	std::cout << "        IIIIII??+~~::::::::~~=+?        ";
+	gotoXY(65, 12);	std::cout << "       7III?===~~:::::::::::::::        ";
+	gotoXY(65, 13);	std::cout << "       =+++==+=~~:::::::::::=,,,::      ";
+	gotoXY(65, 14);	std::cout << "      ++++++===~~:::::::::?+++,,,,,,    ";
+	gotoXY(65, 15);	std::cout << "      =++++===~~:::::::::~==+++,:,,,    ";
+	gotoXY(65, 16);	std::cout << "    :=++++====~~?+=~::::,:::~==,,,,,,   ";
+	gotoXY(65, 17);	std::cout << " ??IIII?~~==~~~:,~~~::::,,,:~=,,,,,     ";
+	gotoXY(65, 18);	std::cout << " IIIIII?:~:~:::::,+:,::::,,,,,,,,,,,,   ";
+	gotoXY(65, 19);	std::cout << "~~=====~~::::~:~:~::::::~=~,,,,,,,,,,,, ";
+	gotoXY(65, 20);	std::cout << "     +===~::~~~~~~~~~::~,:~+:,,,,,,,,,, ";
+	gotoXY(65, 21);	std::cout << "       +++++=~~~~~~~~~~,~==+++,,,,,,,,, ";
+}
+
+void pianusLaser1()
+{
+	gotoXY(65, 7);	std::cout << "                        :?              ";
+	gotoXY(65, 8);	std::cout << "                      ~+?III=           ";
+	gotoXY(65, 9);	std::cout << "                 ,,=:~+=~++?I,          ";
+	gotoXY(65, 10);	std::cout << "           7777I??+=~~~~==~=+??         ";
+	gotoXY(65, 11);	std::cout << "        IIIIII??+~~::::::::~~=+?        ";
+	gotoXY(65, 12);	std::cout << "       7III?===~~:::::::::::::::        ";
+	gotoXY(65, 13);	std::cout << "       =+++==+=~~:::::::::::=,,,::      ";
+	gotoXY(65, 14);	std::cout << "      ++++++===~~:::::::::?+++,,,,,,    ";
+	gotoXY(65, 15);	std::cout << "    :I??++===~~~~::::::::=~=+++,:,,,,   ";
+	gotoXY(65, 16);	std::cout << "    :=++++====~~?+=~::::,:::~==,,,,,,   ";
+	gotoXY(65, 17);	std::cout << "  ??IIII?~~==~~~:,~~~::::,,,:~=,,,,,    ";
+	gotoXY(65, 18);	std::cout << "  ====~~:+==~~~====~:::,:::~~==,,,,,,,  ";
+	gotoXY(65, 19);	std::cout << "   ====~~:+==~~~====~:::,:::~~==,,,,,,, ";
+	gotoXY(65, 20);	std::cout << "   =,:~~~~?:~~~~~~~~~~~,,~=:,,,,,,,,,,, ";
+	gotoXY(65, 21);	std::cout << "  ========~~~~~~~~~~:~,,===+++?,,,,,,,, ";
+}
+
+void pianusLaser2()
+{
+	gotoXY(65, 7);	std::cout << "                        :?              ";
+	gotoXY(65, 8);	std::cout << "                      ~+?III=           ";
+	gotoXY(65, 9);	std::cout << "                 ,,=:~+=~++?I,          ";
+	gotoXY(65, 10);	std::cout << "           7777I??+=~~~~==~=+??         ";
+	gotoXY(65, 11);	std::cout << "        IIIIII??+~~::::::::~~=+?        ";
+	gotoXY(65, 12);	std::cout << "       7III?===~~:::::::::::::::        ";
+	gotoXY(65, 13);	std::cout << "       =+++==+=~~:::::::::::=,,,::      ";
+	gotoXY(65, 14);	std::cout << "      ++++++===~~:::::::::?+++,,,,,,    ";
+	gotoXY(65, 15);	std::cout << "    :I??++===~~~~::::::::=~=+++,:,,,,   ";
+	gotoXY(65, 16);	std::cout << "    :=++++====~~?+=~::::,:::~==,,,,,,   ";
+	gotoXY(65, 17);	std::cout << "  ??IIII?~~==~~~:,~~~::::,,,:~=,,,,,    ";
+	gotoXY(65, 18);	std::cout << "  ====~~:+==~~~====~:::,:::~~==,,,,,,   ";
+	gotoXY(65, 19);	std::cout << "       :::~:~~~~::::::~~,,,,,,,,,,,,,,, ";
+	gotoXY(65, 20);	std::cout << "   =,:~~~~?:~~~~~~~~~~~,,~=:,,,,,,,,,,, ";
+	gotoXY(65, 21);	std::cout << "  ========~~~~~~~~~~:~,,===+++?,,,,,,,, ";
+}
+
+void pianusLaser3()
+{
+	gotoXY(65, 7);	std::cout << "                        :?              ";
+	gotoXY(65, 8);	std::cout << "                      ~+?III=           ";
+	gotoXY(65, 9);	std::cout << "                 ,,=:~+=~++?I,          ";
+	gotoXY(65, 10);	std::cout << "           7777I??+=~~~~==~=+??         ";
+	gotoXY(65, 11);	std::cout << "        IIIIII??+~~::::::::~~=+?        ";
+	gotoXY(65, 12);	std::cout << "       7III?===~~:::::::::::::::        ";
+	gotoXY(65, 13);	std::cout << "       =+++==+=~~:::::::::::=,,,::      ";
+	gotoXY(65, 14);	std::cout << "      ++++++===~~:::::::::?+++,,,,,,    ";
+	gotoXY(65, 15);	std::cout << "    :I??++===~~~~::::::::=~=+++,:,,,,   ";
+	gotoXY(65, 16);	std::cout << "  ====~~:+==~~~====~:::,:::~~==,,,,,,   ";
+	gotoXY(65, 17);	std::cout << "        :::~~::+7::::::~,,,:~==,,,,     ";
+	gotoXY(65, 18);	std::cout << "         ,:~::::=I?~::::,,,,,,,,,,,,,   ";
+	gotoXY(65, 19);	std::cout << "       :::~:~~~~::::::~~,,,,,,,,,,,,,,, ";
+	gotoXY(65, 20);	std::cout << "   =,:~~~~?:~~~~~~~~~~~,,~=:,,,,,,,,,,, ";
+	gotoXY(65, 21);	std::cout << "  ========~~~~~~~~~~:~,,===+++?,,,,,,,, ";
+}
+
+void pianusLaserEffect()
+{
+	(laser.X).push_back(68);
+	(laser.Y).push_back(18);
+}
+
+void updateLaser()
+{
+	for (unsigned int i = 0; i < (laser.X).size(); i++ ) // when laser still moving lefts
+	{
+		if ( (laser.X)[i] > 5 )
+		{
+			(laser.X)[i]--;
+		}
+		else // when laser reaches the left
+		{
+			for ( int j = (laser.Y)[i]-2; j < (laser.Y)[i]+3; j++) // remove the lazor
+			{
+				for ( int k = 66; k > 0; k--) // CLEAN UP THE MESS >:((
+				{
+					gotoXY(k, j);
+					if ( map[j][k] == '#')
+					{
+						std::cout << (char)219; // and print block to replace walls
+					}
+					else
+					{
+						std::cout << map[j][k]; // else print what's in the array
+					}
+				}
+			}
+
+			(laser.X).erase( (laser.X).begin() + i ); //erase coords
+			(laser.Y).erase( (laser.Y).begin() + i ); //erase coords
+		}
+	}
+}
+
+void renderLaser()
+{
+	for (unsigned int i = 0; i < (laser.X).size(); i++ )
+	{
+		for ( int j = (laser.Y)[i]-2; j < (laser.Y)[i]+3; j++)
+		{
+			gotoXY( (laser.X)[i], j );
+			std::cout << (char)27;
+		}
+	}
+
+}
+
 void bossStand1()
 {
-	gotoXY(60, 4);
-	std::cout << "    ~,~~             ?=:,";
-	gotoXY(60, 5);
-	std::cout << "    =~,~~,,      ,==?~~~";
-	gotoXY(60, 6);
-	std::cout << "    =~~7IIIIIIIII+~=~~,,~";
-	gotoXY(60, 7);
-	std::cout << "    =.7777IIIIIIII~~~::,~";
-	gotoXY(60, 8);
-	std::cout << "    I777777IIIIIIII?,:,,";
-	gotoXY(60, 9); 
-	std::cout << "    II777IIIIIIIIIII?++=";
-	gotoXY(60, 10);
-	std::cout << "   IIIIIIIIIIIII7III?+++~";
-	gotoXY(60, 11);
-	std::cout << "   II+.=IIIIIII?..III+?+=";
-	gotoXY(60, 12);
-	std::cout << "    I=.=IIIIIII?..III?++=~         7I7:    ";
-	gotoXY(60, 13);
-	std::cout << "    ++III~I:IIII7I++I?++=~         ~~~:    ";
-	gotoXY(60, 14);
-	std::cout << "   ?IIIIIIIIIIIIIIIII?++=~       =         ";
-	gotoXY(50, 15);
-	std::cout << "             +II          +I??7?++=~     =           ";
-	gotoXY(50, 16);
-	std::cout << "             ?77              7I++=~    I";
-	gotoXY(50, 17);
-	std::cout << "            I777              7I?=~~   I";
-	gotoXY(50, 18);
-	std::cout << "            +777            77II?===   =";
-	gotoXY(50, 19);
-	std::cout << "            +I            77IIII======";
-	gotoXY(50, 20);
-	std::cout << "             +III7777777IIIIII?=~=";
-	gotoXY(50, 21);
-	std::cout << "          ,~~~.+IIIIIIIIIII??+.~:,,";
+	gotoXY(60, 4);	std::cout << "    ~,~~             ?=:,";
+	gotoXY(60, 5);	std::cout << "    =~,~~,,      ,==?~~~";
+	gotoXY(60, 6);	std::cout << "    =~~7IIIIIIIII+~=~~,,~";
+	gotoXY(60, 7);	std::cout << "    =.7777IIIIIIII~~~::,~";
+	gotoXY(60, 8);	std::cout << "    I777777IIIIIIII?,:,,";
+	gotoXY(60, 9);	std::cout << "    II777IIIIIIIIIII?++=";
+	gotoXY(60, 10);	std::cout << "   IIIIIIIIIIIII7III?+++~";
+	gotoXY(60, 11);	std::cout << "   II+.=IIIIIII?..III+?+=";
+	gotoXY(60, 12);	std::cout << "    I=.=IIIIIII?..III?++=~         7I7:    ";
+	gotoXY(60, 13);	std::cout << "    ++III~I:IIII7I++I?++=~         ~~~:    ";
+	gotoXY(60, 14);	std::cout << "   ?IIIIIIIIIIIIIIIII?++=~       =         ";
+	gotoXY(50, 15);	std::cout << "             +II          +I??7?++=~     =           ";
+	gotoXY(50, 16);	std::cout << "             ?77              7I++=~    I";
+	gotoXY(50, 17);	std::cout << "            I777              7I?=~~   I";
+	gotoXY(50, 18);	std::cout << "            +777            77II?===   =";
+	gotoXY(50, 19);	std::cout << "            +I            77IIII======";
+	gotoXY(50, 20);	std::cout << "             +III7777777IIIIII?=~=";
+	gotoXY(50, 21);	std::cout << "          ,~~~.+IIIIIIIIIII??+.~:,,";
 }
 
 void bossStand2()
@@ -1323,6 +1454,81 @@ void checkBossStatus()
 	}
 }
 
+void checkPianusStatus()
+{
+	if ( skillDelay > 5.0 )
+	{
+		bossStatus = ( rand() % 2 + 1 ); // Changes boss status to either 1 or 2 ( use either skill1 or skill2 ).
+		skillDelay = 0.0; // reset skillDelay;
+	}
+    else if ( skillDelay < 0.5 && bossStatus == 0 )
+	{
+		bossStatus = 0; // not using skill, boss is standing
+	}
+
+	if ( bossStatus == 0 ) // when boss is standing
+	{
+		if ( bossFrameDelay > 1.0 ) // first frame
+		{
+			if ( bossFrameDelay > 2.0 ) //second frame
+			{
+				pianusStand2();
+				bossFrameDelay = 0.0;
+			}
+			else
+			{
+				pianusStand1();
+			}
+		}
+	}
+	else if ( bossStatus == 1 ) // boss is using first skill (meteor)
+	{
+		if ( bossFrameDelay > 1.0 ) // first frame
+		{
+			if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
+			{
+				pianusLaser2();
+			}
+			else if ( bossFrameDelay > 3.0 ) // third frame
+			{
+				pianusLaser3();
+				pianusLaserEffect();
+				bossFrameDelay = 0;
+				bossStatus = 0;
+				skillDelay = 0;
+				// reset to standing animation ~
+			}
+			else
+			{
+				pianusLaser1();
+			}
+		}
+	}
+	else if ( bossStatus == 2 )
+	{
+		if ( bossFrameDelay > 1.0 ) // first frame
+		{
+			if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
+			{
+				bossSplint2();
+			}
+			else if ( bossFrameDelay > 3.0 ) // third frame
+			{
+				bossSplint3();
+				bossSplintEffect();
+				bossFrameDelay = 0;
+				bossStatus = 0;
+				skillDelay = 0;
+				// reset to standing animation ~
+			}
+			else
+			{
+				bossSplint1();
+			}
+		}
+	}
+}
+
 void jump()
 {
 	if ( map[charLocation.Y+1][charLocation.X] == '#' && map[charLocation.Y-1][charLocation.X] != '#' && canJump > 0.800 ) // You're standing on the ground, and there's no ceiling above you, and you haven't jumped in the last 0.8 seconds
@@ -1472,7 +1678,7 @@ void init()
 	}
 	else if ( checkLevel == 10 )
 	{
-		isBossLevel = 1;
+		isBossLevel = 2;
 		SetConsoleTitle(L"Level Ten");
 		loadLevel("level10.txt");
 	}
@@ -1535,6 +1741,15 @@ void update(double dt)
 		{
 			updateSplint();
 			checkCollisionSplint();
+		}
+	}
+
+	if ( isBossLevel == 2 )
+	{
+		if ( (laser.X).size() != 0 ) // If there's laz0r
+		{
+			updateLaser();
+			// check collision
 		}
 	}
 
@@ -1611,6 +1826,16 @@ void render()
 		}
 
 		checkBossStatus();
+	}
+
+	if ( isBossLevel == 2 )
+	{
+		if ( (laser.X).size() != 0 ) // If laz0r
+		{
+			renderLaser();
+		}
+
+		checkPianusStatus();
 	}
 
 	renderSnails();
