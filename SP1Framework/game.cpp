@@ -1457,7 +1457,7 @@ void checkCollisionFloater()
 		{
 			if ( map[i][j] == 'M') // if floater spotted !
 			{
-				if ( charLocation.X >= j && charLocation.X <= j+2 ) // when within x coordinates of floater
+				if ( charLocation.X == j ) // when within x coordinates of floater
 				{
 					if ( charLocation.Y == i ) //when within y coordinate of floater
 					{
