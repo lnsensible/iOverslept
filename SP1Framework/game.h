@@ -17,12 +17,28 @@ enum Keys
     K_RIGHT,
     K_ESCAPE,
 	K_SPACE,
+	K_ENTER,
     K_COUNT
 };
 
 enum Sequence
 {
-	PLAY,
+	MENU,
+	GAME,
+	ENDGAME,
+	SHOP,
+	LEVELMENU,
+	LEVELONE,
+	LEVELTWO,
+	LEVELTHREE,
+	LEVELFOUR,
+	LEVELFIVE,
+	LEVELSIX,
+	LEVELSEVEN,
+	LEVELEIGHT,
+	LEVELNINE,
+	LEVELTEN,
+	DEATH,
 };
 
 void init();                // initialize your variables, allocate memory, etc
@@ -30,5 +46,22 @@ void getInput();            // get input from player
 void update(double dt);     // update the game and the state of the game
 void render();              // renders the current state of the game to the console
 void shutdown();            // do clean up, free memory
+
+
+//menu
+void initmainmenu();
+void updatemainmenu(double dt);
+void rendermainmenu();
+
+void initlevelmenu();
+void updatelevelmenu(double dt);
+void renderlevelmenu();
+
+void initdeathmenu();
+void updatedeathmenu(double dt);
+void renderdeathmenu();
+
+//player environment intewractions.
+void trap();
 
 #endif // _GAME_H

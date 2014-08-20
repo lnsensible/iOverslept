@@ -38,6 +38,341 @@ struct bossAttack {
 bossAttack meteor;
 bossAttack splint;
 
+//menu ~ Gabriel Wong
+void initmainmenu()
+{
+	// Set precision for floating point output
+	std::cout << std::fixed << std::setprecision(3);
+
+	SetConsoleTitle(L"Main Menu");
+
+	// Get console width and height
+	CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
+
+	/* get the number of character cells in the current buffer */ 
+	GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &csbi );
+	consoleSize.X = csbi.srWindow.Right + 1;
+	consoleSize.Y = csbi.srWindow.Bottom + 1;
+
+	charLocation.X = 55;
+	charLocation.Y = 20;
+}
+void updatemainmenu(double dt)
+{
+	elapsedTime += dt;
+	deltaTime = dt;
+
+	if(keyPressed[K_UP])
+	{
+		if (charLocation.Y == 20 )
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.Y = 20;
+		}
+
+		else if (charLocation.Y == 22)
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.Y = 20;
+		}
+
+		else if (charLocation.Y == 24)
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.Y = 22;
+		}
+	}
+
+	if(keyPressed[K_DOWN])
+	{
+		if (charLocation.Y == 20 )
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.Y = 22;
+		}
+
+		else if (charLocation.Y == 22)
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.Y = 24;
+		}
+
+		else if (charLocation.Y == 24)
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.Y = 24;
+		}
+	}
+
+	if(keyPressed[K_ENTER])
+	{
+		if(charLocation.Y == 20)
+		{
+			gamestate = LEVELMENU;
+		}
+
+		if(charLocation.Y == 22)
+		{
+			gamestate = SHOP;
+		}
+
+		if(charLocation.Y == 24)
+		{
+			g_quitGame = true;
+		}
+	}
+}
+void rendermainmenu()
+{
+	cls();
+	std::string linemenuthing;
+	for(int i = 0; i < 20; i++)
+	{
+		linemenuthing += (char)196;
+	}
+	gotoXY(48, 18);
+	std::cout << (char)218 << linemenuthing << (char)191;
+	gotoXY(57, 20);
+	std::cout << "Play!";
+	gotoXY(57, 22);
+	std::cout << "Shop";
+	gotoXY(57, 24);
+	std::cout << "Quit";
+
+	gotoXY(charLocation);
+	colour(0x0C);
+	std::cout << (char)16;
+	colour(0x0F);
+}
+
+void initlevelmenu()
+{
+	// Set precision for floating point output
+	std::cout << std::fixed << std::setprecision(3);
+
+	SetConsoleTitle(L"Level Menu");
+
+	// Get console width and height
+	CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
+
+	/* get the number of character cells in the current buffer */ 
+	GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &csbi );
+	consoleSize.X = csbi.srWindow.Right + 1;
+	consoleSize.Y = csbi.srWindow.Bottom + 1;
+
+	charLocation.X = 50; //default cursor position
+	charLocation.Y = 23;
+}
+void updatelevelmenu(double dt)
+{
+	elapsedTime += dt;
+	deltaTime = dt;
+
+	if(keyPressed[K_LEFT])
+	{
+		if (charLocation.X != 50 )
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.X -= 2;
+		}
+	}
+
+	if(keyPressed[K_RIGHT])
+	{
+		if (charLocation.X != 68 )
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.X += 2;
+		}
+	}
+
+	if(keyPressed[K_ENTER])
+	{
+		if(charLocation.X == 50)
+		{
+			gamestate = LEVELONE;
+		}
+
+		if(charLocation.X == 52)
+		{
+			gamestate = LEVELTWO;
+		}
+
+		if(charLocation.X == 54)
+		{
+			gamestate = LEVELTHREE;
+		}
+
+		if(charLocation.X == 56)
+		{
+			gamestate = LEVELFOUR;
+		}
+
+		if(charLocation.X == 58)
+		{
+			gamestate = LEVELFIVE;
+		}
+
+		if(charLocation.X == 60)
+		{
+			gamestate = LEVELSIX;
+		}
+
+		if(charLocation.X == 62)
+		{
+			gamestate = LEVELSEVEN;
+		}
+
+		if(charLocation.X == 64)
+		{
+			gamestate = LEVELEIGHT;
+		}
+
+		if(charLocation.X == 66)
+		{
+			gamestate = LEVELNINE;
+		}
+
+		if(charLocation.X == 68)
+		{
+			gamestate = LEVELTEN;
+		}
+	}
+
+	if(keyPressed[K_ESCAPE])
+	{
+		gamestate = MENU;
+	}
+}
+void renderlevelmenu()
+{
+	cls();
+	colour(0x0F);
+
+	gotoXY(57, 20);
+	std::cout << "Levels";
+	gotoXY(50, 22);
+	std::cout << "1";
+	gotoXY(52, 22);
+	std::cout << "2";
+	gotoXY(54, 22);
+	std::cout << "3";
+	gotoXY(56, 22);
+	std::cout << "4";
+	gotoXY(58, 22);
+	std::cout << "5";
+	gotoXY(60, 22);
+	std::cout << "6";
+	gotoXY(62, 22);
+	std::cout << "7";
+	gotoXY(64, 22);
+	std::cout << "8";
+	gotoXY(66, 22);
+	std::cout << "9";
+	gotoXY(68, 22);
+	std::cout << "10";
+
+	gotoXY(charLocation);
+	colour(0x0C);
+	std::cout << (char)94;
+	colour(0x0F);
+}
+
+void initdeathmenu()
+{
+	// Set precision for floating point output
+	std::cout << std::fixed << std::setprecision(3);
+
+	SetConsoleTitle(L"Death Menu");
+
+	// Get console width and height
+	CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
+
+	/* get the number of character cells in the current buffer */ 
+	GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &csbi );
+	consoleSize.X = csbi.srWindow.Right + 1;
+	consoleSize.Y = csbi.srWindow.Bottom + 1;
+
+	charLocation.X = 50;
+	charLocation.Y = 22;
+}
+void updatedeathmenu(double dt)
+{
+	elapsedTime += dt;
+	deltaTime = dt;
+
+	if(keyPressed[K_LEFT])
+	{
+		if (charLocation.X == 60 )
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.X = 50;
+		}
+
+		else if(charLocation.X == 50)
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.X = 50;
+		}
+	}
+
+	if(keyPressed[K_RIGHT])
+	{
+		if (charLocation.X == 60 )
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.X = 60;
+		}
+
+		else if(charLocation.X == 50)
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.X = 60;
+		}
+	}
+
+	if(keyPressed[K_ENTER])
+	{
+		if(charLocation.X == 60)
+		{
+			g_quitGame = true;
+		}
+
+		if(charLocation.X == 50)
+		{
+			gamestate = LEVELMENU;
+		}
+	}
+}
+void renderdeathmenu()
+{
+	cls();
+	colour(0x0F);
+
+	gotoXY(52, 20);
+	std::cout << "YOU DIED :C TRY AGAIN?";
+	gotoXY(52, 22);
+	std::cout << "Yes :D";
+	gotoXY(62, 22);
+	std::cout << "SCREW IT I'M OUTTA HERE";
+
+	colour(0x0C);
+	gotoXY(charLocation);
+	std::cout << (char)16;
+	colour(0x0F);
+}
 
 void loadLevel(std::string filename) // loads level map from file.
 {
@@ -655,7 +990,7 @@ void checkforDeath()
 {
 	if ( PlayerHealth <= 0 )
 	{
-		g_quitGame = true;
+		gamestate = DEATH;
 	}
 }
 
@@ -811,7 +1146,7 @@ void init()
     // Set precision for floating point output
     std::cout << std::fixed << std::setprecision(3);
 
-    SetConsoleTitle(L"Level One");
+    SetConsoleTitle(L"Level Ten");
 
     // Get console width and height
     CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
@@ -856,6 +1191,7 @@ void getInput()
     keyPressed[K_RIGHT] = isKeyPressed(VK_RIGHT);
     keyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
 	keyPressed[K_SPACE] = isKeyPressed(VK_SPACE);
+	keyPressed[K_ENTER] = isKeyPressed(VK_RETURN);
 }
 
 void update(double dt)

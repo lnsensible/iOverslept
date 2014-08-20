@@ -44,8 +44,10 @@ int main()
 // at a specific frame rate
 void mainLoop()
 {
-   g_timer.startTimer();
-		while ( gamestate == PLAY ) 
+	while (g_quitGame == false)      // run this loop until user wants to quit 
+	{  
+		g_timer.startTimer();
+		while ( gamestate == LEVELTEN ) 
 		{
 			if ( initialisedornot != 1 )
 			{
@@ -59,7 +61,62 @@ void mainLoop()
 			g_timer.waitUntil(frameTime);
 
 			if ( g_quitGame == true )
-			break;
+				break;
 		}
-		initialisedornot = 0; 
+		initialisedornot = 0;
+
+		while ( gamestate == MENU )//MAIN MENU :3
+		{
+			if ( initialisedornot != 1 )
+			{
+				initmainmenu();
+				initialisedornot = 1;
+			}
+
+			getInput();
+			updatemainmenu(g_timer.getElapsedTime());
+			rendermainmenu();
+			g_timer.waitUntil(frameTime);
+
+			if ( g_quitGame == true )
+				break;
+		}
+		initialisedornot = 0;
+
+		while ( gamestate == LEVELMENU )//LEVEL MENU :DDDD
+		{
+			if ( initialisedornot != 1 )
+			{
+				initlevelmenu();
+				initialisedornot = 1;
+			}
+
+			getInput();
+			updatelevelmenu(g_timer.getElapsedTime());
+			renderlevelmenu();
+			g_timer.waitUntil(frameTime);
+
+			if ( g_quitGame == true )
+				break;
+		}
+		initialisedornot = 0;
+
+		while ( gamestate == DEATH )//DEATH MENU :C
+		{
+			if ( initialisedornot != 1 )
+			{
+				initdeathmenu();
+				initialisedornot = 1;
+			}
+
+			getInput();
+			updatedeathmenu(g_timer.getElapsedTime());
+			renderdeathmenu();
+			g_timer.waitUntil(frameTime);
+
+			if ( g_quitGame == true )
+				break;
+		}
+		initialisedornot = 0;
+	}
 }
