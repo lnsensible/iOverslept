@@ -411,7 +411,7 @@ void initendmenu()
 	consoleSize.X = csbi.srWindow.Right + 1;
 	consoleSize.Y = csbi.srWindow.Bottom + 1;
 
-	charLocation.X = 50;
+	charLocation.X = 47;
 	charLocation.Y = 22;
 }
 void updateendmenu(double dt)
@@ -421,46 +421,50 @@ void updateendmenu(double dt)
 
 	if(keyPressed[K_LEFT])
 	{
-		if (charLocation.X == 60 )
+		if (charLocation.X == 63 )
 		{
 			gotoXY(charLocation);
 			std::cout << " ";
-			charLocation.X = 50;
+			charLocation.X = 47;
 		}
 
-		else if(charLocation.X == 50)
+		else if(charLocation.X == 47)
 		{
 			gotoXY(charLocation);
 			std::cout << " ";
-			charLocation.X = 50;
+			charLocation.X = 47;
 		}
 	}
 
 	if(keyPressed[K_RIGHT])
 	{
-		if (charLocation.X == 60 )
+		if (charLocation.X == 63 )
 		{
 			gotoXY(charLocation);
 			std::cout << " ";
-			charLocation.X = 60;
+			charLocation.X = 63;
 		}
 
-		else if(charLocation.X == 50)
+		else if(charLocation.X == 47)
 		{
 			gotoXY(charLocation);
 			std::cout << " ";
-			charLocation.X = 60;
+			charLocation.X = 63;
 		}
 	}
 
 	if(keyPressed[K_ENTER])
 	{
-		if(charLocation.X == 60)
+		if(charLocation.X == 63)
 		{
+			if(checkLevel != 10)
+			{
+				checkLevel++;
+			}
 			gamestate = GAME;
 		}
 
-		if(charLocation.X == 50)
+		if(charLocation.X == 47)
 		{
 			gamestate = LEVELMENU;
 		}
@@ -478,7 +482,7 @@ void renderendmenu()
 	colour(0x0F);
 	std::cout << "Return menu";
 	gotoXY(65, 22);
-	std::cout << "Retry";
+	std::cout << "Next level";
 
 	colour(0x0C);
 	gotoXY(charLocation);
