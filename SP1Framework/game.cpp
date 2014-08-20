@@ -209,6 +209,7 @@ void updatelevelmenu(double dt)
 
 	if(keyPressed[K_ENTER])
 	{
+		hasLevelRendered = 0;
 
 		if(charLocation.X == 50)
 		{
@@ -445,6 +446,16 @@ void prepareLevel() // Prepares level map for cout
 				MonsterSnail.x.push_back(j); // location of X-coordinates of snail
 				MonsterSnail.y.push_back(i); // location of Y-coordinates of snail
 				MonsterSnail.health.push_back(2); // health of snail
+			}
+
+			if ( map[i][j] == 'T' ) // TREASURE HORRYY SHEET $$$
+			{
+				map[i][j] = 15;
+			}
+
+			if ( map[i][j] == 'G' ) // GOAL
+			{
+				map[i][j] = 234;
 			}
 		}
 	}
@@ -981,6 +992,14 @@ void checkforSpike() // checks if character is standing on a trap.
 	}
 }
 
+void checkForGoal()
+{
+	if (map[charLocation.Y][charLocation.X] == 234)
+	{
+		gamestate = ENDGAME;
+	}
+}
+
 void checkCollisionSplint()
 {
 	if ( (splint.X).size() != 0 ) // confirming there is a splint
@@ -1333,6 +1352,7 @@ void update(double dt)
 
 	gravity();
 	checkforSpike();
+	checkForGoal();
 
 	if ( hasbeenStabbed == 1 ) 
 	{

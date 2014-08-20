@@ -63,6 +63,6 @@ void updatedeathmenu(double dt);
 void renderdeathmenu();
 
 //player environment intewractions.
-void trap();
+void checkForGoal();
 
 #endif // _GAME_H
