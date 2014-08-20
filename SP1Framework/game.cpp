@@ -53,7 +53,7 @@ struct bossAttack {
 bossAttack meteor;
 bossAttack splint;
 bossAttack laser;
-bossAttack weights;
+bossAttack lava;
 
 //menu ~ Gabriel Wong
 
@@ -756,11 +756,23 @@ void updateLaser()
 	{
 		if ( (laser.X)[i] > 5 )
 		{
-			(laser.X)[i]--;
+			for ( int j = (laser.Y)[0]-6; j < (laser.Y)[0]+2; j++)
+			{
+				gotoXY( (laser.X)[i], j );
+				if ( map[j][ (laser.X)[i] ] == '#')
+				{
+					std::cout << (char)219; // and print block to replace walls
+				}
+				else
+				{
+					std::cout << map[j][ (laser.X)[i] ]; // else print what's in the array
+				}
+			}
+			(laser.X)[i]-- ;
 		}
 		else // when laser reaches the left
 		{
-			for ( int j = (laser.Y)[i]-2; j < (laser.Y)[i]+3; j++) // remove the lazor
+			for ( int j = (laser.Y)[i]-6; j < (laser.Y)[i]+2; j++) // remove the lazor
 			{
 				for ( int k = 66; k > 0; k--) // CLEAN UP THE MESS >:((
 				{
@@ -786,13 +798,123 @@ void renderLaser()
 {
 	for (unsigned int i = 0; i < (laser.X).size(); i++ )
 	{
-		for ( int j = (laser.Y)[i]-2; j < (laser.Y)[i]+3; j++)
+		for ( int j = (laser.Y)[i]-6; j < (laser.Y)[i]+2; j++)
 		{
 			gotoXY( (laser.X)[i], j );
 			std::cout << (char)27;
 		}
 	}
 
+}
+
+void pianusLava1()
+{
+	gotoXY(65, 7);	std::cout << "                        :?              ";
+	gotoXY(65, 8);	std::cout << "                      ~+?III=           ";
+	gotoXY(65, 9);	std::cout << "                 ,,=:~+=~++?I,          ";
+	gotoXY(65, 10);	std::cout << "           7777I??+=~~~~==~=+??         ";
+	gotoXY(65, 11);	std::cout << "        IIIIII??+~~::::::::~~=+?        ";
+	gotoXY(65, 12);	std::cout << "       7III?===~~:::::::::::::::        ";
+	gotoXY(65, 13);	std::cout << "       =+++==+=~~:::::::::::=,,,::      ";
+	gotoXY(65, 14);	std::cout << "      ++++++===~~:::::::::?+++,,,,,,    ";
+	gotoXY(65, 15);	std::cout << "    :I??++===~~~~::::::::=~=+++,:,,,,   ";
+	gotoXY(65, 16);	std::cout << "    :=++++====~~?+=~::::,:::~==,,,,,,   ";
+	gotoXY(65, 17);	std::cout << "  ??IIII?~~==~~~:,~~~::::,,,:~=,,,,,    ";
+	gotoXY(65, 18);	std::cout << "  ====~~:+==~~~====~:::,:::~~==,,,,,,,  ";
+	gotoXY(65, 19);	std::cout << "   ====~~:+==~~~====~:::,:::~~==,,,,,,, ";
+	gotoXY(65, 20);	std::cout << "   =,:~~~~?:~~~~~~~~~~~,,~=:,,,,,,,,,,, ";
+	gotoXY(65, 21);	std::cout << "  ========~~~~~~~~~~:~,,===+++?,,,,,,,, ";
+}
+
+void pianusLava2()
+{
+	gotoXY(65, 7);	std::cout << "                        :?              ";
+	gotoXY(65, 8);	std::cout << "                      ~+?III=           ";
+	gotoXY(65, 9);	std::cout << "                 ,,=:~+=~++?I,          ";
+	gotoXY(65, 10);	std::cout << "           7777I??+=~~~~==~=+??         ";
+	gotoXY(65, 11);	std::cout << "        IIIIII??+~~::::::::~~=+?        ";
+	gotoXY(65, 12);	std::cout << "       7III?===~~:::::::::::::::        ";
+	gotoXY(65, 13);	std::cout << "       =+++==+=~~:::::::::::=,,,::      ";
+	gotoXY(65, 14);	std::cout << "      ++++++===~~:::::::::?+++,,,,,,    ";
+	gotoXY(65, 15);	std::cout << "    :I??++===~~~~::::::::=~=+++,:,,,,   ";
+	gotoXY(65, 16);	std::cout << "    :=++++====~~?+=~::::,:::~==,,,,,,   ";
+	gotoXY(65, 17);	std::cout << "  ??IIII?~~==~~~:,~~~::::,,,:~=,,,,,    ";
+	gotoXY(65, 18);	std::cout << "  ====~~:+==~~~====~:::,:::~~==,,,,,,   ";
+	gotoXY(65, 19);	std::cout << "       :::~:~~~~::::::~~,,,,,,,,,,,,,,, ";
+	gotoXY(65, 20);	std::cout << "   =,:~~~~?:~~~~~~~~~~~,,~=:,,,,,,,,,,, ";
+	gotoXY(65, 21);	std::cout << "  ========~~~~~~~~~~:~,,===+++?,,,,,,,, ";
+}
+
+void pianusLava3()
+{
+	gotoXY(65, 7);	std::cout << "                        :?              ";
+	gotoXY(65, 8);	std::cout << "                      ~+?III=           ";
+	gotoXY(65, 9);	std::cout << "                 ,,=:~+=~++?I,          ";
+	gotoXY(65, 10);	std::cout << "           7777I??+=~~~~==~=+??         ";
+	gotoXY(65, 11);	std::cout << "        IIIIII??+~~::::::::~~=+?        ";
+	gotoXY(65, 12);	std::cout << "       7III?===~~:::::::::::::::        ";
+	gotoXY(65, 13);	std::cout << "       =+++==+=~~:::::::::::=,,,::      ";
+	gotoXY(65, 14);	std::cout << "      ++++++===~~:::::::::?+++,,,,,,    ";
+	gotoXY(65, 15);	std::cout << "    :I??++===~~~~::::::::=~=+++,:,,,,   ";
+	gotoXY(65, 16);	std::cout << "  ====~~:+==~~~====~:::,:::~~==,,,,,,   ";
+	gotoXY(65, 17);	std::cout << "        :::~~::+7::::::~,,,:~==,,,,     ";
+	gotoXY(65, 18);	std::cout << "         ,:~::::=I?~::::,,,,,,,,,,,,,   ";
+	gotoXY(65, 19);	std::cout << "       :::~:~~~~::::::~~,,,,,,,,,,,,,,, ";
+	gotoXY(65, 20);	std::cout << "   =,:~~~~?:~~~~~~~~~~~,,~=:,,,,,,,,,,, ";
+	gotoXY(65, 21);	std::cout << "  ========~~~~~~~~~~:~,,===+++?,,,,,,,, ";
+}
+
+void pianusLavaEffect()
+{
+	for ( int i = 5; i < 46; i++ )
+	{
+		(lava.X).push_back(i);
+		(lava.Y).push_back(21);
+	}
+}
+
+void updateLava()
+{
+	if ( (lava.Y)[0] > 17 )
+	{
+		for ( int i = 0; i < 41; i++)
+		{
+			(lava.Y)[i]--;
+		}
+	}
+	else // when lava reaches top platform
+	{
+		for ( int j = 5; j < 46; j++) // remove the lava
+		{
+			for ( int k = 20; k > 15; k--) // CLEAN UP THE MESS >:((
+			{
+				gotoXY(j, k);
+				if ( map[k][j] == '#')
+				{
+					std::cout << (char)219; // and print block to replace walls
+				}
+				else
+				{
+					std::cout << map[k][j]; // else print what's in the array
+				}
+			}
+		}
+		
+		lava.X.clear();
+		lava.Y.clear();
+	}
+}
+
+void renderLava()
+{
+	for (unsigned int i = 0; i < (lava.Y).size(); i++ )
+	{
+		for ( int j = 0; j < (lava.X).size(); j++)
+		{
+			gotoXY( (lava.X)[j], (lava.Y)[i] );
+			std::cout << (char)30;
+		}
+	}
 }
 
 void bossStand1()
@@ -1510,12 +1632,12 @@ void checkPianusStatus()
 		{
 			if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
 			{
-				bossSplint2();
+				pianusLava2();
 			}
 			else if ( bossFrameDelay > 3.0 ) // third frame
 			{
-				bossSplint3();
-				bossSplintEffect();
+				pianusLava3();
+				pianusLavaEffect();
 				bossFrameDelay = 0;
 				bossStatus = 0;
 				skillDelay = 0;
@@ -1523,7 +1645,7 @@ void checkPianusStatus()
 			}
 			else
 			{
-				bossSplint1();
+				pianusLava1();
 			}
 		}
 	}
@@ -1540,6 +1662,7 @@ void jump()
 		std::cout << " "; //and clear it! (prevent screen flicker)
 		--charLocation.Y; // Initial Jump.
 		jumpDelay = 0; // Reset delay since we jumped.
+		render();
 		while ( jumpDelay < 0.100 ) // You are in the middle of jumping, but still want to be able to take in input!
 		{
 			getInput();
@@ -1673,12 +1796,13 @@ void init()
 	}
 	else if ( checkLevel == 9 )
 	{
+		isBossLevel = 2;
 		loadLevel("level9.txt");
 		SetConsoleTitle(L"Level Nine");
 	}
 	else if ( checkLevel == 10 )
 	{
-		isBossLevel = 2;
+		isBossLevel = 1;
 		SetConsoleTitle(L"Level Ten");
 		loadLevel("level10.txt");
 	}
@@ -1746,9 +1870,15 @@ void update(double dt)
 
 	if ( isBossLevel == 2 )
 	{
-		if ( (laser.X).size() != 0 ) // If there's laz0r
+		if ( (laser.X).size() != 0 ) // If there's laser
 		{
 			updateLaser();
+			// check collision
+		}
+
+		if ( (lava.X).size() != 0 ) // If there's lava
+		{
+			updateLava();
 			// check collision
 		}
 	}
@@ -1833,6 +1963,12 @@ void render()
 		if ( (laser.X).size() != 0 ) // If laz0r
 		{
 			renderLaser();
+		}
+
+		if ( (lava.X).size() != 0 ) // If there's lavarh
+		{
+			renderLava();
+			// check collision
 		}
 
 		checkPianusStatus();
