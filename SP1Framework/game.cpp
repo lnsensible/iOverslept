@@ -30,7 +30,7 @@ double jumpDelay = 0; // delay between y coordinate change while jumping
 double fallDelay = 0; // delay between falling (no delay for initial fall)
 double skillDelay = 0; // delay between using skills
 double bossFrameDelay = 0; // delay between boss animations
-double snailMoveDelay = 0; // delay between each snail movement
+double snailMoveDelay = 0; // delay between each snail movement :D
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
 
@@ -576,6 +576,14 @@ void renderLevel() // Renders map into console
 			{
 				std::cout << (char)219; // and print block to replace walls
 			}
+
+			if ( map[i][j] == 234)
+			{
+				colour(0x0A);
+				std::cout << (char)234; // Green goal
+				colour(0x0F);
+			}
+
 			else
 			{
 				std::cout << map[i][j]; // else print what's in the array

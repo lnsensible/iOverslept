@@ -49,7 +49,7 @@ void render();              // renders the current state of the game to the cons
 void shutdown();            // do clean up, free memory
 
 
-//menu
+//menu :D
 void initmainmenu();
 void updatemainmenu(double dt);
 void rendermainmenu();
