@@ -1,0 +1,980 @@
+// This is the main file for the game logic and function
+//
+//
+#include "game.h"
+#include "Framework\console.h"
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <vector>
+#include <fstream>
+
+double elapsedTime;
+double deltaTime;
+bool keyPressed[K_COUNT];
+int gamestate = 0;
+COORD charLocation;
+COORD consoleSize;
+
+unsigned char map[25][120]; // stores the level map
+int hasLevelRendered = 0; // Check if level has been rendered. 0 = Not loaded, 1 = Loaded
+int isJumping = 0; // Check if character is jumping. 0 = Not jumping, 1 = Jumping
+int hasbeenStabbed = 0; // Check if character has been stabbed by a needle/spike to determine if spikes need to be re rendered
+int hasbeenDamaged = 0; // Check if character was damaged. If yes, need to re-render HP. All to prevent flickering ); 0 = No change, 1 = Changed
+int bossStatus = 0; // Check what the boss is currently doing. 0 = Standing, 1 = Using skill1, 2 = using skill2. 
+double canJump = 0; // Check if you have jumped in the past 0.8 ms
+double jumpDelay = 0; // delay between y coordinate change while jumping
+double fallDelay = 0; // delay between falling (no delay for initial fall)
+double skillDelay = 0; // delay between using skills
+double bossFrameDelay = 0; // delay between boss animations
+
+int PlayerHealth = 3; // Player's HP. Default = 3.
+
+struct bossAttack {
+	std::vector<int> X;
+	std::vector<int> Y;
+};
+
+bossAttack meteor;
+bossAttack splint;
+
+
+void loadLevel(std::string filename) // loads level map from file.
+{
+	std::fstream LevelMap;
+	LevelMap.open(filename);
+
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 120; j++)
+		{
+			LevelMap >> map[i][j];
+		}
+	}
+
+	LevelMap.close();
+} 
+
+void prepareLevel() // Prepares level map for cout
+{
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 120; j++)
+		{
+			if ( map[i][j] == '.' ) // Whitespace placeholder
+			{
+				map[i][j] = ' ';
+			}
+			if ( map[i][j] == 'C' ) //Character placeholder
+			{
+				charLocation.X = j; // Assign coordinates of placeholder
+				charLocation.Y = i; // to actual character ~
+				map[i][j] = ' '; // Remove character placeholder
+			}
+			if ( map[i][j] == 'x' ) // Floor trap placeholder
+			{
+				map[i][j] = 30;
+			}
+			if ( map[i][j] == 'X' ) // Ceiling trap placeholder
+			{
+				map[i][j] = 31;
+			}
+			if ( map[i][j] == 'n' ) // Wall trap placeholder ( a spike facing left )
+			{
+				map[i][j] = 17;
+			}
+			if ( map[i][j] == 'N' ) // Wall trap placeholder ( a spike facing right )
+			{
+				map[i][j] = 16;
+			}
+		}
+	}
+}
+
+void renderLevel() // Renders map into console
+{
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 120; j++)
+		{
+			gotoXY(j, i); // go to XY coords respectively,
+			if ( map[i][j] == '#')
+			{
+				std::cout << (char)219; // and print block to replace walls
+			}
+			else
+			{
+				std::cout << map[i][j]; // else print what's in the array
+			}
+		}
+	}
+}
+
+void renderSpikes() // re-render spikes after being stabbed
+{
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 120; j++)
+		{
+			if ( map[i][j] == 30 ) // Floor trap placeholder
+			{
+				gotoXY(j, i);
+				std::cout << map[i][j];
+			}
+			if ( map[i][j] == 31 ) // Ceiling trap placeholder
+			{
+				gotoXY(j, i);
+				std::cout << map[i][j];
+			}
+			if ( map[i][j] == 17 ) // Wall trap placeholder ( a spike facing left )
+			{
+				gotoXY(j, i);
+				std::cout << map[i][j];
+			}
+			if ( map[i][j] == 16 ) // Wall trap placeholder ( a spike facing right )
+			{
+				gotoXY(j, i);
+				std::cout << map[i][j];
+			}
+		}
+	}
+}
+
+void renderHP() // displays amount of HP player still has.
+{
+	gotoXY(14, 26); // Clear HP section for render again
+	std::cout << "        ";
+	colour(0x0F);
+	gotoXY(6, 26);
+	std::cout << "Health: ";
+	gotoXY(14, 26);
+	for ( int i = 0; i < PlayerHealth; i++ )
+	{
+		std::cout << (char)3 << " ";
+	}
+}
+
+void bossStand1()
+{
+	gotoXY(60, 4);
+	std::cout << "    ~,~~             ?=:,";
+	gotoXY(60, 5);
+	std::cout << "    =~,~~,,      ,==?~~~";
+	gotoXY(60, 6);
+	std::cout << "    =~~7IIIIIIIII+~=~~,,~";
+	gotoXY(60, 7);
+	std::cout << "    =.7777IIIIIIII~~~::,~";
+	gotoXY(60, 8);
+	std::cout << "    I777777IIIIIIII?,:,,";
+	gotoXY(60, 9); 
+	std::cout << "    II777IIIIIIIIIII?++=";
+	gotoXY(60, 10);
+	std::cout << "   IIIIIIIIIIIII7III?+++~";
+	gotoXY(60, 11);
+	std::cout << "   II+.=IIIIIII?..III+?+=";
+	gotoXY(60, 12);
+	std::cout << "    I=.=IIIIIII?..III?++=~         7I7:    ";
+	gotoXY(60, 13);
+	std::cout << "    ++III~I:IIII7I++I?++=~         ~~~:    ";
+	gotoXY(60, 14);
+	std::cout << "   ?IIIIIIIIIIIIIIIII?++=~       =         ";
+	gotoXY(50, 15);
+	std::cout << "             +II          +I??7?++=~     =           ";
+	gotoXY(50, 16);
+	std::cout << "             ?77              7I++=~    I";
+	gotoXY(50, 17);
+	std::cout << "            I777              7I?=~~   I";
+	gotoXY(50, 18);
+	std::cout << "            +777            77II?===   =";
+	gotoXY(50, 19);
+	std::cout << "            +I            77IIII======";
+	gotoXY(50, 20);
+	std::cout << "             +III7777777IIIIII?=~=";
+	gotoXY(50, 21);
+	std::cout << "          ,~~~.+IIIIIIIIIII??+.~:,,";
+}
+
+void bossStand2()
+{
+	gotoXY(60, 4);
+	std::cout << "    ~,~~             ?=:,";
+	gotoXY(60, 5);
+	std::cout << "    =~,~~,,      ,==?~~~";
+	gotoXY(60, 6);
+	std::cout << "    =~~7IIIIIIIII+~=~~,,~";
+	gotoXY(60, 7);
+	std::cout << "    =.7777IIIIIIII~~~::,~";
+	gotoXY(60, 8);
+	std::cout << "    I777777IIIIIIII?,:,,";
+	gotoXY(60, 9);
+	std::cout << "    II777IIIIIIIIIII?++=";
+	gotoXY(60, 10);
+	std::cout << "   IIIIIIIIIIIII7III?+++~";
+	gotoXY(60, 11);
+	std::cout << "   II+.=IIIIIII?..III+?+=";
+	gotoXY(60, 12);
+	std::cout << "    I=.=IIIIIII?..III?++=~              ";
+	gotoXY(60, 13);
+	std::cout << "    ++III~I:IIII7I++I?++=~         ??~~:";
+	gotoXY(60, 14);
+	std::cout << "   ?IIIIIIIIIIIIIIIII?++=~       = ,'   ";
+	gotoXY(50, 15);
+	std::cout << "             +II          +I??7?++=~     =        ";
+	gotoXY(50, 16);
+	std::cout << "             ?77              7I++=~    I";
+	gotoXY(50, 17);
+	std::cout << "            I777              7I?=~~   I";
+	gotoXY(50, 18);
+	std::cout << "            +777            77II?===   =";
+	gotoXY(50, 19);
+	std::cout << "            +I            77IIII======";
+	gotoXY(50, 20);
+	std::cout << "             +III7777777IIIIII?=~=";
+	gotoXY(50, 21);
+	std::cout << "          ,~~~.+IIIIIIIIIII??+.~:,,";
+}
+
+void bossMeteor1()
+{
+	gotoXY(60, 4);
+	std::cout << "    ~,~~             ?=:,";
+	gotoXY(60, 5);
+	std::cout << "    =~,~~,,      ,==?~~~";
+	gotoXY(60, 6);
+	std::cout << "    =~~7IIIIIIIII+~=~~,,~";
+	gotoXY(60, 7);
+	std::cout << "    =.7777IIIIIIII~~~::,~";
+	gotoXY(56, 8);
+	std::cout << ",I??    I777777IIIIIIII?,:,,";
+	gotoXY(55, 9);
+	std::cout << ":I77+7+.?II777IIIIIIIIIII?++=           ";
+	gotoXY(54, 10);
+	std::cout << ",?7=++I~?IIIIIIIIIIIIIIII7III?+++~      ";
+	gotoXY(53, 11);
+	std::cout << "=.=777=?+?II+.=IIIIIII?..III+?+=               ";
+	gotoXY(60, 12);
+	std::cout << "    I=.=IIIIIII?..III?++=~              ";
+	gotoXY(60, 13);
+	std::cout << "    ++III~I:IIII7I++I?++=~         ??~~:";
+	gotoXY(60, 14);
+	std::cout << "   ?IIIIIIIIIIIIIIIII?++=~       = ,'   ";
+	gotoXY(60, 15);
+	std::cout << "   +II          +I??7?++=~     =        ";
+	gotoXY(60, 16);
+	std::cout << "   ?77              7I++=~    I         ";
+	gotoXY(60, 17);
+	std::cout << "  I777              7I?=~~   I          ";
+	gotoXY(60, 18);
+	std::cout << "  +777            77II?===   =          ";
+	gotoXY(60, 19);
+	std::cout << "  +I            77IIII======            ";
+	gotoXY(60, 20);
+	std::cout << "   +III7777777IIIIII?=~=";
+	gotoXY(60, 21);
+	std::cout << ",~~~.+IIIIIIIIIII??+.~:,,";
+	
+}
+
+void bossMeteor2()
+{
+	gotoXY(60, 4);
+	std::cout << "    ~,~~             ?=:,";
+	gotoXY(60, 5);
+	std::cout << "    =~,~~,,      ,==?~~~";
+	gotoXY(60, 6);
+	std::cout << "    =~~7IIIIIIIII+~=~~,,~";
+	gotoXY(60, 7);
+	std::cout << "    =.7777IIIIIIII~~~::,~";
+	gotoXY(56, 8);
+	std::cout << " ,I??   I777777IIIIIIII?,:,,";
+	gotoXY(55, 9);
+	std::cout << " :I77+7+.II777IIIIIIIIIII?++=";
+	gotoXY(54, 10);
+	std::cout << " ,?7=++I~IIIIIIIIIIIIIIII7III?+++~     ";
+	gotoXY(53, 11);
+	std::cout << "  =.=777=?II+.=IIIIIII?..III+?+=            ?";
+	gotoXY(60, 12);
+	std::cout << "    I=.=IIIIIII?..III?++=~          ?  ";
+	gotoXY(60, 13);
+	std::cout << "    ++III~I:IIII7I++I?++=~         ?    ";
+	gotoXY(60, 14);
+	std::cout << "   ?IIIIIIIIIIIIIIIII?++=~       =     ";
+	gotoXY(60, 15);
+	std::cout << "   +II          +I??7?++=~     =";
+	gotoXY(60, 16);
+	std::cout << "   ?77              7I++=~    I";
+	gotoXY(60, 17);
+	std::cout << "  I777              7I?=~~   I";
+	gotoXY(60, 18);
+	std::cout << "  +777            77II?===   =";
+	gotoXY(60, 19);
+	std::cout << "  +I            77IIII======";
+	gotoXY(60, 20);
+	std::cout << "   +III7777777IIIIII?=~=";
+	gotoXY(60, 21);
+	std::cout << ",~~~.+IIIIIIIIIII??+.~:,,";
+	
+}
+
+void bossMeteor3()
+{
+	gotoXY(60, 4);
+	std::cout << "    ~,~~             ?=:,";
+	gotoXY(60, 5);
+	std::cout << "    =~,~~,,      ,==?~~~";
+	gotoXY(60, 6);
+	std::cout << "    =~~7IIIIIIIII+~=~~,,~";
+	gotoXY(60, 7);
+	std::cout << "    =.7777IIIIIIII~~~::,~";
+	gotoXY(56, 8);
+	std::cout << "        I777777IIIIIIII?,:,,";
+	gotoXY(55, 9);
+	std::cout << "         II777IIIIIIIIIII?++=";
+	gotoXY(54, 10);
+	std::cout << "       I~IIIIIIIIIIIIIIII7III?+++~     ";
+	gotoXY(53, 11);
+	std::cout << "          II+.=IIIIIII?..III+?+=             ";
+	gotoXY(60, 12);
+	std::cout << "    I=.=IIIIIII?..III?++=~          ???";
+	gotoXY(60, 13);
+	std::cout << "    ++III~I:IIII7I++I?++=~         ?    ";
+	gotoXY(60, 14);
+	std::cout << "   ?IIIIIIIIIIIIIIIII?++=~       =     ";
+	gotoXY(60, 15);
+	std::cout << "   +II          +I??7?++=~     =";
+	gotoXY(60, 16);
+	std::cout << "   ?77              7I++=~    I";
+	gotoXY(60, 17);
+	std::cout << "  I777              7I?=~~   I";
+	gotoXY(60, 18);
+	std::cout << "  +777            77II?===   =";
+	gotoXY(60, 19);
+	std::cout << "  +I            77IIII======";
+	gotoXY(60, 20);
+	std::cout << "   +III7777777IIIIII?=~=";
+	gotoXY(60, 21);
+	std::cout << ",~~~.+IIIIIIIIIII??+.~:,,";
+}
+
+void bossMeteorEffect() // spawns meteors !
+{
+	(meteor.X).push_back(13);
+	(meteor.Y).push_back(0);
+
+	(meteor.X).push_back(29);
+	(meteor.Y).push_back(0);
+}
+
+void updateMeteor() // moves meteors / delete meteors and adjust coordinates
+{
+	gotoXY(20, 3);
+	std::cout << "        "; // clean up mess after spawning
+	gotoXY(36, 3);
+	std::cout << "         ";
+	for (unsigned int i = 0; i < (meteor.X).size(); i++ ) // for all the meteors
+	{
+		if ( (meteor.Y)[i] < 19 ) // when meteor is still falling ~
+		{
+			for ( int j = (meteor.Y)[i]-2; j < (meteor.Y)[i]+3; j++) //clean up the path behind the meteor 
+			{
+				for ( int k = (meteor.X)[i]-5; k < (meteor.X)[i]+6; k++) //  WHAT THE METEOR DESTROYEDDD.
+				{
+					if ( j < 0 ) // lowest Y coord is 0.
+						j = 0;
+
+					gotoXY(k, j); // go to XY coords respectively,
+					if ( map[j][k] == '#')
+					{
+						std::cout << (char)219; // and print block to replace walls
+					}
+					else
+					{
+						std::cout << map[j][k]; // else print what's in the array
+					}
+				}
+			}
+		( (meteor.Y)[i] )++;
+		}
+		else // when meteor hits the ground
+		{
+			for ( int j = (meteor.Y)[i]-2; j < (meteor.Y)[i]+3; j++) //clean up the ground
+			{
+				for ( int k = (meteor.X)[i]-5; k < (meteor.X)[i]+6; k++) // CLEAN UP THE GROUNDD >:((
+				{
+					gotoXY(k, j);
+					if ( map[j][k] == '#')
+					{
+						std::cout << (char)219; // and print block to replace walls
+					}
+					else
+					{
+						std::cout << map[j][k]; // else print what's in the array
+					}
+				}
+			}
+
+			(meteor.X).erase( (meteor.X).begin() + i ); //erase coords
+			(meteor.Y).erase( (meteor.Y).begin() + i ); //erase coords
+		}
+	}
+}
+
+void renderMeteor() // cout meteors to console
+{
+	for (unsigned int i = 0; i < (meteor.X).size(); i++ )
+	{
+		gotoXY( (meteor.X)[i]-5, (meteor.Y)[i] );
+		std::cout << "x@*(&@(*&%x";
+		gotoXY( (meteor.X)[i]-5, (meteor.Y)[i]+1 );
+		std::cout << "'x?HQ(*@&x'";
+		gotoXY( (meteor.X)[i]-5, (meteor.Y)[i]-1 );
+		std::cout << ",xQ)(&@FJx,";
+		gotoXY( (meteor.X)[i]-5, (meteor.Y)[i]+2 );
+		std::cout << " 'xxxxxxx' ";
+		gotoXY( (meteor.X)[i]-5, (meteor.Y)[i]-2 );
+		std::cout << " ,xxxxxxx, ";
+	}
+
+}
+
+void bossSplint1()
+{
+	gotoXY(60, 4);
+	std::cout << "    ~,~~             ?=:,";
+	gotoXY(60, 5);
+	std::cout << "    =~,~~,,      ,==?~~~";
+	gotoXY(60, 6);
+	std::cout << "    =~~7IIIIIIIII+~=~~,,~";
+	gotoXY(60, 7);
+	std::cout << "    =.7777IIIIIIII~~~::,~";
+	gotoXY(60, 8);
+	std::cout << "    I777777IIIIIIII?,:,,";
+	gotoXY(60, 9); 
+	std::cout << "    II777IIIIIIIIIII?++=";
+	gotoXY(60, 10);
+	std::cout << "   IIIIIIIIIIIII7III?+++~";
+	gotoXY(60, 11);
+	std::cout << "   II+.=IIIIIII?..III+?+=";
+	gotoXY(60, 12);
+	std::cout << "    I=.=IIIIIII?..III?++=~         7I7:    ";
+	gotoXY(60, 13);
+	std::cout << "    ++III~I:IIII7I++I?++=~         ~~~:    ";
+	gotoXY(60, 14);
+	std::cout << "   ?IIIIIIIIIIIIIIIII?++=~       =       ";
+	gotoXY(60, 15);
+	std::cout << "   +II          +I??7?++=~     =";
+	gotoXY(60, 16);
+	std::cout << "   ?77              7I++=~    I";
+	gotoXY(60, 17);
+	std::cout << "  I777              7I?=~~   I";
+	gotoXY(60, 18);
+	std::cout << "  +777            77II?===   =";
+	gotoXY(50, 19);
+	std::cout << " =???++==~= +I            77IIII======";
+	gotoXY(51, 20);
+	std::cout << " ++???=~~   +III7777777IIIIII?=~=";
+	gotoXY(51, 21);
+	std::cout << " =????=~=,~~~.+IIIIIIIIIII??+.~:,,";
+}
+
+void bossSplint2()
+{
+	gotoXY(60, 4);
+	std::cout << "    ~,~~             ?=:,";
+	gotoXY(60, 5);
+	std::cout << "    =~,~~,,      ,==?~~~";
+	gotoXY(60, 6);
+	std::cout << "    =~~7IIIIIIIII+~=~~,,~";
+	gotoXY(60, 7);
+	std::cout << "    =.7777IIIIIIII~~~::,~";
+	gotoXY(60, 8);
+	std::cout << "    I777777IIIIIIII?,:,,";
+	gotoXY(60, 9); 
+	std::cout << "    II777IIIIIIIIIII?++=";
+	gotoXY(60, 10);
+	std::cout << "   IIIIIIIIIIIII7III?+++~";
+	gotoXY(60, 11);
+	std::cout << "   II+.=IIIIIII?..III+?+=";
+	gotoXY(60, 12);
+	std::cout << "    I=.=IIIIIII?..III?++=~         7I7:       ";
+	gotoXY(60, 13);
+	std::cout << "    ++III~I:IIII7I++I?++=~         ~  ?      ";
+	gotoXY(60, 14);
+	std::cout << "   ?IIIIIIIIIIIIIIIII?++=~       =         ";
+	gotoXY(60, 15);
+	std::cout << "   +II          +I??7?++=~     =";
+	gotoXY(60, 16);
+	std::cout << "   ?77              7I++=~    I";
+	gotoXY(60, 17);
+	std::cout << "  I777              7I?=~~   I";
+	gotoXY(50, 18);
+	std::cout << "     xx     +777            77II?===   =";
+	gotoXY(50, 19);
+	std::cout << " =???++==~= +I            77IIII======";
+	gotoXY(51, 20);
+	std::cout << " ++???=~~   +III7777777IIIIII?=~=";
+	gotoXY(51, 21);
+	std::cout << " =????=~=,~~~.+IIIIIIIIIII??+.~:,,";
+}
+
+void bossSplint3()
+{
+	gotoXY(60, 4);
+	std::cout << "    ~,~~             ?=:,";
+	gotoXY(60, 5);
+	std::cout << "    =~,~~,,      ,==?~~~";
+	gotoXY(60, 6);
+	std::cout << "    =~~7IIIIIIIII+~=~~,,~";
+	gotoXY(60, 7);
+	std::cout << "    =.7777IIIIIIII~~~::,~";
+	gotoXY(60, 8);
+	std::cout << "    I777777IIIIIIII?,:,,";
+	gotoXY(60, 9); 
+	std::cout << "    II777IIIIIIIIIII?++=";
+	gotoXY(60, 10);
+	std::cout << "   IIIIIIIIIIIII7III?+++~";
+	gotoXY(60, 11);
+	std::cout << "   II+.=IIIIIII?..III+?+=";
+	gotoXY(60, 12);
+	std::cout << "    I=.=IIIIIII?..III?++=~         7I7:    ";
+	gotoXY(60, 13);
+	std::cout << "    ++III~I:IIII7I++I?++=~         ~~~:   ";
+	gotoXY(60, 14);
+	std::cout << "   ?IIIIIIIIIIIIIIIII?++=~       =       ";
+	gotoXY(60, 15);
+	std::cout << "   +II          +I??7?++=~     =";
+	gotoXY(60, 16);
+	std::cout << "   ?77              7I++=~    I";
+	gotoXY(50, 17);
+	std::cout << "     xx     I777              7I?=~~   I";
+	gotoXY(50, 18);
+	std::cout << "    xxxx    +777            77II?===   =";
+	gotoXY(50, 19);
+	std::cout << " =???++==~= +I            77IIII======";
+	gotoXY(51, 20);
+	std::cout << " ++???=~~   +III7777777IIIIII?=~=";
+	gotoXY(51, 21);
+	std::cout << " =????=~=,~~~.+IIIIIIIIIII??+.~:,,";
+}
+
+void bossSplintEffect()
+{
+	(splint.X).push_back(22);
+	(splint.Y).push_back(22);
+}
+
+void updateSplint()
+{
+	for (unsigned int i = 0; i < (splint.Y).size(); i++ ) // when spike still moving upwards
+	{
+		if ( (splint.Y)[i] > 3 )
+		{
+			(splint.Y)[i]--;
+		}
+		else // when spike reaches the top
+		{
+			for ( int j = (splint.X)[i]-3; j < (splint.X)[i]+2; j++) // remove the spikes
+			{
+				for ( int k = 2; k < 22; k++) // CLEAN UP THE MESS >:((
+				{
+					gotoXY(j, k);
+						if ( map[k][j] == '#')
+					{
+						std::cout << (char)219; // and print block to replace walls
+					}
+					else
+					{
+						std::cout << map[k][j]; // else print what's in the array
+					}
+				}
+			}
+
+			(splint.X).erase( (splint.X).begin() + i ); //erase coords
+			(splint.Y).erase( (splint.Y).begin() + i ); //erase coords
+		}
+	}
+}
+
+void renderSplint()
+{
+	for (unsigned int i = 0; i < (splint.X).size(); i++ )
+	{
+		gotoXY( (splint.X)[i]-3, (splint.Y)[i] );
+		std::cout << (char)24 << (char)24 << (char)24 << (char)24 << (char)24;
+	}
+
+}
+
+void checkforSpike() // checks if character is standing on a trap.
+{
+	if ( map[charLocation.Y][charLocation.X] == 16 || map[charLocation.Y][charLocation.X] == 17 || map[charLocation.Y][charLocation.X] == 30 || map[charLocation.Y][charLocation.X] == 31 ) // You're standing on a SPIKEEE
+	{
+		hasbeenStabbed = 1;
+		hasbeenDamaged = 1;
+		if ( PlayerHealth > 0 )
+			PlayerHealth--;
+	}
+}
+
+void checkCollisionSplint()
+{
+	if ( (splint.X).size() != 0 ) // confirming there is a splint
+	{
+		if ( charLocation.X >= (splint.X)[0]-3 && charLocation.X <= (splint.X)[0]+1 ) // if player standing within x coordinates of splint attack
+		{
+			if ( charLocation.Y >= (splint.Y)[0] ) // if player is within the splint
+			{
+				hasbeenDamaged = 1;
+				if ( PlayerHealth > 0 )
+					PlayerHealth--;
+			}
+		}
+	}
+}
+
+void checkCollisionMeteor()
+{
+	if ( (meteor.X).size() != 0 )
+	{
+		for ( int i = 0; i < (meteor.X).size(); i++ )
+		{
+			if ( charLocation.X >= (meteor.X)[i]-5 && charLocation.X <= (meteor.X)[i]+5 ) // if player standing within x coordinates of splint attack
+			{
+				if ( charLocation.Y >= (meteor.Y)[i]-2 && charLocation.Y >= (meteor.Y)[i]+2 ) // if player is within the splint
+				{
+					hasbeenDamaged = 1;
+					if ( PlayerHealth > 0 )
+						PlayerHealth--;
+				}
+			}
+		}
+	}
+}
+
+void checkforDeath()
+{
+	if ( PlayerHealth <= 0 )
+	{
+		g_quitGame = true;
+	}
+}
+
+void checkBossStatus()
+{
+	if ( skillDelay > 5.0 )
+	{
+		bossStatus = ( rand() % 2 + 1 ); // Changes boss status to either 1 or 2 ( use either skill1 or skill2 ).
+		skillDelay = 0.0; // reset skillDelay;
+	}
+    else if ( skillDelay < 0.5 && bossStatus == 0 )
+	{
+		bossStatus = 0; // not using skill, boss is standing
+	}
+
+	if ( bossStatus == 0 ) // when boss is standing
+	{
+		if ( bossFrameDelay > 1.0 ) // first frame
+		{
+			if ( bossFrameDelay > 2.0 ) //second frame
+			{
+				bossStand2();
+				bossFrameDelay = 0.0;
+			}
+			else
+			{
+				bossStand1();
+			}
+		}
+	}
+	else if ( bossStatus == 1 ) // boss is using first skill (meteor)
+	{
+		if ( bossFrameDelay > 1.0 ) // first frame
+		{
+			if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
+			{
+				bossMeteor2();
+			}
+			else if ( bossFrameDelay > 3.0 ) // third frame
+			{
+				bossMeteor3();
+				bossMeteorEffect();
+				bossFrameDelay = 0;
+				bossStatus = 0;
+				skillDelay = 0;
+				// reset to standing animation ~
+			}
+			else
+			{
+				bossMeteor1();
+			}
+		}
+	}
+	else if ( bossStatus == 2 )
+	{
+		if ( bossFrameDelay > 1.0 ) // first frame
+		{
+			if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
+			{
+				bossSplint2();
+			}
+			else if ( bossFrameDelay > 3.0 ) // third frame
+			{
+				bossSplint3();
+				bossSplintEffect();
+				bossFrameDelay = 0;
+				bossStatus = 0;
+				skillDelay = 0;
+				// reset to standing animation ~
+			}
+			else
+			{
+				bossSplint1();
+			}
+		}
+	}
+}
+
+void jump()
+{
+	if ( map[charLocation.Y+1][charLocation.X] == '#' && map[charLocation.Y-1][charLocation.X] != '#' && canJump > 0.800 ) // You're standing on the ground, and there's no ceiling above you, and you haven't jumped in the last 0.8 seconds
+	{
+		Beep(1000,30);
+		isJumping = 1;
+		canJump = 0.0;
+		gotoXY(charLocation); // Go to character's location,
+		std::cout << " "; //and clear it! (prevent screen flicker)
+		--charLocation.Y; // Initial Jump.
+		jumpDelay = 0; // Reset delay since we jumped.
+		while ( jumpDelay < 0.100 ) // You are in the middle of jumping, but still want to be able to take in input!
+		{
+			getInput();
+			update(g_timer.getElapsedTime());
+			render();
+			g_timer.waitUntil(frameTime);
+		}
+		if ( map[charLocation.Y-1][charLocation.X] != '#' && isJumping == 1 ) // You are mid jump. If there's no ceiling above you, continue jumping
+		{
+			gotoXY(charLocation); // Go to character's location,
+			std::cout << " "; //and clear it! (prevent screen flicker)
+			--charLocation.Y; // Second Jump
+			jumpDelay = 0; // Reset delay since we jumped.
+			while ( jumpDelay < 0.100 ) // You are in the middle of jumping, but still want to be able to take in input.
+			{
+				getInput();
+				update(g_timer.getElapsedTime());
+				render();
+				g_timer.waitUntil(frameTime);
+			}
+			if ( map[charLocation.Y-1][charLocation.X] != '#' && isJumping == 1) // You are mid jump. If there's no ceiling above you, continue jumping
+			{
+				gotoXY(charLocation); // Go to character's location,
+				std::cout << " "; //and clear it! (prevent screen flicker)
+				--charLocation.Y; // Third Jump
+				jumpDelay = 0; // Reset delay since we jumped.
+				while ( jumpDelay < 0.100 ) // You are in the middle of jumping, but still want to be able to take in input.
+				{
+					getInput();
+					update(g_timer.getElapsedTime());
+					render();
+					g_timer.waitUntil(frameTime);
+				}
+				isJumping = 0;
+			}
+			else if ( map[charLocation.Y-1][charLocation.X] == '#' ) // If there is a ceiling, stop the jump.
+			{
+				isJumping = 0;
+			}
+		}
+		else if ( map[charLocation.Y-1][charLocation.X] == '#' ) // If there is a ceiling, stop the jump.
+			{
+				isJumping = 0;
+			}
+	}
+}
+
+void gravity() // screw physics
+{
+	if ( map[charLocation.Y+1][charLocation.X] != '#' && isJumping == 0 ) // OMG THERE'S NO FLOOR BUT IM' NOT JUMPING
+	{
+		while ( fallDelay > 0.100 ) // Haven't fell within last 100ms
+		{
+			gotoXY(charLocation); // Clears character to prevent
+			std::cout << " "; // screen flickering... >:(
+			charLocation.Y++; // Fall!
+			fallDelay = 0;
+		}
+	}
+}
+
+void init()
+{
+    // Set precision for floating point output
+    std::cout << std::fixed << std::setprecision(3);
+
+    SetConsoleTitle(L"Level One");
+
+    // Get console width and height
+    CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
+
+    /* get the number of character cells in the current buffer */ 
+    GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &csbi );
+    consoleSize.X = csbi.srWindow.Right + 1;
+    consoleSize.Y = csbi.srWindow.Bottom + 1;
+
+    // set the character to be in the center of the screen.
+
+    elapsedTime = 0.0;
+	hasLevelRendered = 0;
+	skillDelay = 0.0;
+	fallDelay = 0.0;
+	jumpDelay = 0.0;
+	
+	PlayerHealth = 3;
+
+	hasbeenStabbed = 0;
+	hasbeenDamaged = 0;
+	bossStatus = 0;
+
+	//loads level from file
+	loadLevel("level10.txt");
+
+	// prepares map for rendering
+	prepareLevel();
+}
+
+void shutdown()
+{
+    // Reset to white text on black background
+	colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+}
+
+void getInput()
+{    
+    keyPressed[K_UP] = isKeyPressed(VK_UP);
+    keyPressed[K_DOWN] = isKeyPressed(VK_DOWN);
+    keyPressed[K_LEFT] = isKeyPressed(VK_LEFT);
+    keyPressed[K_RIGHT] = isKeyPressed(VK_RIGHT);
+    keyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
+	keyPressed[K_SPACE] = isKeyPressed(VK_SPACE);
+}
+
+void update(double dt)
+{
+    // get the delta time
+    elapsedTime += dt;
+	jumpDelay += dt;
+	fallDelay += dt;
+	skillDelay += dt;
+	bossFrameDelay += dt;
+	canJump += dt;
+    deltaTime = dt;
+
+	gravity();
+
+	if ( hasbeenStabbed == 1 ) 
+	{
+		colour(0x0F);
+		renderSpikes();
+		hasbeenStabbed = 0;
+		gotoXY(14, 8);
+	}
+
+	checkforSpike();
+
+	if ( (meteor.X).size() != 0 ) // If there are meteors
+	{
+		updateMeteor();
+		checkCollisionMeteor();
+	}
+
+	if ( (splint.X).size() != 0 ) // If boss used splint
+	{
+		updateSplint();
+		checkCollisionSplint();
+	}
+
+    // Updating the location of the character based on the key press
+    if (keyPressed[K_LEFT])
+    {
+       if (map[charLocation.Y][charLocation.X-1] != '#') // There is no wall on the left.
+		{
+			Beep(1440, 30);
+			gotoXY(charLocation.X, charLocation.Y); // Preventing screen flickering.
+			std::cout << " "; // Replace character with a space.
+			charLocation.X--; // Move left.
+		}
+    }
+
+    if (keyPressed[K_RIGHT])
+    {
+		if (map[charLocation.Y][charLocation.X+1] != '#') // There is no wall on the right.
+		{
+			Beep(1440, 30);
+			gotoXY(charLocation.X, charLocation.Y); // Preventing screen flickering.
+			std::cout << " "; // Replace character with a space.
+			charLocation.X++;
+		}
+    }
+
+	if (keyPressed[K_SPACE])
+	{
+		jump();
+	}
+
+    // quits the game if player hits the escape key
+    if (keyPressed[K_ESCAPE])
+        g_quitGame = true;
+
+	checkforDeath();
+}
+
+void render()
+{
+    // clear previous screen
+	if ( hasLevelRendered == 0 )
+	{
+		cls();
+		colour(0x0F);
+		renderLevel();
+		renderHP();
+		hasLevelRendered = 1;
+	}
+
+	if ( hasbeenDamaged == 1 )
+		renderHP();
+
+	if ( (meteor.X).size() != 0 ) // If boss spawned meteors
+	{
+		renderMeteor();
+	}
+
+	if ( (splint.X).size() != 0 ) // If boss used splint
+	{
+		renderSplint();
+	}
+
+	//gotoXY(6, 3);
+	//std::cout << "X: " << charLocation.X << " Y: " << charLocation.Y;
+
+    colour(0x0F);
+
+    //render the game
+
+    // render time taken to calculate this frame
+    //gotoXY(70, 0);
+    //colour(0x1A);
+    //std::cout << 1.0 / deltaTime << "fps" << std::endl;
+  
+    //gotoXY(0, 0);
+    //colour(0x59);
+    //std::cout << elapsedTime << "secs" << std::endl;
+
+    // render character
+    gotoXY(charLocation);
+    colour(0x0C);
+    std::cout << (char)1;
+	colour(0x0F);
+	
+	checkBossStatus();
+
+}
