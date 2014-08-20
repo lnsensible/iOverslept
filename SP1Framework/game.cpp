@@ -32,6 +32,7 @@ double fallDelay = 0; // delay between falling (no delay for initial fall)
 double skillDelay = 0; // delay between using skills
 double bossFrameDelay = 0; // delay between boss animations
 double snailMoveDelay = 0; // delay between each snail movement :D
+double floaterMoveDelay = 0; // delay between each floater movement
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
 
@@ -43,6 +44,7 @@ struct Monster
 };
 
 Monster MonsterSnail;
+Monster Floater;
 
 
 struct bossAttack {
@@ -555,6 +557,13 @@ void prepareLevel() // Prepares level map for cout
 				MonsterSnail.health.push_back(2); // health of snail
 			}
 
+			if ( map[i][j] == 'M' ) // Floater Monster placeholder ( a ascii 235 )
+			{
+				Floater.x.push_back(j); // location of X-coordinates of floater
+				Floater.y.push_back(i); // location of Y-coordinates of floater
+				Floater.health.push_back(1); // health of floater
+			}
+
 			if ( map[i][j] == 'T' ) // TREASURE HORRYY SHEET $$$
 			{
 				map[i][j] = 15;
@@ -597,6 +606,12 @@ void renderLevel() // Renders map into console
 	{
 		gotoXY( MonsterSnail.x[i], MonsterSnail.y[i] ); // spawns at XY coordinates 
 		std::cout << "@/'"; // spawn snail appearance 
+	}
+
+	for (unsigned int i = 0; i < (Floater.x).size(); i++)
+	{
+		gotoXY( Floater.x[i], Floater.y[i] ); // spawns at XY coordinates 
+		std::cout << (char)235; // spawn floater appearance 
 	}
 
 }
@@ -1434,6 +1449,28 @@ void checkCollisionSnail()
 	}
 }
 
+void checkCollisionFloater()
+{
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 120; j++)
+		{
+			if ( map[i][j] == 'M') // if floater spotted !
+			{
+				if ( charLocation.X >= j && charLocation.X <= j+2 ) // when within x coordinates of floater
+				{
+					if ( charLocation.Y == i ) //when within y coordinate of floater
+					{
+						hasbeenDamaged = 1;
+						if ( PlayerHealth > 0 )
+							PlayerHealth--;
+					}
+				}
+			}
+		}
+	}
+}
+
 void updateSnails() // snail movement update
 {
 	for (int i = 0; i < 24; i++)
@@ -1467,6 +1504,39 @@ void updateSnails() // snail movement update
 	}
 }
 
+void updateFloater() // floater movement update
+{
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 120; j++)
+		{
+			if ( map[i][j] == 'M' )
+			{
+				if ( rand() % 2 == 0 ) // movement left
+				{
+					if ( map[i][j-1] != '#' && map[i+1][j-1] == '#' )
+					{
+						gotoXY(j, i);
+						std::cout << " ";
+						map[i][j] = ' ';
+						map[i][j-1] = 'M';
+					}
+				}
+				else // movement right
+				{
+					if ( map[i][j+1] != '#' && map[i+1][j+1] == '#' )
+					{
+						gotoXY(j, i);
+						std::cout << " ";
+						map[i][j] = ' ';
+						map[i][j+1] = 'M';
+					}
+				}
+			}
+		}
+	}
+}
+
 void renderSnails() // re-render snails after being hit
 {
 	for (int i = 0; i < 24; i++)
@@ -1477,6 +1547,21 @@ void renderSnails() // re-render snails after being hit
 			{
 				gotoXY(j, i);
 				std::cout << "@/'";
+			}
+		}
+	}
+}
+
+void renderFloater() // re-render floater after being hit
+{
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 120; j++)
+		{
+			if ( map[i][j] == 'M' )
+			{
+				gotoXY(j, i);
+				std::cout << (char)235;
 			}
 		}
 	}
@@ -1495,6 +1580,9 @@ void resetElements() // removes monsters and effects on the map
 	(MonsterSnail.x).clear();
 	(MonsterSnail.y).clear();
 	(MonsterSnail.health).clear();
+	(Floater.x).clear();
+	(Floater.y).clear();
+	(Floater.health).clear();
 	(meteor.X).clear();
 	(meteor.Y).clear();
 	(splint.X).clear();
@@ -1836,6 +1924,7 @@ void update(double dt)
 	skillDelay += dt;
 	bossFrameDelay += dt;
 	snailMoveDelay += dt;
+	floaterMoveDelay += dt;
 	canJump += dt;
     deltaTime = dt;
 
@@ -1885,12 +1974,22 @@ void update(double dt)
 
 	if ( (MonsterSnail.x).size() != 0 ) // When there are snails
 	{
-		if ( snailMoveDelay > 1.000 ) // Snails move every 1000ms
+		if ( snailMoveDelay > 0.500 ) // Snails move every 500ms
 		{
 			updateSnails();
 			snailMoveDelay = 0; // reset movement timer
 		}
 		checkCollisionSnail();
+	}
+
+	if ( (Floater.x).size() != 0 ) // When there are floaters
+	{
+		if ( floaterMoveDelay > 0.750 ) // floaters move every 750ms
+		{
+			updateFloater();
+			floaterMoveDelay = 0; // reset movement timer
+		}
+		checkCollisionFloater();
 	}
 
     // Updating the location of the character based on the key press
@@ -1975,6 +2074,7 @@ void render()
 	}
 
 	renderSnails();
+	renderFloater();
 
 	//gotoXY(6, 3);
 	//std::cout << "X: " << charLocation.X << " Y: " << charLocation.Y;
