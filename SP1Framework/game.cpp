@@ -412,6 +412,7 @@ void loadLevel(std::string filename) // loads level map from file.
 
 void prepareLevel() // Prepares level map for cout
 {
+	resetElements();
 	for (int i = 0; i < 24; i++)
 	{
 		for (int j = 0; j < 120; j++)
@@ -1112,6 +1113,17 @@ void checkforDeath()
 	{
 		gamestate = DEATH;
 	}
+}
+
+void resetElements() // removes monsters and effects on the map
+{
+	(MonsterSnail.x).clear();
+	(MonsterSnail.y).clear();
+	(MonsterSnail.health).clear();
+	(meteor.X).clear();
+	(meteor.Y).clear();
+	(splint.X).clear();
+	(splint.Y).clear();
 }
 
 void checkBossStatus()
