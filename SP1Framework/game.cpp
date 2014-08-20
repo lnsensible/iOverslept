@@ -142,6 +142,11 @@ void updatemainmenu(double dt)
 			g_quitGame = true;
 		}
 	}
+	
+	if(keyPressed[K_ESCAPE])
+	{
+		g_quitGame = true;
+	}
 }
 void rendermainmenu()
 {
