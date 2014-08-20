@@ -62,6 +62,10 @@ void initdeathmenu();
 void updatedeathmenu(double dt);
 void renderdeathmenu();
 
+void initendmenu();
+void updateendmenu(double dt);
+void renderendmenu();
+
 //player environment intewractions.
 void checkForGoal();
 void resetElements();

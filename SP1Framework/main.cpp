@@ -118,5 +118,25 @@ void mainLoop()
 				break;
 		}
 		initialisedornot = 0;
+
+		while ( gamestate == ENDGAME )//YOU WIN :DDD
+		{
+			if ( initialisedornot != 1 )
+			{
+				initendmenu();
+				initialisedornot = 1;
+			}
+
+			getInput();
+			updateendmenu(g_timer.getElapsedTime());
+			renderendmenu();
+			g_timer.waitUntil(frameTime);
+
+			if ( g_quitGame == true )
+				break;
+		}
+		initialisedornot = 0;
+
+
 	}
 }

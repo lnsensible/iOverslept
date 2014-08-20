@@ -24,6 +24,7 @@ int hasbeenStabbed = 0; // Check if character has been stabbed by a needle/spike
 int hasbeenDamaged = 0; // Check if character was damaged. If yes, need to re-render HP. All to prevent flickering ); 0 = No change, 1 = Changed
 int bossStatus = 0; // Check what the boss is currently doing. 0 = Standing, 1 = Using skill1, 2 = using skill2. 
 int isBossLevel = 0; //Check if it is a boss level. 0 = No, 1 = Yep.
+int treasure = 0;//Treasure :DD
 double canJump = 0; // Check if you have jumped in the past 0.8 ms
 double jumpDelay = 0; // delay between y coordinate change while jumping
 double fallDelay = 0; // delay between falling (no delay for initial fall)
@@ -366,12 +367,12 @@ void updatedeathmenu(double dt)
 	{
 		if(charLocation.X == 60)
 		{
-			g_quitGame = true;
+			gamestate = LEVELMENU;
 		}
 
 		if(charLocation.X == 50)
 		{
-			gamestate = LEVELMENU;
+			gamestate = GAME;
 		}
 	}
 }
@@ -380,12 +381,104 @@ void renderdeathmenu()
 	cls();
 	colour(0x0F);
 
-	gotoXY(52, 20);
+	gotoXY(50, 20);
+	colour(0x0C);
 	std::cout << "YOU DIED :C TRY AGAIN?";
 	gotoXY(52, 22);
+	colour(0x0F);
 	std::cout << "Yes :D";
 	gotoXY(62, 22);
 	std::cout << "SCREW IT I'M OUTTA HERE";
+
+	colour(0x0C);
+	gotoXY(charLocation);
+	std::cout << (char)16;
+	colour(0x0F);
+}
+
+void initendmenu()
+{
+	// Set precision for floating point output
+	std::cout << std::fixed << std::setprecision(3);
+
+	SetConsoleTitle(L"You Win!");
+
+	// Get console width and height
+	CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
+
+	/* get the number of character cells in the current buffer */ 
+	GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &csbi );
+	consoleSize.X = csbi.srWindow.Right + 1;
+	consoleSize.Y = csbi.srWindow.Bottom + 1;
+
+	charLocation.X = 50;
+	charLocation.Y = 22;
+}
+void updateendmenu(double dt)
+{
+	elapsedTime += dt;
+	deltaTime = dt;
+
+	if(keyPressed[K_LEFT])
+	{
+		if (charLocation.X == 60 )
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.X = 50;
+		}
+
+		else if(charLocation.X == 50)
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.X = 50;
+		}
+	}
+
+	if(keyPressed[K_RIGHT])
+	{
+		if (charLocation.X == 60 )
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.X = 60;
+		}
+
+		else if(charLocation.X == 50)
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.X = 60;
+		}
+	}
+
+	if(keyPressed[K_ENTER])
+	{
+		if(charLocation.X == 60)
+		{
+			gamestate = GAME;
+		}
+
+		if(charLocation.X == 50)
+		{
+			gamestate = LEVELMENU;
+		}
+	}
+}
+void renderendmenu()
+{
+	cls();
+	colour(0x0F);
+
+	gotoXY(45, 20);
+	colour(0x0A);
+	std::cout << "Level completed, Congratulations!";
+	gotoXY(49, 22);
+	colour(0x0F);
+	std::cout << "Return menu";
+	gotoXY(65, 22);
+	std::cout << "Retry";
 
 	colour(0x0C);
 	gotoXY(charLocation);
@@ -526,10 +619,14 @@ void renderHP() // displays amount of HP player still has.
 	gotoXY(6, 26);
 	std::cout << "Health: ";
 	gotoXY(14, 26);
+	colour(0x0C);
 	for ( int i = 0; i < PlayerHealth; i++ )
 	{
 		std::cout << (char)3 << " ";
 	}
+	colour(0x0F);
+	gotoXY(25, 26); // Clear HP section for render again
+	std::cout << "          ";
 }
 
 void bossStand1()
@@ -1002,6 +1099,14 @@ void checkForGoal()
 	}
 }
 
+void checkForTreasure()
+{
+	if (map[charLocation.Y][charLocation.X] == 15)
+	{
+		treasure = treasure + 1;
+	}
+}
+
 void checkCollisionSplint()
 {
 	if ( (splint.X).size() != 0 ) // confirming there is a splint
@@ -1390,6 +1495,7 @@ void update(double dt)
 	gravity();
 	checkforSpike();
 	checkForGoal();
+	checkForTreasure();
 
 	if ( hasbeenStabbed == 1 ) 
 	{
