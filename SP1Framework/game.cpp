@@ -577,7 +577,7 @@ void prepareLevel() // Prepares level map for cout
 	}
 }
 
-void renderLevel() // Renders map into console
+void renderLevel() // Renders map into console blah
 {
 	for (int i = 0; i < 24; i++)
 	{
