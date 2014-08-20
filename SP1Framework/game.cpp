@@ -29,6 +29,7 @@ double jumpDelay = 0; // delay between y coordinate change while jumping
 double fallDelay = 0; // delay between falling (no delay for initial fall)
 double skillDelay = 0; // delay between using skills
 double bossFrameDelay = 0; // delay between boss animations
+double snailMoveDelay = 0; // delay between each snail movement
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
 
@@ -478,7 +479,7 @@ void renderLevel() // Renders map into console
 			}
 		}
 	}
-	for (int i = 0; i < (MonsterSnail.x).size(); i++)
+	for (unsigned int i = 0; i < (MonsterSnail.x).size(); i++)
 	{
 		gotoXY( MonsterSnail.x[i], MonsterSnail.y[i] ); // spawns at XY coordinates 
 		std::cout << "@/'"; // spawn snail appearance 
@@ -1020,15 +1021,37 @@ void checkCollisionMeteor()
 {
 	if ( (meteor.X).size() != 0 )
 	{
-		for ( int i = 0; i < (meteor.X).size(); i++ )
+		for ( unsigned int i = 0; i < (meteor.X).size(); i++ )
 		{
-			if ( charLocation.X >= (meteor.X)[i]-5 && charLocation.X <= (meteor.X)[i]+5 ) // if player standing within x coordinates of splint attack
+			if ( charLocation.X >= (meteor.X)[i]-5 && charLocation.X <= (meteor.X)[i]+5 ) // if player standing within x coordinates of meteors
 			{
-				if ( charLocation.Y >= (meteor.Y)[i]-2 && charLocation.Y >= (meteor.Y)[i]+2 ) // if player is within the splint
+				if ( charLocation.Y >= (meteor.Y)[i]-2 && charLocation.Y <= (meteor.Y)[i]+2 ) // if player is within the meteor
 				{
 					hasbeenDamaged = 1;
 					if ( PlayerHealth > 0 )
 						PlayerHealth--;
+				}
+			}
+		}
+	}
+}
+
+void checkCollisionSnail()
+{
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 120; j++)
+		{
+			if ( map[i][j] == 'S') // if snail spotted !
+			{
+				if ( charLocation.X >= j && charLocation.X <= j+2 ) // when within x coordinates of snail
+				{
+					if ( charLocation.Y == i ) //when within y coordinate of snail
+					{
+						hasbeenDamaged = 1;
+						if ( PlayerHealth > 0 )
+							PlayerHealth--;
+					}
 				}
 			}
 		}
@@ -1258,6 +1281,7 @@ void init()
 	skillDelay = 0.0;
 	fallDelay = 0.0;
 	jumpDelay = 0.0;
+	snailMoveDelay = 0.0;
 
 	PlayerHealth = 3;//-------------------------
 
@@ -1347,6 +1371,7 @@ void update(double dt)
 	fallDelay += dt;
 	skillDelay += dt;
 	bossFrameDelay += dt;
+	snailMoveDelay += dt;
 	canJump += dt;
     deltaTime = dt;
 
@@ -1378,7 +1403,15 @@ void update(double dt)
 		}
 	}
 
-	updateSnails();
+	if ( (MonsterSnail.x).size() != 0 ) // When there are snails
+	{
+		if ( snailMoveDelay > 1.000 ) // Snails move every 1000ms
+		{
+			updateSnails();
+			snailMoveDelay = 0; // reset movement timer
+		}
+		checkCollisionSnail();
+	}
 
     // Updating the location of the character based on the key press
     if (keyPressed[K_LEFT])
