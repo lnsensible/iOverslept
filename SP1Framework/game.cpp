@@ -32,6 +32,16 @@ double bossFrameDelay = 0; // delay between boss animations
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
 
+struct Monster
+{
+	std::vector<int> x;
+	std::vector<int> y;
+	std::vector<int> health;
+};
+
+Monster MonsterSnail;
+
+
 struct bossAttack {
 	std::vector<int> X;
 	std::vector<int> Y;
@@ -41,6 +51,7 @@ bossAttack meteor;
 bossAttack splint;
 
 //menu ~ Gabriel Wong
+
 void initmainmenu()
 {
 	// Set precision for floating point output
@@ -380,6 +391,7 @@ void renderdeathmenu()
 	colour(0x0F);
 }
 
+
 void loadLevel(std::string filename) // loads level map from file.
 {
 	std::fstream LevelMap;
@@ -428,6 +440,12 @@ void prepareLevel() // Prepares level map for cout
 			{
 				map[i][j] = 16;
 			}
+			if ( map[i][j] == 'S' ) // Snail Monster placeholder ( a @/' )
+			{
+				MonsterSnail.x.push_back(j); // location of X-coordinates of snail
+				MonsterSnail.y.push_back(i); // location of Y-coordinates of snail
+				MonsterSnail.health.push_back(2); // health of snail
+			}
 		}
 	}
 }
@@ -449,6 +467,12 @@ void renderLevel() // Renders map into console
 			}
 		}
 	}
+	for (int i = 0; i < (MonsterSnail.x).size(); i++)
+	{
+		gotoXY( MonsterSnail.x[i], MonsterSnail.y[i] ); // spawns at XY coordinates 
+		std::cout << "@/'"; // spawn snail appearance 
+	}
+
 }
 
 void renderSpikes() // re-render spikes after being stabbed
@@ -992,6 +1016,54 @@ void checkCollisionMeteor()
 	}
 }
 
+void updateSnails() // snail movement update
+{
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 120; j++)
+		{
+			if ( map[i][j] == 'S' )
+			{
+				if ( rand() % 2 == 0 ) // movement left
+				{
+					if ( map[i][j-1] != '#' && map[i+1][j-1] == '#' )
+					{
+						gotoXY(j, i);
+						std::cout << "   ";
+						map[i][j] = ' ';
+						map[i][j-1] = 'S';
+					}
+				}
+				else // movement right
+				{
+					if ( map[i][j+1] != '#' && map[i+1][j+1] == '#' )
+					{
+						gotoXY(j, i);
+						std::cout << "   ";
+						map[i][j] = ' ';
+						map[i][j+1] = 'S';
+					}
+				}
+			}
+		}
+	}
+}
+
+void renderSnails() // re-render snails after being hit
+{
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 120; j++)
+		{
+			if ( map[i][j] == 'S' )
+			{
+				gotoXY(j, i);
+				std::cout << "@/'";
+			}
+		}
+	}
+}
+
 void checkforDeath()
 {
 	if ( PlayerHealth <= 0 )
@@ -1286,6 +1358,8 @@ void update(double dt)
 		}
 	}
 
+	updateSnails();
+
     // Updating the location of the character based on the key press
     if (keyPressed[K_LEFT])
     {
@@ -1351,6 +1425,8 @@ void render()
 		checkBossStatus();
 	}
 
+	renderSnails();
+
 	//gotoXY(6, 3);
 	//std::cout << "X: " << charLocation.X << " Y: " << charLocation.Y;
 
@@ -1374,3 +1450,4 @@ void render()
 	colour(0x0F);
 
 }
+
