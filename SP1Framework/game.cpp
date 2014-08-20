@@ -1459,7 +1459,7 @@ void checkCollisionFloater()
 			{
 				if ( charLocation.X == j ) // when within x coordinates of floater
 				{
-					if ( charLocation.Y == i ) //when within y coordinate of floater
+					if ( charLocation.Y == i ) //when within y coordinate of floater hi
 					{
 						hasbeenDamaged = 1;
 						if ( PlayerHealth > 0 )
