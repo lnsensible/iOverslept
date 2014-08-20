@@ -590,7 +590,7 @@ void updateendmenu(double dt)
 	{
 		if(charLocation.X == 63)
 		{
-			if(checkLevel != 10)
+			if(checkLevel != 20)
 			{
 				checkLevel++;
 			}
@@ -699,10 +699,16 @@ void prepareLevel() // Prepares level map for cout
 				map[i][j] = 15;
 			}
 
-			if ( map[i][j] == 'G' ) // GOAL
+			if ( map[i][j] == 'P' ) // Portal to next
+			{
+				map[i][j] = 239;
+			}
+
+			if ( map[i][j] == 'p' ) // Portal to back
 			{
 				map[i][j] = 234;
 			}
+
 		}
 	}
 }
@@ -719,10 +725,17 @@ void renderLevel() // Renders map into console
 				std::cout << (char)219; // and print block to replace walls
 			}
 
+			if ( map[i][j] == 239)
+			{
+				colour(0x0A);
+				std::cout << (char)239; // Portal next
+				colour(0x0F);
+			}
+
 			if ( map[i][j] == 234)
 			{
 				colour(0x0A);
-				std::cout << (char)234; // Green goal
+				std::cout << (char)234; // Portal back
 				colour(0x0F);
 			}
 
@@ -1514,9 +1527,24 @@ void checkforSpike() // checks if character is standing on a trap.
 
 void checkForGoal()
 {
+	if (map[charLocation.Y][charLocation.X] == 239)
+	{
+		if(checkLevel != 20)
+		{
+			checkLevel++;
+		}
+		init();
+		gamestate = GAME;
+	}
+
 	if (map[charLocation.Y][charLocation.X] == 234)
 	{
-		gamestate = ENDGAME;
+		if(checkLevel != 1)
+		{
+			checkLevel--;
+		}
+		init();
+		gamestate = GAME;
 	}
 }
 
@@ -1527,7 +1555,7 @@ void checkForTreasure()
 		treasure = treasure + 1;
 	}
 }
-
+ 
 void checkCollisionSplint()
 {
 	if ( (splint.X).size() != 0 ) // confirming there is a splint
@@ -1649,7 +1677,7 @@ void updateSnails() // snail movement update
 				}
 				else // movement right
 				{
-					if ( map[i][j+1] != '#' && map[i+1][j+1] == '#' )
+					if ( map[i][j+3] != '#' && map[i+1][j+1] == '#' )
 					{
 						gotoXY(j, i);
 						std::cout << "   ";
