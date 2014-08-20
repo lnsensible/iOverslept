@@ -47,7 +47,7 @@ void mainLoop()
 	while (g_quitGame == false)      // run this loop until user wants to quit 
 	{  
 		g_timer.startTimer();
-		while ( gamestate == LEVELTEN ) 
+		while ( gamestate == GAME ) 
 		{
 			if ( initialisedornot != 1 )
 			{

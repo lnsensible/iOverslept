@@ -17,11 +17,13 @@ COORD charLocation;
 COORD consoleSize;
 
 unsigned char map[25][120]; // stores the level map
+int checkLevel = 0; // Check current level
 int hasLevelRendered = 0; // Check if level has been rendered. 0 = Not loaded, 1 = Loaded
 int isJumping = 0; // Check if character is jumping. 0 = Not jumping, 1 = Jumping
 int hasbeenStabbed = 0; // Check if character has been stabbed by a needle/spike to determine if spikes need to be re rendered
 int hasbeenDamaged = 0; // Check if character was damaged. If yes, need to re-render HP. All to prevent flickering ); 0 = No change, 1 = Changed
 int bossStatus = 0; // Check what the boss is currently doing. 0 = Standing, 1 = Using skill1, 2 = using skill2. 
+int isBossLevel = 0; //Check if it is a boss level. 0 = No, 1 = Yep.
 double canJump = 0; // Check if you have jumped in the past 0.8 ms
 double jumpDelay = 0; // delay between y coordinate change while jumping
 double fallDelay = 0; // delay between falling (no delay for initial fall)
@@ -196,56 +198,60 @@ void updatelevelmenu(double dt)
 
 	if(keyPressed[K_ENTER])
 	{
+
 		if(charLocation.X == 50)
 		{
-			gamestate = LEVELONE;
+			checkLevel = 1;
 		}
 
-		if(charLocation.X == 52)
+		else if(charLocation.X == 52)
 		{
-			gamestate = LEVELTWO;
+			checkLevel = 2;
 		}
 
-		if(charLocation.X == 54)
+		else if(charLocation.X == 54)
 		{
-			gamestate = LEVELTHREE;
+			checkLevel = 3;
 		}
 
-		if(charLocation.X == 56)
+		else if(charLocation.X == 56)
 		{
-			gamestate = LEVELFOUR;
+			checkLevel = 4;
 		}
 
-		if(charLocation.X == 58)
+		else if(charLocation.X == 58)
 		{
-			gamestate = LEVELFIVE;
+			checkLevel = 5;
 		}
 
-		if(charLocation.X == 60)
+		else if(charLocation.X == 60)
 		{
-			gamestate = LEVELSIX;
+			checkLevel = 6;
 		}
 
-		if(charLocation.X == 62)
+		else if(charLocation.X == 62)
 		{
-			gamestate = LEVELSEVEN;
+			checkLevel = 7;
 		}
 
-		if(charLocation.X == 64)
+		else if(charLocation.X == 64)
 		{
-			gamestate = LEVELEIGHT;
+			checkLevel = 8;
 		}
 
-		if(charLocation.X == 66)
+		else if(charLocation.X == 66)
 		{
-			gamestate = LEVELNINE;
+			checkLevel = 9;
 		}
 
-		if(charLocation.X == 68)
+		else if(charLocation.X == 68)
 		{
-			gamestate = LEVELTEN;
+			checkLevel = 10;
 		}
-	}
+
+		gamestate = GAME;
+
+	}//keypress enter
 
 	if(keyPressed[K_ESCAPE])
 	{
@@ -1146,8 +1152,6 @@ void init()
     // Set precision for floating point output
     std::cout << std::fixed << std::setprecision(3);
 
-    SetConsoleTitle(L"Level Ten");
-
     // Get console width and height
     CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
 
@@ -1163,23 +1167,73 @@ void init()
 	skillDelay = 0.0;
 	fallDelay = 0.0;
 	jumpDelay = 0.0;
-	
-	PlayerHealth = 3;
+
+	PlayerHealth = 3;//-------------------------
 
 	hasbeenStabbed = 0;
 	hasbeenDamaged = 0;
 	bossStatus = 0;
+	isBossLevel = 0;
 
 	//loads level from file
-	loadLevel("level10.txt");
-
+	if ( checkLevel == 1 )
+	{
+		loadLevel("level1.txt");
+		SetConsoleTitle(L"Level One");
+	}
+	else if ( checkLevel == 2 )
+	{
+		loadLevel("level2.txt");
+		SetConsoleTitle(L"Level Two");
+	}
+	else if ( checkLevel == 3 )
+	{
+		loadLevel("level3.txt");
+		SetConsoleTitle(L"Level Three");
+	}
+	else if ( checkLevel == 4 )
+	{
+		loadLevel("level4.txt");
+		SetConsoleTitle(L"Level Four");
+	}
+	else if ( checkLevel == 5 )
+	{
+		loadLevel("level5.txt");
+		SetConsoleTitle(L"Level Five");
+	}
+	else if ( checkLevel == 6 )
+	{
+		loadLevel("level6.txt");
+		SetConsoleTitle(L"Level Six");
+	}
+	else if ( checkLevel == 7 )
+	{
+		loadLevel("level7.txt");
+		SetConsoleTitle(L"Level Seven");
+	}
+	else if ( checkLevel == 8 )
+	{
+		SetConsoleTitle(L"Level Eight");
+		loadLevel("level8.txt");
+	}
+	else if ( checkLevel == 9 )
+	{
+		loadLevel("level9.txt");
+		SetConsoleTitle(L"Level Nine");
+	}
+	else if ( checkLevel == 10 )
+	{
+		isBossLevel = 1;
+		SetConsoleTitle(L"Level Ten");
+		loadLevel("level10.txt");
+	}
 	// prepares map for rendering
 	prepareLevel();
 }
 
 void shutdown()
 {
-    // Reset to white text on black background
+	// Reset to white text on black background
 	colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 }
 
@@ -1206,6 +1260,7 @@ void update(double dt)
     deltaTime = dt;
 
 	gravity();
+	checkforSpike();
 
 	if ( hasbeenStabbed == 1 ) 
 	{
@@ -1215,18 +1270,20 @@ void update(double dt)
 		gotoXY(14, 8);
 	}
 
-	checkforSpike();
-
-	if ( (meteor.X).size() != 0 ) // If there are meteors
+	if ( isBossLevel == 1 )
 	{
-		updateMeteor();
-		checkCollisionMeteor();
-	}
+		
+		if ( (meteor.X).size() != 0 ) // If there are meteors
+		{
+			updateMeteor();
+			checkCollisionMeteor();
+		}
 
-	if ( (splint.X).size() != 0 ) // If boss used splint
-	{
-		updateSplint();
-		checkCollisionSplint();
+		if ( (splint.X).size() != 0 ) // If boss used splint
+		{
+			updateSplint();
+			checkCollisionSplint();
+		}
 	}
 
     // Updating the location of the character based on the key press
@@ -1259,7 +1316,7 @@ void update(double dt)
 
     // quits the game if player hits the escape key
     if (keyPressed[K_ESCAPE])
-        g_quitGame = true;
+        gamestate = LEVELMENU;
 
 	checkforDeath();
 }
@@ -1278,15 +1335,20 @@ void render()
 
 	if ( hasbeenDamaged == 1 )
 		renderHP();
-
-	if ( (meteor.X).size() != 0 ) // If boss spawned meteors
+	
+	if ( isBossLevel == 1 ) // These renders only occur when it's a boss level
 	{
-		renderMeteor();
-	}
+		if ( (meteor.X).size() != 0 ) // If boss spawned meteors
+		{
+			renderMeteor();
+		}
 
-	if ( (splint.X).size() != 0 ) // If boss used splint
-	{
-		renderSplint();
+		if ( (splint.X).size() != 0 ) // If boss used splint
+		{
+			renderSplint();
+		}
+
+		checkBossStatus();
 	}
 
 	//gotoXY(6, 3);
@@ -1310,7 +1372,5 @@ void render()
     colour(0x0C);
     std::cout << (char)1;
 	colour(0x0F);
-	
-	checkBossStatus();
 
 }
