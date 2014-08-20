@@ -193,7 +193,7 @@ void initlevelmenu()
 	consoleSize.X = csbi.srWindow.Right + 1;
 	consoleSize.Y = csbi.srWindow.Bottom + 1;
 
-	charLocation.X = 50; //default cursor position
+	charLocation.X = 46; //default cursor position
 	charLocation.Y = 23;
 }
 void updatelevelmenu(double dt)
@@ -203,21 +203,41 @@ void updatelevelmenu(double dt)
 
 	if(keyPressed[K_LEFT])
 	{
-		if (charLocation.X != 50 )
+		if (charLocation.X != 46 )
 		{
 			gotoXY(charLocation);
 			std::cout << " ";
-			charLocation.X -= 2;
+			charLocation.X -= 3;
 		}
 	}
 
 	if(keyPressed[K_RIGHT])
 	{
-		if (charLocation.X != 68 )
+		if (charLocation.X != 73 )
 		{
 			gotoXY(charLocation);
 			std::cout << " ";
-			charLocation.X += 2;
+			charLocation.X += 3;
+		}
+	}
+
+	if(keyPressed[K_DOWN])
+	{
+		if(charLocation.Y != 25)
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.Y += 2;
+		}
+	}
+
+	if(keyPressed[K_UP])
+	{
+		if(charLocation.Y != 23)
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.Y -= 2;
 		}
 	}
 
@@ -225,54 +245,134 @@ void updatelevelmenu(double dt)
 	{
 		hasLevelRendered = 0;
 
-		if(charLocation.X == 50)
+		if(charLocation.X == 46)
 		{
-			checkLevel = 1;
+			if(charLocation.Y == 23)
+			{
+				checkLevel = 1;
+			}
+
+			else if(charLocation.Y == 25)
+			{
+				checkLevel = 11;
+			}
+		}
+
+		else if(charLocation.X == 49)
+		{
+			if(charLocation.Y == 23)
+			{
+				checkLevel = 2;
+			}
+
+			else if(charLocation.Y == 25)
+			{
+				checkLevel = 12;
+			}
 		}
 
 		else if(charLocation.X == 52)
 		{
-			checkLevel = 2;
+			if(charLocation.Y == 23)
+			{
+				checkLevel = 3;
+			}
+
+			else if(charLocation.Y == 25)
+			{
+				checkLevel = 13;
+			}
 		}
 
-		else if(charLocation.X == 54)
+		else if(charLocation.X == 55)
 		{
-			checkLevel = 3;
-		}
+			if(charLocation.Y == 23)
+			{
+				checkLevel = 4;
+			}
 
-		else if(charLocation.X == 56)
-		{
-			checkLevel = 4;
+			else if(charLocation.Y == 25)
+			{
+				checkLevel = 14;
+			}
 		}
 
 		else if(charLocation.X == 58)
 		{
-			checkLevel = 5;
+			if(charLocation.Y == 23)
+			{
+				checkLevel = 5;
+			}
+
+			else if(charLocation.Y == 25)
+			{
+				checkLevel = 15;
+			}
 		}
 
-		else if(charLocation.X == 60)
+		else if(charLocation.X == 61)
 		{
-			checkLevel = 6;
-		}
+			if(charLocation.Y == 23)
+			{
+				checkLevel = 6;
+			}
 
-		else if(charLocation.X == 62)
-		{
-			checkLevel = 7;
+			else if(charLocation.Y == 25)
+			{
+				checkLevel = 16;
+			}
 		}
 
 		else if(charLocation.X == 64)
 		{
-			checkLevel = 8;
+			if(charLocation.Y == 23)
+			{
+				checkLevel = 7;
+			}
+
+			else if(charLocation.Y == 25)
+			{
+				checkLevel = 17;
+			}
 		}
 
-		else if(charLocation.X == 66)
+		else if(charLocation.X == 67)
 		{
-			checkLevel = 9;
+			if(charLocation.Y == 23)
+			{
+				checkLevel = 8;
+			}
+
+			else if(charLocation.Y == 25)
+			{
+				checkLevel = 18;
+			}
 		}
 
-		else if(charLocation.X == 68)
+		else if(charLocation.X == 70)
 		{
-			checkLevel = 10;
+			if(charLocation.Y == 23)
+			{
+				checkLevel = 9;
+			}
+
+			else if(charLocation.Y == 25)
+			{
+				checkLevel = 19;
+			}
+		}
+
+		else if(charLocation.X == 73)
+		{
+			if(charLocation.Y == 23)
+			{
+				checkLevel = 10;
+			}
+
+			else if(charLocation.Y == 25)
+			{
+				checkLevel = 20;
+			}
 		}
 
 		gamestate = GAME;
@@ -291,26 +391,47 @@ void renderlevelmenu()
 
 	gotoXY(57, 20);
 	std::cout << "Levels";
-	gotoXY(50, 22);
+	gotoXY(46, 22);
 	std::cout << "1";
-	gotoXY(52, 22);
+	gotoXY(49, 22);
 	std::cout << "2";
-	gotoXY(54, 22);
+	gotoXY(52, 22);
 	std::cout << "3";
-	gotoXY(56, 22);
+	gotoXY(55, 22);
 	std::cout << "4";
 	gotoXY(58, 22);
 	std::cout << "5";
-	gotoXY(60, 22);
+	gotoXY(61, 22);
 	std::cout << "6";
-	gotoXY(62, 22);
-	std::cout << "7";
 	gotoXY(64, 22);
+	std::cout << "7";
+	gotoXY(67, 22);
 	std::cout << "8";
-	gotoXY(66, 22);
+	gotoXY(70, 22);
 	std::cout << "9";
-	gotoXY(68, 22);
+	gotoXY(73, 22);
 	std::cout << "10";
+
+	gotoXY(46, 24);
+	std::cout << "11";
+	gotoXY(49, 24);
+	std::cout << "12";
+	gotoXY(52, 24);
+	std::cout << "13";
+	gotoXY(55, 24);
+	std::cout << "14";
+	gotoXY(58, 24);
+	std::cout << "15";
+	gotoXY(61, 24);
+	std::cout << "16";
+	gotoXY(64, 24);
+	std::cout << "17";
+	gotoXY(67, 24);
+	std::cout << "18";
+	gotoXY(70, 24);
+	std::cout << "19";
+	gotoXY(73, 24);
+	std::cout << "20";
 
 	gotoXY(charLocation);
 	colour(0x0C);
@@ -1932,47 +2053,55 @@ void init()
 	//loads level from file
 	if ( checkLevel == 1 )
 	{
+		isBossLevel = 0;
 		loadLevel("level1.txt");
 		SetConsoleTitle(L"Level One");
 	}
 	else if ( checkLevel == 2 )
 	{
+		isBossLevel = 0;
 		loadLevel("level2.txt");
 		SetConsoleTitle(L"Level Two");
 	}
 	else if ( checkLevel == 3 )
 	{
+		isBossLevel = 0;
 		loadLevel("level3.txt");
 		SetConsoleTitle(L"Level Three");
 	}
 	else if ( checkLevel == 4 )
 	{
+		isBossLevel = 0;
 		loadLevel("level4.txt");
 		SetConsoleTitle(L"Level Four");
 	}
 	else if ( checkLevel == 5 )
 	{
+		isBossLevel = 0;
 		loadLevel("level5.txt");
 		SetConsoleTitle(L"Level Five");
 	}
 	else if ( checkLevel == 6 )
 	{
+		isBossLevel = 0;
 		loadLevel("level6.txt");
 		SetConsoleTitle(L"Level Six");
 	}
 	else if ( checkLevel == 7 )
 	{
+		isBossLevel = 0;
 		loadLevel("level7.txt");
 		SetConsoleTitle(L"Level Seven");
 	}
 	else if ( checkLevel == 8 )
 	{
+		isBossLevel = 0;
 		SetConsoleTitle(L"Level Eight");
 		loadLevel("level8.txt");
 	}
 	else if ( checkLevel == 9 )
 	{
-		isBossLevel = 2;
+		isBossLevel = 0;
 		loadLevel("level9.txt");
 		SetConsoleTitle(L"Level Nine");
 	}
@@ -1981,6 +2110,66 @@ void init()
 		isBossLevel = 1;
 		SetConsoleTitle(L"Level Ten");
 		loadLevel("level10.txt");
+	}
+	else if ( checkLevel == 11 )
+	{
+		isBossLevel = 0;
+		SetConsoleTitle(L"Level Eleven");
+		loadLevel("level11.txt");
+	}
+	else if ( checkLevel == 12 )
+	{
+		isBossLevel = 0;
+		SetConsoleTitle(L"Level Twelve");
+		loadLevel("level12.txt");
+	}
+	else if ( checkLevel == 13 )
+	{
+		isBossLevel = 0;
+		SetConsoleTitle(L"Level Thirteen");
+		loadLevel("level13.txt");
+	}
+	else if ( checkLevel == 14 )
+	{
+		isBossLevel = 0;
+		SetConsoleTitle(L"Level Fourteen");
+		loadLevel("level14.txt");
+	}
+	else if ( checkLevel == 15 )
+	{
+		isBossLevel = 0;
+		SetConsoleTitle(L"Level Fifteen");
+		loadLevel("level15.txt");
+	}
+	else if ( checkLevel == 16 )
+	{
+		isBossLevel = 0;
+		SetConsoleTitle(L"Level Sixteen");
+		loadLevel("level16.txt");
+	}
+	else if ( checkLevel == 17 )
+	{
+		isBossLevel = 0;
+		SetConsoleTitle(L"Level Seventeen");
+		loadLevel("level17.txt");
+	}
+	else if ( checkLevel == 18 )
+	{
+		isBossLevel = 0;
+		SetConsoleTitle(L"Level Eighteen");
+		loadLevel("level18.txt");
+	}
+	else if ( checkLevel == 19 )
+	{
+		isBossLevel = 0;
+		SetConsoleTitle(L"Level Nineteen");
+		loadLevel("level19.txt");
+	}
+	else if ( checkLevel == 20 )
+	{
+		isBossLevel = 2;
+		SetConsoleTitle(L"Level Twenty");
+		loadLevel("level20.txt");
 	}
 	// prepares map for rendering
 	prepareLevel();
