@@ -64,5 +64,6 @@ void renderdeathmenu();
 
 //player environment intewractions.
 void checkForGoal();
+void resetElements();
 
 #endif // _GAME_H
