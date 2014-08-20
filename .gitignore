@@ -3,19 +3,24 @@
 *.lo
 *.o
 *.obj
+*.opensdf
+*.sdf
 
 # Compiled Dynamic libraries
 *.so
 *.dylib
 *.dll
+*.ipch
 
 # Compiled Static libraries
 *.lai
 *.la
 *.a
 *.lib
+*.user
 
 # Executables
 *.exe
 *.out
 *.app
+*.tlog
