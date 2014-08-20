@@ -33,6 +33,7 @@ double skillDelay = 0; // delay between using skills
 double bossFrameDelay = 0; // delay between boss animations
 double snailMoveDelay = 0; // delay between each snail movement :D
 double floaterMoveDelay = 0; // delay between each floater movement
+double InnerFearMoveDelay = 0; // delay between each InnerFear movement
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
 
@@ -45,6 +46,7 @@ struct Monster
 
 Monster MonsterSnail;
 Monster Floater;
+Monster InnerFear;
 
 
 struct bossAttack {
@@ -564,6 +566,13 @@ void prepareLevel() // Prepares level map for cout
 				Floater.health.push_back(1); // health of floater
 			}
 
+			if ( map[i][j] == 'F' ) // InnerFear Monster placeholder 
+			{
+				InnerFear.x.push_back(j); // location of X-coordinates of floater
+				InnerFear.y.push_back(i); // location of Y-coordinates of floater
+				InnerFear.health.push_back(1); // health of floater
+			}
+
 			if ( map[i][j] == 'T' ) // TREASURE HORRYY SHEET $$$
 			{
 				map[i][j] = 15;
@@ -577,7 +586,7 @@ void prepareLevel() // Prepares level map for cout
 	}
 }
 
-void renderLevel() // Renders map into console blah
+void renderLevel() // Renders map into console
 {
 	for (int i = 0; i < 24; i++)
 	{
@@ -612,6 +621,12 @@ void renderLevel() // Renders map into console blah
 	{
 		gotoXY( Floater.x[i], Floater.y[i] ); // spawns at XY coordinates 
 		std::cout << (char)235; // spawn floater appearance 
+	}
+
+	for (unsigned int i = 0; i < (InnerFear.x).size(); i++)
+	{
+		gotoXY( InnerFear.x[i], InnerFear.y[i] ); // spawns at XY coordinates 
+		std::cout << (char)12; // spawn InnerFear appearance 
 	}
 
 }
@@ -1459,7 +1474,29 @@ void checkCollisionFloater()
 			{
 				if ( charLocation.X == j ) // when within x coordinates of floater
 				{
-					if ( charLocation.Y == i ) //when within y coordinate of floater hi
+					if ( charLocation.Y == i ) //when within y coordinate of floater
+					{
+						hasbeenDamaged = 1;
+						if ( PlayerHealth > 0 )
+							PlayerHealth--;
+					}
+				}
+			}
+		}
+	}
+}
+
+void checkCollisionInnerFear()
+{
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 120; j++)
+		{
+			if ( map[i][j] == 'F') // if InnerFear spotted !
+			{
+				if ( charLocation.X == j ) // when within x coordinates of InnerFear
+				{
+					if ( charLocation.Y == i ) //when within y coordinate of InnerFear
 					{
 						hasbeenDamaged = 1;
 						if ( PlayerHealth > 0 )
@@ -1537,6 +1574,39 @@ void updateFloater() // floater movement update
 	}
 }
 
+void updateInnerFear() // InnerFear movement update
+{
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 120; j++)
+		{
+			if ( map[i][j] == 'F' )
+			{
+				if ( rand() % 2 == 0 ) // movement left
+				{
+					if ( map[i][j-1] != '#' && map[i+1][j-1] == '#' )
+					{
+						gotoXY(j, i);
+						std::cout << " ";
+						map[i][j] = ' ';
+						map[i][j-1] = 'F';
+					}
+				}
+				else // movement right
+				{
+					if ( map[i][j+1] != '#' && map[i+1][j+1] == '#' )
+					{
+						gotoXY(j, i);
+						std::cout << " ";
+						map[i][j] = ' ';
+						map[i][j+1] = 'F';
+					}
+				}
+			}
+		}
+	}
+}
+
 void renderSnails() // re-render snails after being hit
 {
 	for (int i = 0; i < 24; i++)
@@ -1567,6 +1637,21 @@ void renderFloater() // re-render floater after being hit
 	}
 }
 
+void renderInnerFear() // re-render InnerFear after being hit
+{
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 120; j++)
+		{
+			if ( map[i][j] == 'F' )
+			{
+				gotoXY(j, i);
+				std::cout << (char)12;
+			}
+		}
+	}
+}
+
 void checkforDeath()
 {
 	if ( PlayerHealth <= 0 )
@@ -1583,6 +1668,9 @@ void resetElements() // removes monsters and effects on the map
 	(Floater.x).clear();
 	(Floater.y).clear();
 	(Floater.health).clear();
+	(InnerFear.x).clear();
+	(InnerFear.y).clear();
+	(InnerFear.health).clear();
 	(meteor.X).clear();
 	(meteor.Y).clear();
 	(splint.X).clear();
@@ -1925,6 +2013,7 @@ void update(double dt)
 	bossFrameDelay += dt;
 	snailMoveDelay += dt;
 	floaterMoveDelay += dt;
+	InnerFearMoveDelay += dt;
 	canJump += dt;
     deltaTime = dt;
 
@@ -1990,6 +2079,16 @@ void update(double dt)
 			floaterMoveDelay = 0; // reset movement timer
 		}
 		checkCollisionFloater();
+	}
+
+	if ( (InnerFear.x).size() != 0 ) // When there are InnerFears
+	{
+		if ( InnerFearMoveDelay > 0.400 ) // floaters move every 400ms
+		{
+			updateInnerFear();
+			InnerFearMoveDelay = 0; // reset movement timer
+		}
+		checkCollisionInnerFear();
 	}
 
     // Updating the location of the character based on the key press
@@ -2075,6 +2174,7 @@ void render()
 
 	renderSnails();
 	renderFloater();
+	renderInnerFear();
 
 	//gotoXY(6, 3);
 	//std::cout << "X: " << charLocation.X << " Y: " << charLocation.Y;
