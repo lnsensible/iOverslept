@@ -59,7 +59,7 @@ bossAttack splint;
 bossAttack laser;
 bossAttack lava;
 
-//menu ~ Gabriel Wong
+//menu ~ Gabriel Wong :)
 
 void initmainmenu()
 {
