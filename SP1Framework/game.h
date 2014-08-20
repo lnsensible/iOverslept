@@ -6,6 +6,7 @@
 extern StopWatch g_timer;
 extern bool g_quitGame;
 extern int gamestate;
+extern int checkLevel;
 extern const unsigned char FPS; // FPS of this game
 extern const unsigned int frameTime; // time for each frame
 
