@@ -34,6 +34,7 @@ double bossFrameDelay = 0; // delay between boss animations
 double snailMoveDelay = 0; // delay between each snail movement :D
 double floaterMoveDelay = 0; // delay between each floater movement
 double InnerFearMoveDelay = 0; // delay between each InnerFear movement
+double RatMoveDelay = 0; // delay between each Rat movement
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
 
@@ -47,6 +48,7 @@ struct Monster
 Monster MonsterSnail;
 Monster Floater;
 Monster InnerFear;
+Monster Rat;
 
 
 struct bossAttack {
@@ -694,6 +696,13 @@ void prepareLevel() // Prepares level map for cout
 				InnerFear.health.push_back(1); // health of floater
 			}
 
+			if ( map[i][j] == 'R' ) // Rat Monster placeholder 
+			{
+				Rat.x.push_back(j); // location of X-coordinates of Rat
+				Rat.y.push_back(i); // location of Y-coordinates of Rat
+				Rat.health.push_back(1); // health of Rat
+			}
+
 			if ( map[i][j] == 'T' ) // TREASURE HORRYY SHEET $$$
 			{
 				map[i][j] = 15;
@@ -763,6 +772,11 @@ void renderLevel() // Renders map into console
 		std::cout << (char)12; // spawn InnerFear appearance 
 	}
 
+	for (unsigned int i = 0; i < (Rat.x).size(); i++)
+	{
+		gotoXY( Rat.x[i], Rat.y[i] ); // spawns at XY coordinates 
+		 std::cout << "~~(_^" << (char)249 << ">"; // spawn Rat appearance 
+	}
 }
 
 void renderSpikes() // re-render spikes after being stabbed
@@ -1657,6 +1671,28 @@ void checkCollisionInnerFear()
 	}
 }
 
+void checkCollisionRat()
+{
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 120; j++)
+		{
+			if ( map[i][j] == 'R') // if Rat spotted !
+			{
+				if ( charLocation.X >= j && charLocation.X <= j+7 ) // when within x coordinates of Rat
+				{
+					if ( charLocation.Y == i ) //when within y coordinate of Rat
+					{
+						hasbeenDamaged = 1;
+						if ( PlayerHealth > 0 )
+							PlayerHealth--;
+					}
+				}
+			}
+		}
+	}
+}
+
 void updateSnails() // snail movement update
 {
 	for (int i = 0; i < 24; i++)
@@ -1756,48 +1792,66 @@ void updateInnerFear() // InnerFear movement update
 	}
 }
 
-void renderSnails() // re-render snails after being hit
+void updateRat() // Rat movement update
 {
 	for (int i = 0; i < 24; i++)
 	{
 		for (int j = 0; j < 120; j++)
 		{
-			if ( map[i][j] == 'S' )
+			if ( map[i][j] == 'R' )
+			{
+				if ( rand() % 2 == 0 ) // movement left
+				{
+					if ( map[i][j-1] != '#' && map[i+1][j-1] == '#' )
+					{
+						gotoXY(j, i);
+						std::cout << "       ";
+						map[i][j] = ' ';
+						map[i][j-1] = 'R';
+					}
+				}
+				else // movement right
+				{
+					if ( map[i][j+7] != '#' && map[i+1][j+7] == '#' )
+					{
+						gotoXY(j, i);
+						std::cout << "       ";
+						map[i][j] = ' ';
+						map[i][j+1] = 'R';
+					}
+				}
+			}
+		}
+	}
+}
+
+void renderMonster() // re-render mobs after being hit
+{
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 120; j++)
+		{
+			if ( map[i][j] == 'S' ) // re-render snails after being hit
 			{
 				gotoXY(j, i);
 				std::cout << "@/'";
 			}
-		}
-	}
-}
-
-void renderFloater() // re-render floater after being hit
-{
-	for (int i = 0; i < 24; i++)
-	{
-		for (int j = 0; j < 120; j++)
-		{
-			if ( map[i][j] == 'M' )
+			if ( map[i][j] == 'M' ) // re-render Floaters
 			{
 				gotoXY(j, i);
 				std::cout << (char)235;
 			}
-		}
-	}
-}
-
-void renderInnerFear() // re-render InnerFear after being hit
-{
-	for (int i = 0; i < 24; i++)
-	{
-		for (int j = 0; j < 120; j++)
-		{
-			if ( map[i][j] == 'F' )
+			if ( map[i][j] == 'F' ) // re-render InnerFear after being hit
 			{
 				gotoXY(j, i);
 				std::cout << (char)12;
 			}
-		}
+			if ( map[i][j] == 'R' ) // re-render Rat after being hit
+			{
+				gotoXY(j, i);
+				std::cout << "~~(_^" << (char)249 << ">";
+			}
+		}	
 	}
 }
 
@@ -1820,6 +1874,9 @@ void resetElements() // removes monsters and effects on the map
 	(InnerFear.x).clear();
 	(InnerFear.y).clear();
 	(InnerFear.health).clear();
+	(Rat.x).clear();
+	(Rat.y).clear();
+	(Rat.health).clear();
 	(meteor.X).clear();
 	(meteor.Y).clear();
 	(splint.X).clear();
@@ -2070,6 +2127,7 @@ void init()
 	fallDelay = 0.0;
 	jumpDelay = 0.0;
 	snailMoveDelay = 0.0;
+	RatMoveDelay = 0.0;
 
 	PlayerHealth = 3;//-------------------------
 
@@ -2231,6 +2289,7 @@ void update(double dt)
 	snailMoveDelay += dt;
 	floaterMoveDelay += dt;
 	InnerFearMoveDelay += dt;
+	RatMoveDelay += dt;
 	canJump += dt;
     deltaTime = dt;
 
@@ -2298,15 +2357,26 @@ void update(double dt)
 		checkCollisionFloater();
 	}
 
+	if ( (Rat.x).size() != 0 ) // When there are Rats
+	{
+		if ( RatMoveDelay > 0.250 ) // Rats move every 250ms
+		{
+			updateRat();
+			RatMoveDelay = 0; // reset movement timer
+		}
+		checkCollisionRat();
+	}
+
 	if ( (InnerFear.x).size() != 0 ) // When there are InnerFears
 	{
-		if ( InnerFearMoveDelay > 0.400 ) // floaters move every 400ms
+		if ( InnerFearMoveDelay > 0.400 ) // InnerFears move every 400ms
 		{
 			updateInnerFear();
 			InnerFearMoveDelay = 0; // reset movement timer
 		}
 		checkCollisionInnerFear();
 	}
+
 
     // Updating the location of the character based on the key press
     if (keyPressed[K_LEFT])
@@ -2389,9 +2459,7 @@ void render()
 		checkPianusStatus();
 	}
 
-	renderSnails();
-	renderFloater();
-	renderInnerFear();
+	renderMonster();
 
 	//gotoXY(6, 3);
 	//std::cout << "X: " << charLocation.X << " Y: " << charLocation.Y;
