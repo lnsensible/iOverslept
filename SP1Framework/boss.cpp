@@ -20,6 +20,11 @@ std::vector<bossAttack> splint;
 std::vector<bossAttack> laser;
 std::vector<bossAttack> lava;
 
+int PewPew = 0; // 0 = no shoot laser, 1 = pewpew, 2 = delete laser
+int SpewSpew = 0; // 0 = no lava flood, 1 = spewspew, 2 = delete lava
+int BoomBoom = 0; // 0 = no meteor, 1 = booom, 2 = delete meteor
+int BlingBling = 0; // 0 = no splint, 1 = poke, 2 = delete splint
+
 void pianusStand1()
 {
 	gotoXY(65, 7);	std::cout << "                        :?              ";
@@ -130,21 +135,47 @@ void updateLaser()
 	{
 		if ( laser[i].X > 5 )
 		{
-			for ( int j = laser[0].Y -6; j < laser[0].Y +2; j++)
+			PewPew = 1;
+			laser[i].X-- ;
+		}
+		else // when laser reaches the left
+		{	
+			PewPew = 2;
+		}
+	}
+}
+
+void renderLaser()
+{
+	if ( PewPew == 1 )
+	{
+		for (unsigned int i = 0; i < laser.size(); i++ ) // when laser still moving lefts
+		{
+			for ( int j = laser[i].Y -6; j < laser[i].Y +2; j++)
 			{
-				gotoXY( laser[i].X, j );
-				if ( map[j][laser[i].X] == '#')
+				gotoXY( laser[i].X+1, j );
+				if ( map[j][laser[i].X+1] == '#')
 				{
 					std::cout << (char)219; // and print block to replace walls
 				}
 				else
 				{
-					std::cout << map[j][laser[i].X]; // else print what's in the array
+					std::cout << map[j][laser[i].X+1]; // else print what's in the array
 				}
 			}
-			laser[i].X-- ;
 		}
-		else // when laser reaches the left
+
+		for ( int j = laser[0].Y -6; j < laser[0].Y +2; j++)
+		{
+			gotoXY( laser[0].X, j );
+			std::cout << (char)27;
+		}
+		PewPew = 0;
+	}
+
+	if ( PewPew == 2 )
+	{
+		for (unsigned int i = 0; i < laser.size(); i++ ) // when laser still moving lefts
 		{
 			for ( int j = laser[i].Y -6; j < laser[i].Y +2; j++) // remove the lazor
 			{
@@ -161,21 +192,9 @@ void updateLaser()
 					}
 				}
 			}
-
-			laser.clear(); // removes laser
 		}
-	}
-}
-
-void renderLaser()
-{
-	for (unsigned int i = 0; i < laser.size(); i++ )
-	{
-		for ( int j = laser[i].Y -6; j < laser[i].Y +2; j++)
-		{
-			gotoXY( laser[i].X, j );
-			std::cout << (char)27;
-		}
+		laser.clear(); // removes laser
+		PewPew = 0;
 	}
 
 }
@@ -255,10 +274,32 @@ void updateLava()
 	{
 		for ( int i = 0; i < 41; i++)
 		{
+			SpewSpew = 1;
 			lava[i].Y--;
 		}
 	}
 	else // when lava reaches top platform
+	{
+		SpewSpew = 2;
+	}
+}
+
+void renderLava()
+{
+	if ( SpewSpew == 1 )
+	{
+		for (unsigned int i = 0; i < lava.size(); i++ )
+		{
+			for (unsigned int j = 0; j < lava.size(); j++)
+			{
+				gotoXY( lava[j].X, lava[i].Y );
+				std::cout << (char)30;
+			}
+		}
+		SpewSpew = 0;
+	}
+
+	if ( SpewSpew == 2 )
 	{
 		for ( int j = 5; j < 46; j++) // remove the lava
 		{
@@ -277,18 +318,6 @@ void updateLava()
 		}
 		
 		lava.clear(); // remove lava
-	}
-}
-
-void renderLava()
-{
-	for (unsigned int i = 0; i < lava.size(); i++ )
-	{
-		for (unsigned int j = 0; j < lava.size(); j++)
-		{
-			gotoXY( lava[j].X, lava[i].Y );
-			std::cout << (char)30;
-		}
 	}
 }
 
@@ -418,17 +447,34 @@ void bossMeteorEffect() // spawns meteors !
 	std::cout << meteor.size();
 }
 
-void updateMeteor() // moves meteors / delete meteors and adjust coordinates
+void updateMeteor() // moves meteors and adjust coordinates
+{
+	
+	for (unsigned int i = 0; i < meteor.size(); i++ ) // for all the meteors
+	{
+		if ( meteor[i].Y < 19 ) // when meteor is still falling ~
+		{
+			BoomBoom = 1;
+			meteor[i].Y++;
+		}
+		else // when meteor hits the ground
+		{
+			BoomBoom = 2;
+		}
+	}
+}
+
+void renderMeteor() // cout meteors to console
 {
 	gotoXY(20, 3);
 	std::cout << "        "; // clean up mess after spawning
 	gotoXY(36, 3);
 	std::cout << "         ";
-	for (unsigned int i = 0; i < meteor.size(); i++ ) // for all the meteors
+	if ( BoomBoom == 1 )
 	{
-		if ( meteor[i].Y < 19 ) // when meteor is still falling ~
+		for (unsigned int i = 0; i < meteor.size(); i++ ) // for all the meteors
 		{
-			for ( int j = meteor[i].Y -2; j < meteor[i].Y +3; j++) //clean up the path behind the meteor 
+			for ( int j = meteor[i].Y -3; j < meteor[i].Y; j++) //clean up the path behind the meteor 
 			{
 				for ( int k = meteor[i].X -5; k < meteor[i].X +6; k++) //  WHAT THE METEOR DESTROYEDDD.
 				{
@@ -446,9 +492,28 @@ void updateMeteor() // moves meteors / delete meteors and adjust coordinates
 					}
 				}
 			}
-		 meteor[i].Y++;
 		}
-		else // when meteor hits the ground
+
+		for (unsigned int i = 0; i < meteor.size(); i++ )
+		{
+			gotoXY( meteor[i].X -5, meteor[i].Y );
+			std::cout << "x@*(&@(*&%x";
+			gotoXY( meteor[i].X -5, meteor[i].Y +1 );
+			std::cout << "'x?HQ(*@&x'";
+			gotoXY( meteor[i].X -5, meteor[i].Y -1 );
+			std::cout << ",xQ)(&@FJx,";
+			gotoXY( meteor[i].X -5, meteor[i].Y +2 );
+			std::cout << " 'xxxxxxx' ";
+			gotoXY( meteor[i].X -5, meteor[i].Y -2 );
+			std::cout << " ,xxxxxxx, ";
+		}
+
+		BoomBoom = 0;
+	}
+
+	if ( BoomBoom == 2 )
+	{
+		for (unsigned int i = 0; i < meteor.size(); i++ ) // for all the meteors
 		{
 			for ( int j = meteor[i].Y -2; j < meteor[i].Y +3; j++) //clean up the ground
 			{
@@ -466,25 +531,8 @@ void updateMeteor() // moves meteors / delete meteors and adjust coordinates
 				}
 			}
 		}
-	}
-	if ( meteor[0].Y > 18 )
 		meteor.clear(); // clear meteors when reached ground
-}
-
-void renderMeteor() // cout meteors to console
-{
-	for (unsigned int i = 0; i < meteor.size(); i++ )
-	{
-		gotoXY( meteor[i].X -5, meteor[i].Y );
-		std::cout << "x@*(&@(*&%x";
-		gotoXY( meteor[i].X -5, meteor[i].Y +1 );
-		std::cout << "'x?HQ(*@&x'";
-		gotoXY( meteor[i].X -5, meteor[i].Y -1 );
-		std::cout << ",xQ)(&@FJx,";
-		gotoXY( meteor[i].X -5, meteor[i].Y +2 );
-		std::cout << " 'xxxxxxx' ";
-		gotoXY( meteor[i].X -5, meteor[i].Y -2 );
-		std::cout << " ,xxxxxxx, ";
+		BoomBoom = 0;
 	}
 
 }
@@ -624,9 +672,31 @@ void updateSplint()
 	{
 		if ( splint[i].Y > 3 )
 		{
+			BlingBling = 1;
 			splint[i].Y--;
 		}
 		else // when spike reaches the top
+		{
+			BlingBling = 2;
+		}
+	}
+}
+
+void renderSplint()
+{
+	if ( BlingBling == 1 )
+	{
+		for (unsigned int i = 0; i < splint.size(); i++ )
+		{
+			gotoXY( splint[i].X -3, splint[i].Y );
+			std::cout << (char)24 << (char)24 << (char)24 << (char)24 << (char)24;
+		}
+		BlingBling = 0;
+	}
+
+	if ( BlingBling == 2 )
+	{
+		for (unsigned int i = 0; i < splint.size(); i++ )
 		{
 			for ( int j = splint[i].X -3; j < splint[i].X +2; j++) // remove the spikes
 			{
@@ -643,17 +713,9 @@ void updateSplint()
 					}
 				}
 			}
-			splint.clear();
 		}
-	}
-}
-
-void renderSplint()
-{
-	for (unsigned int i = 0; i < splint.size(); i++ )
-	{
-		gotoXY( splint[i].X -3, splint[i].Y );
-		std::cout << (char)24 << (char)24 << (char)24 << (char)24 << (char)24;
+		splint.clear();
+		BlingBling = 0;
 	}
 
 }

@@ -20,6 +20,7 @@ bool spawnwhere = false; // false = spawn at C, true = spawn at c
 extern COORD charLocation;
 extern COORD consoleSize;
 extern int gamestate;
+extern int hasMoved;
 
 void jump()
 {
@@ -28,8 +29,7 @@ void jump()
 		Beep(1000,30);
 		isJumping = 1;
 		canJump = 0.0;
-		gotoXY(charLocation); // Go to character's location,
-		std::cout << " "; //and clear it! (prevent screen flicker)
+		hasMoved = 1;
 		--charLocation.Y; // Initial Jump.
 		jumpDelay = 0; // Reset delay since we jumped.
 		render();
@@ -42,8 +42,7 @@ void jump()
 		}
 		if ( map[charLocation.Y-1][charLocation.X] != '#' && isJumping == 1 ) // You are mid jump. If there's no ceiling above you, continue jumping
 		{
-			gotoXY(charLocation); // Go to character's location,
-			std::cout << " "; //and clear it! (prevent screen flicker)
+			hasMoved = 1;
 			--charLocation.Y; // Second Jump
 			jumpDelay = 0; // Reset delay since we jumped.
 			while ( jumpDelay < 0.100 ) // You are in the middle of jumping, but still want to be able to take in input.
@@ -55,8 +54,7 @@ void jump()
 			}
 			if ( map[charLocation.Y-1][charLocation.X] != '#' && isJumping == 1) // You are mid jump. If there's no ceiling above you, continue jumping
 			{
-				gotoXY(charLocation); // Go to character's location,
-				std::cout << " "; //and clear it! (prevent screen flicker)
+				hasMoved = 1;
 				--charLocation.Y; // Third Jump
 				jumpDelay = 0; // Reset delay since we jumped.
 				while ( jumpDelay < 0.100 ) // You are in the middle of jumping, but still want to be able to take in input.
@@ -86,8 +84,7 @@ void gravity() // screw physics
 	{
 		while ( fallDelay > 0.100 ) // Haven't fell within last 100ms
 		{
-			gotoXY(charLocation); // Clears character to prevent
-			std::cout << " "; // screen flickering... >:(
+			hasMoved = 1;
 			charLocation.Y++; // Fall!
 			fallDelay = 0;
 		}

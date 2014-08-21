@@ -41,12 +41,13 @@ COORD consoleSize;
 unsigned char map[25][120]; // stores the level map
 unsigned char Signprint[11][21]; // stores the level map
 int checkLevel = 0; // Check current level
-int checkPrevLevel = 0; // Check previuos level
+int checkPrevLevel = 0; // Check previous level
 int hasLevelRendered = 0; // Check if level has been rendered. 0 = Not loaded, 1 = Loaded
 int signNumber = 0;
 int treasure = 0;//Treasure :DD
 int isBossLevel = 0; //Check if it is a boss level. 0 = No, 1 = Boss, 2= Fishy
 int rerendersign = 0;//rerender sign
+int hasMoved = 0; // check if player moved.
 
 int Snailcounter = 0; // count number of snails
 int Floatercounter = 0; // count number of floaters
@@ -1310,10 +1311,9 @@ void update(double dt)
 		{
 			Beep(1440, 30);
 			gotoXY(charLocation.X, charLocation.Y); // Preventing screen flickering.
-			std::cout << " "; // Replace character with a space.
+			hasMoved = 1;
 			charLocation.X--; // Move left.
-			WEAPON.X = charLocation.X - 2;
-			rightORleft = false;
+			
 		}
     }
 
@@ -1323,10 +1323,8 @@ void update(double dt)
 		{
 			Beep(1440, 30);
 			gotoXY(charLocation.X, charLocation.Y); // Preventing screen flickering.
-			std::cout << " "; // Replace character with a space.
+			hasMoved = 1;
 			charLocation.X++;
-			WEAPON.X = charLocation.X + 2;
-			rightORleft = true;
 		}
     }
 
@@ -1339,39 +1337,12 @@ void update(double dt)
     if (keyPressed[K_ESCAPE])
         gamestate = LEVELMENU;
 
-	WEAPON.Y = charLocation.Y;
-        if (keyPressed[K_Q])
-        {
-                rangeORmelee = true;
-        }
- 
-        if (keyPressed[K_E])
-        {
-                rangeORmelee = false;
-        }
- 
-        WEAPON_PROPERTIES();
- 
-        if (keyPressed[K_C])
-        {
-                Atk();
-        }
- 
-        //for when the player faces the left direction
-        if (rightORleft == false && rangeORmelee == true && weaponSTATE == afterATTACK)
-        {WEAPON.X = charLocation.X - 4;}
- 
-        if (rightORleft == false && rangeORmelee == false)
-        {WEAPON.X = charLocation.X - 5;
-        if (weaponSTATE == afterATTACK)
-        {WEAPON.X = charLocation.X - 6;}}
-
 	checkforDeath();
 }
 
 void render()
 {
-    // clear previous screen
+    // clear previous screen if need to re render
 	if ( hasLevelRendered == 0 )
 	{
 		cls();
@@ -1382,8 +1353,33 @@ void render()
 		hasLevelRendered = 1;
 	}
 
+	//clear only area around character. prevent flickering~
+	if ( hasMoved == 1 )
+	{
+		for ( int i = charLocation.X-1; i <= charLocation.X+1; i++)
+		{
+			for ( int j = charLocation.Y-1; j <= charLocation.Y+1; j++)
+			{
+				gotoXY(i, j);
+				if ( map[j][i] != '#' )
+					std::cout << map[j][i];
+			}
+		}
+		hasMoved = 0;
+	}
+
+	// render character
+    gotoXY(charLocation);
+    colour(0x0C);
+    std::cout << (char)1;
+	colour(0x0F);
+
+
 	if ( hasbeenDamaged == 1 )
+	{
 		renderHP();
+		hasbeenDamaged = 0;
+	}
 	
 	if ( isBossLevel == 1 ) // These renders only occur when it's a boss level
 	{
@@ -1459,12 +1455,6 @@ void render()
     //gotoXY(0, 0);
     //colour(0x59);
     //std::cout << elapsedTime << "secs" << std::endl;
-
-    // render character
-    gotoXY(charLocation);
-    colour(0x0C);
-    std::cout << (char)1;
-	colour(0x0F);
 
 	 //render Equipped Weapons
      gotoXY(WEAPON);
