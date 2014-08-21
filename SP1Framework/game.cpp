@@ -48,6 +48,11 @@ int treasure = 0;//Treasure :DD
 int isBossLevel = 0; //Check if it is a boss level. 0 = No, 1 = Boss, 2= Fishy
 int rerendersign = 0;
 
+int Snailcounter = 0; // count number of snails
+int Floatercounter = 0; // count number of floaters
+int InnerFearcounter = 0; // count number of InnerFear
+int Ratcounter = 0; // count number of rats
+
 double snailMoveDelay = 0; // delay between each snail movement :D
 double floaterMoveDelay = 0; // delay between each floater movement
 double InnerFearMoveDelay = 0; // delay between each InnerFear movement

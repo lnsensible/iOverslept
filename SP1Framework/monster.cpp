@@ -252,7 +252,8 @@ void checkMonsterDead()
 				gotoXY(MonsterSnail[i].x, MonsterSnail[i].y);
 				std::cout << "   ";
 				map[MonsterSnail[i].y][MonsterSnail[i].x] = ' ';
-				MonsterSnail[i].erase();
+
+				MonsterSnail.erase(MonsterSnail.begin() + i);// remove snail from map, nt sure if it works
 			}
 		}
 	}
