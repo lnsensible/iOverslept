@@ -87,6 +87,7 @@ void renderendmenu();
 //player environment intewractions.
 void checkForElement();
 void resetElements();
+void resetCounters();
 
 //Boss functions
 void PianusStand1();

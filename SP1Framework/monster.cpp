@@ -16,6 +16,11 @@ extern COORD charLocation;
 extern COORD consoleSize;
 extern int gamestate;
 
+extern int Snailcounter;
+extern int Floatercounter;
+extern int InnerFearcounter;
+extern int Ratcounter;
+
 void checkCollisionSnail()
 {
 	for (int i = 0; i < 24; i++)
@@ -135,7 +140,7 @@ void updateSnails() // snail movement update
 			}
 		}
 	}
-	checkMonsterDead('S');
+	//checkMonsterDead('S');
 }
 
 void updateFloater() // floater movement update
@@ -237,16 +242,17 @@ void updateRat() // Rat movement update
 	}
 }
 
-void checkMonsterDead(char monster)
+void checkMonsterDead()
 {
-	for (int x = 0; x < 10; x++)
+	for (int i = 0; i < Snailcounter; i++)
 	{
-		if ( monster == 'S')
 		{
-			if ( MonsterSnail[x].health <= 0 )
+			if ( MonsterSnail[i].health <= 0 )
 			{
-				gotoXY(MonsterSnail[x].x, MonsterSnail[x].y);
+				gotoXY(MonsterSnail[i].x, MonsterSnail[i].y);
 				std::cout << "   ";
+				map[MonsterSnail[i].y][MonsterSnail[i].x] = ' ';
+				MonsterSnail[i].erase();
 			}
 		}
 	}
