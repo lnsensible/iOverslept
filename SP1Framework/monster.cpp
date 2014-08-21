@@ -135,6 +135,7 @@ void updateSnails() // snail movement update
 			}
 		}
 	}
+	checkMonsterDead('S');
 }
 
 void updateFloater() // floater movement update
@@ -231,6 +232,21 @@ void updateRat() // Rat movement update
 						map[i][j+1] = 'R';
 					}
 				}
+			}
+		}
+	}
+}
+
+void checkMonsterDead(char monster)
+{
+	for (int x = 0; x < 10; x++)
+	{
+		if ( monster == 'S')
+		{
+			if ( MonsterSnail[x].health <= 0 )
+			{
+				gotoXY(MonsterSnail[x].x, MonsterSnail[x].y);
+				std::cout << "   ";
 			}
 		}
 	}
