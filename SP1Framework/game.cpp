@@ -46,7 +46,7 @@ int hasLevelRendered = 0; // Check if level has been rendered. 0 = Not loaded, 1
 int signNumber = 0;
 int treasure = 0;//Treasure :DD
 int isBossLevel = 0; //Check if it is a boss level. 0 = No, 1 = Boss, 2= Fishy
-int rerendersign = 0;
+int rerendersign = 0;//rerender sign
 
 int Snailcounter = 0; // count number of snails
 int Floatercounter = 0; // count number of floaters
