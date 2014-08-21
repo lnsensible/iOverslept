@@ -41,6 +41,7 @@ COORD consoleSize;
 unsigned char map[25][120]; // stores the level map
 unsigned char Signprint[11][101]; // stores the level map
 int checkLevel = 0; // Check current level
+int checkPrevLevel = 0; // Check previuos level
 int hasLevelRendered = 0; // Check if level has been rendered. 0 = Not loaded, 1 = Loaded
 int signNumber = 0;
 int treasure = 0;//Treasure :DD
@@ -658,12 +659,9 @@ void prepareLevel() // Prepares level map for cout.
 			{
 				map[i][j] = ' ';
 			}
-			if ( map[i][j] == 'C' ) //Character placeholder
-			{
-				charLocation.X = j; // Assign coordinates of placeholder
-				charLocation.Y = i; // to actual character ~
-				map[i][j] = ' '; // Remove character placeholder
-			}
+
+			spawnWhere(); //determine where character will spawn
+
 			if ( map[i][j] == 'x' ) // Floor trap placeholder
 			{
 				map[i][j] = 30;
@@ -1009,7 +1007,7 @@ void init()
 	snailMoveDelay = 0.0;
 	RatMoveDelay = 0.0;
 
-	PlayerHealth = 3;//-------------------------
+	PlayerHealth = 3; //-------------------------
 
 	hasbeenStabbed = 0;
 	hasbeenDamaged = 0;
@@ -1138,6 +1136,19 @@ void init()
 		SetConsoleTitle(L"Level Twenty");
 		loadLevel("level20.txt");
 	}
+
+	//check if character came from next or prev map
+	if ( checkPrevLevel > checkLevel ) //came from next map
+	{
+		spawnwhere = true; // spawn at c
+	}
+	else
+	{
+		spawnwhere = false; // spawn at C
+	}
+
+	checkPrevLevel = checkLevel;
+
 	// prepares map for rendering
 	prepareLevel();
 }

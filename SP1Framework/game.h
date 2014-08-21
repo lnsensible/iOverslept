@@ -6,8 +6,10 @@
 extern unsigned char map[25][120];
 extern StopWatch g_timer;
 extern bool g_quitGame;
+extern bool spawnwhere;
 extern int gamestate;
 extern int checkLevel;
+extern int checkPrevLevel;
 extern int hasbeenDamaged;
 extern int bossStatus;
 extern int PlayerHealth;
@@ -17,8 +19,7 @@ extern double elapsedTime;
 extern double deltaTime;
 extern double skillDelay;
 extern double bossFrameDelay;
-
-     
+ 
 extern bool rangeORmelee;             
 extern bool rightORleft;          
 extern COORD WEAPON;
@@ -139,6 +140,7 @@ void jump();
 void gravity();
 void checkforDeath();
 void checkforSpike();
+void spawnWhere();
 
 //weapon
 void WEAPON_PROPERTIES();

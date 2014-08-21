@@ -15,6 +15,8 @@ double canJump = 0; // Check if you have jumped in the past 0.8 ms
 double jumpDelay = 0; // delay between y coordinate change while jumping
 double fallDelay = 0; // delay between falling (no delay for initial fall)
 
+bool spawnwhere = false; // false = spawn at C, true = spawn at c
+
 extern COORD charLocation;
 extern COORD consoleSize;
 extern int gamestate;
@@ -108,5 +110,47 @@ void checkforSpike() // checks if character is standing on a trap.
 		hasbeenDamaged = 1;
 		if ( PlayerHealth > 0 )
 			PlayerHealth--;
+	}
+}
+
+void spawnWhere()
+{
+	if ( spawnwhere == true ) // came from next map
+	{
+		for ( int i = 0; i < 24; i++ )
+		{
+			for ( int j = 0; j < 120; j++ )
+			{
+				if ( map[i][j] == 'c' )
+				{
+					charLocation.X = j;
+					charLocation.Y = i;
+					map[i][j] = ' '; //replace c with space.
+				}
+				if ( map[i][j] == 'C' )
+				{
+					map[i][j] = ' '; //remove C.
+				}
+			}
+		}
+	}
+	else if ( spawnwhere == false ) //came from previous map
+	{
+		for ( int i = 0; i < 24; i++ )
+		{
+			for ( int j = 0; j < 120; j++ )
+			{
+				if ( map[i][j] == 'c' )
+				{
+					map[i][j] = ' '; //remove c.
+				}
+				if ( map[i][j] == 'C' )
+				{
+					charLocation.X = j;
+					charLocation.Y = i;
+					map[i][j] = ' '; //replace C with space.
+				}
+			}
+		}
 	}
 }
