@@ -134,6 +134,7 @@ void updateSnails();
 void updateFloater();
 void updateInnerFear();
 void updateRat();
+void checkMonsterDead();
 
 //player
 void jump();
