@@ -52,14 +52,14 @@ Monster Rat;
 
 
 struct bossAttack {
-	std::vector<int> X;
-	std::vector<int> Y;
+	int X;
+	int Y;
 };
 
-bossAttack meteor;
-bossAttack splint;
-bossAttack laser;
-bossAttack lava;
+std::vector<bossAttack> meteor;
+std::vector<bossAttack> splint;
+std::vector<bossAttack> laser;
+std::vector<bossAttack> lava;
 
 //menu ~ Gabriel Wong :)
 
@@ -924,33 +924,36 @@ void pianusLaser3()
 
 void pianusLaserEffect()
 {
-	(laser.X).push_back(68);
-	(laser.Y).push_back(18);
+	bossAttack Laser;
+	Laser.X = 68;
+	Laser.Y = 18;
+
+	laser.push_back(Laser);
 }
 
 void updateLaser()
 {
-	for (unsigned int i = 0; i < (laser.X).size(); i++ ) // when laser still moving lefts
+	for (unsigned int i = 0; i < laser.size(); i++ ) // when laser still moving lefts
 	{
-		if ( (laser.X)[i] > 5 )
+		if ( laser[i].X > 5 )
 		{
-			for ( int j = (laser.Y)[0]-6; j < (laser.Y)[0]+2; j++)
+			for ( int j = laser[0].Y -6; j < laser[0].Y +2; j++)
 			{
-				gotoXY( (laser.X)[i], j );
-				if ( map[j][ (laser.X)[i] ] == '#')
+				gotoXY( laser[i].X, j );
+				if ( map[j][laser[i].X] == '#')
 				{
 					std::cout << (char)219; // and print block to replace walls
 				}
 				else
 				{
-					std::cout << map[j][ (laser.X)[i] ]; // else print what's in the array
+					std::cout << map[j][laser[i].X]; // else print what's in the array
 				}
 			}
-			(laser.X)[i]-- ;
+			laser[i].X-- ;
 		}
 		else // when laser reaches the left
 		{
-			for ( int j = (laser.Y)[i]-6; j < (laser.Y)[i]+2; j++) // remove the lazor
+			for ( int j = laser[i].Y -6; j < laser[i].Y +2; j++) // remove the lazor
 			{
 				for ( int k = 66; k > 0; k--) // CLEAN UP THE MESS >:((
 				{
@@ -966,19 +969,18 @@ void updateLaser()
 				}
 			}
 
-			(laser.X).erase( (laser.X).begin() + i ); //erase coords
-			(laser.Y).erase( (laser.Y).begin() + i ); //erase coords
+			laser.clear(); // removes laser
 		}
 	}
 }
 
 void renderLaser()
 {
-	for (unsigned int i = 0; i < (laser.X).size(); i++ )
+	for (unsigned int i = 0; i < laser.size(); i++ )
 	{
-		for ( int j = (laser.Y)[i]-6; j < (laser.Y)[i]+2; j++)
+		for ( int j = laser[i].Y -6; j < laser[i].Y +2; j++)
 		{
-			gotoXY( (laser.X)[i], j );
+			gotoXY( laser[i].X, j );
 			std::cout << (char)27;
 		}
 	}
@@ -1046,18 +1048,21 @@ void pianusLavaEffect()
 {
 	for ( int i = 5; i < 46; i++ )
 	{
-		(lava.X).push_back(i);
-		(lava.Y).push_back(21);
+		bossAttack Lava;
+		Lava.X = i;
+		Lava.Y = 21;
+
+		lava.push_back(Lava);
 	}
 }
 
 void updateLava()
 {
-	if ( (lava.Y)[0] > 17 )
+	if ( lava[0].Y > 17 )
 	{
 		for ( int i = 0; i < 41; i++)
 		{
-			(lava.Y)[i]--;
+			lava[i].Y--;
 		}
 	}
 	else // when lava reaches top platform
@@ -1078,18 +1083,17 @@ void updateLava()
 			}
 		}
 		
-		lava.X.clear();
-		lava.Y.clear();
+		lava.clear(); // remove lava
 	}
 }
 
 void renderLava()
 {
-	for (unsigned int i = 0; i < (lava.Y).size(); i++ )
+	for (unsigned int i = 0; i < lava.size(); i++ )
 	{
-		for ( int j = 0; j < (lava.X).size(); j++)
+		for (unsigned int j = 0; j < lava.size(); j++)
 		{
-			gotoXY( (lava.X)[j], (lava.Y)[i] );
+			gotoXY( lava[j].X, lava[i].Y );
 			std::cout << (char)30;
 		}
 	}
@@ -1281,11 +1285,16 @@ void bossMeteor3()
 
 void bossMeteorEffect() // spawns meteors !
 {
-	(meteor.X).push_back(13);
-	(meteor.Y).push_back(0);
+	bossAttack Meteor;
+	Meteor.X = 13;
+	Meteor.Y = 0;
 
-	(meteor.X).push_back(29);
-	(meteor.Y).push_back(0);
+	meteor.push_back(Meteor);
+
+	Meteor.X = 29;
+
+	meteor.push_back(Meteor);
+	std::cout << meteor.size();
 }
 
 void updateMeteor() // moves meteors / delete meteors and adjust coordinates
@@ -1294,13 +1303,13 @@ void updateMeteor() // moves meteors / delete meteors and adjust coordinates
 	std::cout << "        "; // clean up mess after spawning
 	gotoXY(36, 3);
 	std::cout << "         ";
-	for (unsigned int i = 0; i < (meteor.X).size(); i++ ) // for all the meteors
+	for (unsigned int i = 0; i < meteor.size(); i++ ) // for all the meteors
 	{
-		if ( (meteor.Y)[i] < 19 ) // when meteor is still falling ~
+		if ( meteor[i].Y < 19 ) // when meteor is still falling ~
 		{
-			for ( int j = (meteor.Y)[i]-2; j < (meteor.Y)[i]+3; j++) //clean up the path behind the meteor 
+			for ( int j = meteor[i].Y -2; j < meteor[i].Y +3; j++) //clean up the path behind the meteor 
 			{
-				for ( int k = (meteor.X)[i]-5; k < (meteor.X)[i]+6; k++) //  WHAT THE METEOR DESTROYEDDD.
+				for ( int k = meteor[i].X -5; k < meteor[i].X +6; k++) //  WHAT THE METEOR DESTROYEDDD.
 				{
 					if ( j < 0 ) // lowest Y coord is 0.
 						j = 0;
@@ -1316,13 +1325,13 @@ void updateMeteor() // moves meteors / delete meteors and adjust coordinates
 					}
 				}
 			}
-		( (meteor.Y)[i] )++;
+		 meteor[i].Y++;
 		}
 		else // when meteor hits the ground
 		{
-			for ( int j = (meteor.Y)[i]-2; j < (meteor.Y)[i]+3; j++) //clean up the ground
+			for ( int j = meteor[i].Y -2; j < meteor[i].Y +3; j++) //clean up the ground
 			{
-				for ( int k = (meteor.X)[i]-5; k < (meteor.X)[i]+6; k++) // CLEAN UP THE GROUNDD >:((
+				for ( int k = meteor[i].X -5; k < meteor[i].X +6; k++) // CLEAN UP THE GROUNDD >:((
 				{
 					gotoXY(k, j);
 					if ( map[j][k] == '#')
@@ -1335,26 +1344,25 @@ void updateMeteor() // moves meteors / delete meteors and adjust coordinates
 					}
 				}
 			}
-
-			(meteor.X).erase( (meteor.X).begin() + i ); //erase coords
-			(meteor.Y).erase( (meteor.Y).begin() + i ); //erase coords
 		}
 	}
+	if ( meteor[0].Y > 18 )
+		meteor.clear(); // clear meteors when reached ground
 }
 
 void renderMeteor() // cout meteors to console
 {
-	for (unsigned int i = 0; i < (meteor.X).size(); i++ )
+	for (unsigned int i = 0; i < meteor.size(); i++ )
 	{
-		gotoXY( (meteor.X)[i]-5, (meteor.Y)[i] );
+		gotoXY( meteor[i].X -5, meteor[i].Y );
 		std::cout << "x@*(&@(*&%x";
-		gotoXY( (meteor.X)[i]-5, (meteor.Y)[i]+1 );
+		gotoXY( meteor[i].X -5, meteor[i].Y +1 );
 		std::cout << "'x?HQ(*@&x'";
-		gotoXY( (meteor.X)[i]-5, (meteor.Y)[i]-1 );
+		gotoXY( meteor[i].X -5, meteor[i].Y -1 );
 		std::cout << ",xQ)(&@FJx,";
-		gotoXY( (meteor.X)[i]-5, (meteor.Y)[i]+2 );
+		gotoXY( meteor[i].X -5, meteor[i].Y +2 );
 		std::cout << " 'xxxxxxx' ";
-		gotoXY( (meteor.X)[i]-5, (meteor.Y)[i]-2 );
+		gotoXY( meteor[i].X -5, meteor[i].Y -2 );
 		std::cout << " ,xxxxxxx, ";
 	}
 
@@ -1482,26 +1490,29 @@ void bossSplint3()
 
 void bossSplintEffect()
 {
-	(splint.X).push_back(22);
-	(splint.Y).push_back(22);
+	bossAttack Splint;
+	Splint.X = 22;
+	Splint.Y = 22;
+	
+	splint.push_back(Splint);
 }
 
 void updateSplint()
 {
-	for (unsigned int i = 0; i < (splint.Y).size(); i++ ) // when spike still moving upwards
+	for (unsigned int i = 0; i < splint.size(); i++ ) // when spike still moving upwards
 	{
-		if ( (splint.Y)[i] > 3 )
+		if ( splint[i].Y > 3 )
 		{
-			(splint.Y)[i]--;
+			splint[i].Y--;
 		}
 		else // when spike reaches the top
 		{
-			for ( int j = (splint.X)[i]-3; j < (splint.X)[i]+2; j++) // remove the spikes
+			for ( int j = splint[i].X -3; j < splint[i].X +2; j++) // remove the spikes
 			{
 				for ( int k = 2; k < 22; k++) // CLEAN UP THE MESS >:((
 				{
 					gotoXY(j, k);
-						if ( map[k][j] == '#')
+					if ( map[k][j] == '#')
 					{
 						std::cout << (char)219; // and print block to replace walls
 					}
@@ -1511,18 +1522,16 @@ void updateSplint()
 					}
 				}
 			}
-
-			(splint.X).erase( (splint.X).begin() + i ); //erase coords
-			(splint.Y).erase( (splint.Y).begin() + i ); //erase coords
+			splint.clear();
 		}
 	}
 }
 
 void renderSplint()
 {
-	for (unsigned int i = 0; i < (splint.X).size(); i++ )
+	for (unsigned int i = 0; i < splint.size(); i++ )
 	{
-		gotoXY( (splint.X)[i]-3, (splint.Y)[i] );
+		gotoXY( splint[i].X -3, splint[i].Y );
 		std::cout << (char)24 << (char)24 << (char)24 << (char)24 << (char)24;
 	}
 
@@ -1572,11 +1581,11 @@ void checkForTreasure()
  
 void checkCollisionSplint()
 {
-	if ( (splint.X).size() != 0 ) // confirming there is a splint
+	if ( splint.size() != 0 ) // confirming there is a splint
 	{
-		if ( charLocation.X >= (splint.X)[0]-3 && charLocation.X <= (splint.X)[0]+1 ) // if player standing within x coordinates of splint attack
+		if ( charLocation.X >= splint[0].X -3 && charLocation.X <= splint[0].X +1 ) // if player standing within x coordinates of splint attack
 		{
-			if ( charLocation.Y >= (splint.Y)[0] ) // if player is within the splint
+			if ( charLocation.Y >= splint[0].Y ) // if player is within the splint
 			{
 				hasbeenDamaged = 1;
 				if ( PlayerHealth > 0 )
@@ -1588,13 +1597,13 @@ void checkCollisionSplint()
 
 void checkCollisionMeteor()
 {
-	if ( (meteor.X).size() != 0 )
+	if ( meteor.size() != 0 )
 	{
-		for ( unsigned int i = 0; i < (meteor.X).size(); i++ )
+		for ( unsigned int i = 0; i < meteor.size(); i++ )
 		{
-			if ( charLocation.X >= (meteor.X)[i]-5 && charLocation.X <= (meteor.X)[i]+5 ) // if player standing within x coordinates of meteors
+			if ( charLocation.X >= meteor[i].X -5 && charLocation.X <= meteor[i].X +5 ) // if player standing within x coordinates of meteors
 			{
-				if ( charLocation.Y >= (meteor.Y)[i]-2 && charLocation.Y <= (meteor.Y)[i]+2 ) // if player is within the meteor
+				if ( charLocation.Y >= meteor[i].Y -2 && charLocation.Y <= meteor[i].Y +2 ) // if player is within the meteor
 				{
 					hasbeenDamaged = 1;
 					if ( PlayerHealth > 0 )
@@ -1877,10 +1886,10 @@ void resetElements() // removes monsters and effects on the map
 	(Rat.x).clear();
 	(Rat.y).clear();
 	(Rat.health).clear();
-	(meteor.X).clear();
-	(meteor.Y).clear();
-	(splint.X).clear();
-	(splint.Y).clear();
+	meteor.clear();
+	splint.clear();
+	laser.clear();
+	lava.clear();
 }
 
 void checkBossStatus()
@@ -2309,13 +2318,13 @@ void update(double dt)
 	if ( isBossLevel == 1 )
 	{
 		
-		if ( (meteor.X).size() != 0 ) // If there are meteors
+		if ( meteor.size() != 0 ) // If there are meteors
 		{
 			updateMeteor();
 			checkCollisionMeteor();
 		}
 
-		if ( (splint.X).size() != 0 ) // If boss used splint
+		if ( splint.size() != 0 ) // If boss used splint
 		{
 			updateSplint();
 			checkCollisionSplint();
@@ -2324,13 +2333,13 @@ void update(double dt)
 
 	if ( isBossLevel == 2 )
 	{
-		if ( (laser.X).size() != 0 ) // If there's laser
+		if ( laser.size() != 0 ) // If there's laser
 		{
 			updateLaser();
 			// check collision
 		}
 
-		if ( (lava.X).size() != 0 ) // If there's lava
+		if ( lava.size() != 0 ) // If there's lava
 		{
 			updateLava();
 			// check collision
@@ -2430,12 +2439,12 @@ void render()
 	
 	if ( isBossLevel == 1 ) // These renders only occur when it's a boss level
 	{
-		if ( (meteor.X).size() != 0 ) // If boss spawned meteors
+		if ( meteor.size() != 0 ) // If boss spawned meteors
 		{
 			renderMeteor();
 		}
 
-		if ( (splint.X).size() != 0 ) // If boss used splint
+		if ( splint.size() != 0 ) // If boss used splint
 		{
 			renderSplint();
 		}
@@ -2445,12 +2454,12 @@ void render()
 
 	if ( isBossLevel == 2 )
 	{
-		if ( (laser.X).size() != 0 ) // If laz0r
+		if ( laser.size() != 0 ) // If laz0r
 		{
 			renderLaser();
 		}
 
-		if ( (lava.X).size() != 0 ) // If there's lavarh
+		if ( lava.size() != 0 ) // If there's lavarh
 		{
 			renderLava();
 			// check collision
