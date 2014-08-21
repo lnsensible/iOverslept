@@ -1220,13 +1220,13 @@ void update(double dt)
 		if ( laser.size() != 0 ) // If there's laser
 		{
 			updateLaser();
-			// check collision
+			checkCollisionLaser();
 		}
 
 		if ( lava.size() != 0 ) // If there's lava
 		{
 			updateLava();
-			// check collision
+			checkCollisionLava();
 		}
 	}
 

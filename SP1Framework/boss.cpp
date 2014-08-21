@@ -182,17 +182,17 @@ void renderLaser()
 
 void pianusLava1()
 {
-	gotoXY(65, 7);	std::cout << "                        :?              ";
-	gotoXY(65, 8);	std::cout << "                      ~+?III=           ";
-	gotoXY(65, 9);	std::cout << "                 ,,=:~+=~++?I,          ";
-	gotoXY(65, 10);	std::cout << "           7777I??+=~~~~==~=+??         ";
-	gotoXY(65, 11);	std::cout << "        IIIIII??+~~::::::::~~=+?        ";
-	gotoXY(65, 12);	std::cout << "       7III?===~~:::::::::::::::        ";
-	gotoXY(65, 13);	std::cout << "       =+++==+=~~:::::::::::=,,,::      ";
+	gotoXY(65, 7);	std::cout << "                                        ";
+	gotoXY(65, 8);	std::cout << "                      ~+?III====___     ";
+	gotoXY(65, 9);	std::cout << "                 ,,=:~+=~++?II::==,     ";
+	gotoXY(65, 10);	std::cout << "           7777I??+=~~~~==~=+??II::,    ";
+	gotoXY(65, 11);	std::cout << "        IIIIII??+~~::::::::~~=+?II:,    ";
+	gotoXY(65, 12);	std::cout << "       7III?===~~:::::::::::::::::::    ";
+	gotoXY(65, 13);	std::cout << "       =+++==+=~~:::::::::::=,,,::::    ";
 	gotoXY(65, 14);	std::cout << "      ++++++===~~:::::::::?+++,,,,,,    ";
 	gotoXY(65, 15);	std::cout << "    :I??++===~~~~::::::::=~=+++,:,,,,   ";
 	gotoXY(65, 16);	std::cout << "    :=++++====~~?+=~::::,:::~==,,,,,,   ";
-	gotoXY(65, 17);	std::cout << "  ??IIII?~~==~~~:,~~~::::,,,:~=,,,,,    ";
+	gotoXY(65, 17);	std::cout << "  ??IIII?~~==~~~:,~~~::::,,,:~=,,,,,,   ";
 	gotoXY(65, 18);	std::cout << "  ====~~:+==~~~====~:::,:::~~==,,,,,,,  ";
 	gotoXY(65, 19);	std::cout << "   ====~~:+==~~~====~:::,:::~~==,,,,,,, ";
 	gotoXY(65, 20);	std::cout << "   =,:~~~~?:~~~~~~~~~~~,,~=:,,,,,,,,,,, ";
@@ -201,18 +201,18 @@ void pianusLava1()
 
 void pianusLava2()
 {
-	gotoXY(65, 7);	std::cout << "                        :?              ";
-	gotoXY(65, 8);	std::cout << "                      ~+?III=           ";
-	gotoXY(65, 9);	std::cout << "                 ,,=:~+=~++?I,          ";
-	gotoXY(65, 10);	std::cout << "           7777I??+=~~~~==~=+??         ";
-	gotoXY(65, 11);	std::cout << "        IIIIII??+~~::::::::~~=+?        ";
-	gotoXY(65, 12);	std::cout << "       7III?===~~:::::::::::::::        ";
-	gotoXY(65, 13);	std::cout << "       =+++==+=~~:::::::::::=,,,::      ";
-	gotoXY(65, 14);	std::cout << "      ++++++===~~:::::::::?+++,,,,,,    ";
+	gotoXY(65, 7);	std::cout << "                                        ";
+	gotoXY(65, 8);	std::cout << "                      ~+?III====___     ";
+	gotoXY(65, 9);	std::cout << "                 ,,=:~+=~++?III::==,    ";
+	gotoXY(65, 10);	std::cout << "           7777I??+=~~~~==~=+??III::    ";
+	gotoXY(65, 11);	std::cout << "        IIIIII??+~~::::::::~~=+?::::,   ";
+	gotoXY(65, 12);	std::cout << "       7III?===~~:::::::::::::::::::,   ";
+	gotoXY(65, 13);	std::cout << "       =+++==+=~~:::::::::::=,,,::,,,   ";
+	gotoXY(65, 14);	std::cout << "      ++++++===~~:::::::::?+++,,,,,,,   ";
 	gotoXY(65, 15);	std::cout << "    :I??++===~~~~::::::::=~=+++,:,,,,   ";
 	gotoXY(65, 16);	std::cout << "    :=++++====~~?+=~::::,:::~==,,,,,,   ";
-	gotoXY(65, 17);	std::cout << "  ??IIII?~~==~~~:,~~~::::,,,:~=,,,,,    ";
-	gotoXY(65, 18);	std::cout << "  ====~~:+==~~~====~:::,:::~~==,,,,,,   ";
+	gotoXY(65, 17);	std::cout << "  ??IIII?~~==~~~:,~~~::::,,,:~=,,,,,,   ";
+	gotoXY(65, 18);	std::cout << "  ====~~:+==~~~====~:::,:::~~==,,,,,,,  ";
 	gotoXY(65, 19);	std::cout << "       :::~:~~~~::::::~~,,,,,,,,,,,,,,, ";
 	gotoXY(65, 20);	std::cout << "   =,:~~~~?:~~~~~~~~~~~,,~=:,,,,,,,,,,, ";
 	gotoXY(65, 21);	std::cout << "  ========~~~~~~~~~~:~,,===+++?,,,,,,,, ";
@@ -693,6 +693,40 @@ void checkCollisionMeteor()
 	}
 }
 
+void checkCollisionLaser()
+{
+	if ( laser.size() != 0 ) // confirming there is a splint
+	{
+		if ( charLocation.Y >= laser[0].Y -6 && charLocation.Y <= laser[0].Y +2 ) // if player standing within y coordinates of laser attack
+		{
+			if ( charLocation.X == laser[0].X ) // if player is within the splint
+			{
+				hasbeenDamaged = 1;
+				if ( PlayerHealth > 0 )
+					PlayerHealth--;
+			}
+		}
+	}
+}
+
+void checkCollisionLava()
+{
+	if ( lava.size() != 0 ) // confirming there is lava
+	{
+		for ( int i = 0; i < lava.size(); i++)
+		{
+			if ( charLocation.X == lava[i].X ) // if player standing within y coordinates of lava
+			{
+				if ( charLocation.Y >= lava[i].Y ) // if player is within lava
+				{
+					hasbeenDamaged = 1;
+					if ( PlayerHealth > 0 )
+						PlayerHealth--;
+				}
+			}
+		}
+	}
+}
 
 void checkBossStatus()
 {

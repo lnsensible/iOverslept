@@ -125,6 +125,8 @@ void renderMeteor();
 void checkBossStatus();
 void checkCollisionSplint();
 void checkCollisionMeteor();
+void checkCollisionLava();
+void checkCollisionLaser();
 
 // Monster functions
 void checkCollisionSnail();
