@@ -114,9 +114,9 @@ void spawnWhere()
 {
 	if ( spawnwhere == true ) // came from next map
 	{
-		for ( int i = 0; i < 24; i++ )
+		for ( int i = 0; i < MAPHEIGHT; i++ )
 		{
-			for ( int j = 0; j < 120; j++ )
+			for ( int j = 0; j < MAPWIDTH; j++ )
 			{
 				if ( map[i][j] == 'c' )
 				{
@@ -133,9 +133,9 @@ void spawnWhere()
 	}
 	else if ( spawnwhere == false ) //came from previous map
 	{
-		for ( int i = 0; i < 24; i++ )
+		for ( int i = 0; i < MAPHEIGHT; i++ )
 		{
-			for ( int j = 0; j < 120; j++ )
+			for ( int j = 0; j < MAPWIDTH; j++ )
 			{
 				if ( map[i][j] == 'c' )
 				{

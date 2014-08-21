@@ -268,6 +268,63 @@ void pianusLavaEffect()
 	}
 }
 
+void pianusDeath1()
+{
+	gotoXY(65, 7);	std::cout << "                                        ";
+	gotoXY(65, 8);	std::cout << "                                        ";
+	gotoXY(65, 9);	std::cout << "           ??=?+??++~                   ";
+	gotoXY(65, 10);	std::cout << "         ????=+??+++++~                 ";
+	gotoXY(65, 11);	std::cout << "       ?I+?????++==~~~~~~=              ";
+	gotoXY(65, 12);	std::cout << "      ~I?+???++=~~:::::::~~=            ";
+	gotoXY(65, 13);	std::cout << "     ????I??+=~~~::::::::~~~~           ";
+	gotoXY(65, 14);	std::cout << "     ??II??+=~:::::::::::~~..+          ";
+	gotoXY(65, 15);	std::cout << "    ???I??==~::~+~~~::~:,...+           ";
+	gotoXY(65, 16);	std::cout << "   ?????++=~:~=::  ~::~....+:    ,      ";
+	gotoXY(65, 17);	std::cout << "+++++++=::~:::,     =~~:..+:~   ~~    ~ ";
+	gotoXY(65, 18);	std::cout << ".,:,....,:::::=     =~:~.,:~~~ +~~   +  ";
+	gotoXY(65, 19);	std::cout << "??????=~ ,:::::~:~~~~::..,:,,,,,=~~.+=  ";
+	gotoXY(65, 20);	std::cout << "  ,,,,,::= ::::::~::~~,.:~+:...:,, :~,~ ";
+	gotoXY(65, 21);	std::cout << "    +++=~::,.~~~~~~~~,:..:+,...=,...:   ";
+}
+
+void pianusDeath2()
+{
+	gotoXY(65, 7);	std::cout << "                                        ";
+	gotoXY(65, 8);	std::cout << "                                        ";
+	gotoXY(65, 9);	std::cout << "                                        ";
+	gotoXY(65, 10);	std::cout << "                                        ";
+	gotoXY(65, 11);	std::cout << "                                        ";
+	gotoXY(65, 12);	std::cout << "         ????=+??+++++~                 ";
+	gotoXY(65, 13);	std::cout << "       ?I+?????++==~~~~~~=              ";
+	gotoXY(65, 14);	std::cout << "     ????I??+=~~~::::::::~~~~           ";
+	gotoXY(65, 15);	std::cout << "     ??II??+=~:::::::::::~~..+          ";
+	gotoXY(65, 16);	std::cout << "    ???I??==~::~+~~~::~:,...+           ";
+	gotoXY(65, 17);	std::cout << "   ?????++=~:~=::  ~::~....+:    ,      ";
+	gotoXY(65, 18);	std::cout << "+++++++=::~:::,     =~~:..+:~   ~~    ~ ";
+	gotoXY(65, 19);	std::cout << ".,:,....,:::::=     =~:~.,:~~~ +~~   +  ";
+	gotoXY(65, 20);	std::cout << "??????=~ ,:::::~:~~~~::..,:,,,,,=~~ +=  ";
+	gotoXY(65, 21);	std::cout << "    +++=~::,.~~~~~~~~,:..:+,...=,...:   ";
+}
+
+void pianusDeath3()
+{
+	gotoXY(65, 7);	std::cout << "                                        ";
+	gotoXY(65, 8);	std::cout << "                                        ";
+	gotoXY(65, 9);	std::cout << "                                        ";
+	gotoXY(65, 10);	std::cout << "                                        ";
+	gotoXY(65, 11);	std::cout << "                                        ";
+	gotoXY(65, 12);	std::cout << "                                        ";
+	gotoXY(65, 13);	std::cout << "                                        ";
+	gotoXY(65, 14);	std::cout << "                                        ";
+	gotoXY(65, 15);	std::cout << "         ????=+??+++++~                 ";
+	gotoXY(65, 16);	std::cout << "       ?I+?????++==~~~~~~=              ";
+	gotoXY(65, 17);	std::cout << "     ????I??+=~~~::::::::~~~            ";
+	gotoXY(65, 18);	std::cout << "    ???I??==~::~+~~~::~:,...+           ";
+	gotoXY(65, 19);	std::cout << "   ?????++=~:~=::  ~::~....+:    ,      ";
+	gotoXY(65, 20);	std::cout << " ,:,....,:::::=     =~:~.,:~~~ +~~   +  ";
+	gotoXY(65, 21);	std::cout << "??????=~.,:::::~:~~~~::..,:,,,,,=~~ +=  ";
+}
+
 void updateLava()
 {
 	if ( lava[0].Y > 17 )
@@ -666,6 +723,70 @@ void bossSplintEffect()
 	splint.push_back(Splint);
 }
 
+void bossDeath1()
+{
+	gotoXY(50, 4);	std::cout << "                                                     ";
+	gotoXY(50, 5);	std::cout << "                                                     ";
+	gotoXY(50, 6);	std::cout << "              =~,~~,,      ,==?~~~~                  ";
+	gotoXY(50, 7);	std::cout << "              =~~7IIIIIIIII+~=~~,,~                  ";
+	gotoXY(50, 8);	std::cout << "              =.7777IIIIIIII~~~::,~                  ";
+	gotoXY(50, 9);	std::cout << "              I777777IIIIIIII?,:,,                   ";
+	gotoXY(50, 10);	std::cout << "              II777IIIIIIIIIII?++=                   ";
+	gotoXY(50, 11);	std::cout << "             IIIIIIIIIIIII7III?+++~                  ";
+	gotoXY(50, 12);	std::cout << "             II+  IIIIIII?  III+?+=                  ";
+	gotoXY(50, 13);	std::cout << "              I=  IIIIIII?  III?++=~                 ";
+	gotoXY(50, 14);	std::cout << "              ++III~I:IIII7I++I?++=~                 ";
+	gotoXY(50, 15);	std::cout << "             ?IIIIIIIIIIIIIIIII?++=~       717I      ";
+	gotoXY(50, 16);	std::cout << "             +II          +I??7?++=~     =~~~~~      ";
+	gotoXY(50, 17);	std::cout << "             ?77              7I++=~    I            ";
+	gotoXY(50, 18);	std::cout << "            I777              7I?=~~   I             ";
+	gotoXY(50, 19);	std::cout << "            +777            77II?===   =             ";
+	gotoXY(50, 20);	std::cout << "            +I            77IIII======               ";
+	gotoXY(50, 21);	std::cout << "           +IIIIII7777777IIIIIIII======              ";
+}
+void bossDeath2()
+{
+	gotoXY(50, 4);	std::cout << "                                                     ";
+	gotoXY(50, 5);	std::cout << "                                                     ";
+	gotoXY(50, 6);	std::cout << "                                                     ";
+	gotoXY(50, 7);	std::cout << "                                                     ";
+	gotoXY(50, 8);	std::cout << "                                                     ";
+	gotoXY(50, 9);	std::cout << "                                                     ";
+	gotoXY(50, 10);	std::cout << "              =~~7IIIIIIIII+~=~~,,~                  ";
+	gotoXY(50, 11);	std::cout << "              I777777IIIIIIII?,:,,                   ";
+	gotoXY(50, 12);	std::cout << "              II777IIIIIIIIIII?++=                   ";
+	gotoXY(50, 13);	std::cout << "             II+  IIIIIII?  III+?+=                  ";
+	gotoXY(50, 14);	std::cout << "              I=  IIIIIII?  III?++=~                 ";
+	gotoXY(50, 15);	std::cout << "              ++III~I:IIII7I++I?++=~                 ";
+	gotoXY(50, 16);	std::cout << "             ?IIIIIIIIIIIIIIIII?++=~                 ";
+	gotoXY(50, 17);	std::cout << "             +II          +I??7?++=~                 ";
+	gotoXY(50, 18);	std::cout << "             ?77              7I++=~     ...,        ";
+	gotoXY(50, 19);	std::cout << "            I777              7I?=~~    =~~~~        ";
+	gotoXY(50, 20);	std::cout << "            +777            77II?===   =             ";
+	gotoXY(50, 21);	std::cout << "           +IIIIII7777777IIIIIIIIIII===              ";
+}
+void bossDeath3()
+{
+	gotoXY(50, 4);	std::cout << "                                                     ";
+	gotoXY(50, 5);	std::cout << "                                                     ";
+	gotoXY(50, 6);	std::cout << "                                                     ";
+	gotoXY(50, 7);	std::cout << "                                                     ";
+	gotoXY(50, 8);	std::cout << "                                                     ";
+	gotoXY(50, 9);	std::cout << "                                                     ";
+	gotoXY(50, 10);	std::cout << "                                                     ";
+	gotoXY(50, 11);	std::cout << "                                                     ";
+	gotoXY(50, 12);	std::cout << "                                                     ";
+	gotoXY(50, 13);	std::cout << "              =~~7IIIIIIIII+~=~~,,~                  ";
+	gotoXY(50, 14);	std::cout << "              I777777IIIIIIII?,:,,                   ";
+	gotoXY(50, 15);	std::cout << "             II+  IIIIIII?  III+?+=                  ";
+	gotoXY(50, 16);	std::cout << "              I=  IIIIIII?  III?++=~                 ";
+	gotoXY(50, 17);	std::cout << "              ++III~I:IIII7I++I?++=~                 ";
+	gotoXY(50, 18);	std::cout << "             ?IIIIIIIIIIIIIIIII?++=~                 ";
+	gotoXY(50, 19);	std::cout << "             +II          +I??7?++=~                 ";
+	gotoXY(50, 20);	std::cout << "            +777            77II?===                 ";
+	gotoXY(50, 21);	std::cout << "           +IIIIII7777777IIIIIIIIIII=======~~~-      ";
+}
+
 void updateSplint()
 {
 	for (unsigned int i = 0; i < splint.size(); i++ ) // when spike still moving upwards
@@ -775,7 +896,7 @@ void checkCollisionLava()
 {
 	if ( lava.size() != 0 ) // confirming there is lava
 	{
-		for ( int i = 0; i < lava.size(); i++)
+		for (unsigned int i = 0; i < lava.size(); i++)
 		{
 			if ( charLocation.X == lava[i].X ) // if player standing within y coordinates of lava
 			{

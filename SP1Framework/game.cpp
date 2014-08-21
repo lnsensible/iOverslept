@@ -38,7 +38,7 @@ int gamestate = 0;
 COORD charLocation;
 COORD consoleSize;
 
-unsigned char map[25][120]; // stores the level map
+unsigned char map[MAPHEIGHT][MAPWIDTH]; // stores the level map
 unsigned char Signprint[11][21]; // stores the level map
 int checkLevel = 0; // Check current level
 int checkPrevLevel = 0; // Check previous level
@@ -628,9 +628,9 @@ void loadLevel(std::string filename) // loads level map from file.
 	std::fstream LevelMap;
 	LevelMap.open(filename);
 
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < MAPHEIGHT; i++)
 	{
-		for (int j = 0; j < 120; j++)
+		for (int j = 0; j < MAPWIDTH; j++)
 		{
 			LevelMap >> map[i][j];
 		}
@@ -659,9 +659,9 @@ void loadSign(std::string filename) // loads sign from file.
 void prepareLevel() // Prepares level map for cout.
 {
 	resetElements();
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < MAPHEIGHT; i++)
 	{
-		for (int j = 0; j < 120; j++)
+		for (int j = 0; j < MAPWIDTH; j++)
 		{
 			if ( map[i][j] == '.' ) // Whitespace placeholder
 			{
@@ -695,6 +695,8 @@ void prepareLevel() // Prepares level map for cout.
 				Monstersnail.health = 2; // health of snail
 
 				MonsterSnail.push_back(Monstersnail);
+
+				map[i][j] = ' ';
 			}
 
 			if ( map[i][j] == 'M' ) // Floater Monster placeholder ( a ascii 235 )
@@ -706,6 +708,8 @@ void prepareLevel() // Prepares level map for cout.
 				floater.health = 1; // health of floater
 
 				Floater.push_back(floater);
+
+				map[i][j] = ' ';
 			}
 
 			if ( map[i][j] == 'F' ) // InnerFear Monster placeholder 
@@ -717,6 +721,8 @@ void prepareLevel() // Prepares level map for cout.
 				innerfear.health = 1; // health of InnerFear
 
 				InnerFear.push_back(innerfear);
+
+				map[i][j] = ' ';
 			}
 
 			if ( map[i][j] == 'R' ) // Rat Monster placeholder 
@@ -728,6 +734,8 @@ void prepareLevel() // Prepares level map for cout.
 				rat.health = 1; // health of Rat
 
 				Rat.push_back(rat);
+
+				map[i][j] = ' ';
 			}
 
 			if ( map[i][j] == 'T' ) // TREASURE HORRYY SHEET $$$
@@ -755,9 +763,9 @@ void prepareLevel() // Prepares level map for cout.
 
 void renderLevel() // Renders map into console
 {
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < MAPHEIGHT; i++)
 	{
-		for (int j = 0; j < 120; j++)
+		for (int j = 0; j < MAPWIDTH; j++)
 		{
 			gotoXY(j, i); // go to XY coords respectively,
 			if ( map[i][j] == '#')
@@ -819,9 +827,9 @@ void renderLevel() // Renders map into console
 
 void renderSpikes() // re-render spikes after being stabbed
 {
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < MAPHEIGHT; i++)
 	{
-		for (int j = 0; j < 120; j++)
+		for (int j = 0; j < MAPWIDTH; j++)
 		{
 			if ( map[i][j] == 30 ) // Floor trap placeholder
 			{
@@ -969,36 +977,6 @@ void checkForElement()
 	else
 	{
 		rerendersign = 1;
-	}
-}
-
-void renderMonster() // re-render mobs after being hit
-{
-	for (int i = 0; i < 24; i++)
-	{
-		for (int j = 0; j < 120; j++)
-		{
-			if ( map[i][j] == 'S' ) // re-render snails after being hit
-			{
-				gotoXY(j, i);
-				std::cout << "@/'";
-			}
-			if ( map[i][j] == 'M' ) // re-render Floaters
-			{
-				gotoXY(j, i);
-				std::cout << (char)235;
-			}
-			if ( map[i][j] == 'F' ) // re-render InnerFear after being hit
-			{
-				gotoXY(j, i);
-				std::cout << (char)12;
-			}
-			if ( map[i][j] == 'R' ) // re-render Rat after being hit
-			{
-				gotoXY(j, i);
-				std::cout << "~~(_^" << (char)249 << ">";
-			}
-		}	
 	}
 }
 
@@ -1416,9 +1394,9 @@ void render()
 
 	if(rerendersign == 1)
 	{
-		for (int i = 0; i < 24; i++)
+		for (int i = 0; i < MAPHEIGHT; i++)
 		{
-			for (int j = 0; j < 120; j++)
+			for (int j = 0; j < MAPWIDTH; j++)
 			{
 				if ( map[i][j] == 209 ) // re-render Sign
 				{

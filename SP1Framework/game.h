@@ -1,9 +1,11 @@
 #ifndef _GAME_H
 #define _GAME_H
+#define MAPWIDTH 120
+#define MAPHEIGHT 24
 
 #include "Framework\timer.h"
 
-extern unsigned char map[25][120];
+extern unsigned char map[MAPHEIGHT][MAPWIDTH];
 extern StopWatch g_timer;
 extern bool g_quitGame;
 extern bool spawnwhere;
@@ -99,6 +101,9 @@ void PianusLava3();
 void PianusLaser1();
 void PianusLaser2();
 void PianusLaser3();
+void PianusDeath1();
+void PianusDeath2();
+void PianusDeath3();
 void PianusLaserEffect();
 void PianusLavaEffect();
 void updateLaser();
@@ -117,6 +122,9 @@ void BossSplint3();
 void BossMeteor1();
 void BossMeteor2();
 void BossMeteor3();
+void BossDeath1();
+void BossDeath2();
+void BossDeath3();
 void BossSplintEffect();
 void BossMeteorEffect();
 void updateSplint();
@@ -138,7 +146,8 @@ void updateSnails();
 void updateFloater();
 void updateInnerFear();
 void updateRat();
-void checkMonsterDead(char monster);
+void checkMonsterDead();
+void renderMonster();
 
 //player
 void jump();

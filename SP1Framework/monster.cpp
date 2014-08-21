@@ -21,33 +21,67 @@ extern int Floatercounter;
 extern int InnerFearcounter;
 extern int Ratcounter;
 
+void renderMonster() // render mobs
+{
+	for (unsigned int i = 0; i < MonsterSnail.size(); i++ )
+	{
+		for ( int j = MonsterSnail[i].x-1; j < MonsterSnail[i].x+4; j++)
+		{
+			gotoXY(j, MonsterSnail[i].y);
+			if ( map[MonsterSnail[i].y][j] == '#' )
+			{
+				std::cout << (char)219;
+			}
+			else
+			{
+				 std::cout << map[MonsterSnail[i].y][j];
+			}
+		}
+
+		gotoXY(MonsterSnail[i].x, MonsterSnail[i].y);
+		std::cout << "@/'";
+	}
+	for (int i = 0; i < MAPHEIGHT; i++)
+	{
+		for (int j = 0; j < MAPWIDTH; j++)
+		{
+			if ( map[i][j] == 'M' ) // re-render Floaters
+			{
+				gotoXY(j, i);
+				std::cout << (char)235;
+			}
+			if ( map[i][j] == 'F' ) // re-render InnerFear after being hit
+			{
+				gotoXY(j, i);
+				std::cout << (char)12;
+			}
+			if ( map[i][j] == 'R' ) // re-render Rat after being hit
+			{
+				gotoXY(j, i);
+				std::cout << "~~(_^" << (char)249 << ">";
+			}
+		}	
+	}
+}
+
 void checkCollisionSnail()
 {
-	for (int i = 0; i < 24; i++)
+	for ( unsigned int i = 0; i < MonsterSnail.size(); i++)
 	{
-		for (int j = 0; j < 120; j++)
+		if ( charLocation.X >= MonsterSnail[i].x && charLocation.X <= MonsterSnail[i].x+2 && charLocation.Y == MonsterSnail[i].y)
 		{
-			if ( map[i][j] == 'S') // if snail spotted !
-			{
-				if ( charLocation.X >= j && charLocation.X <= j+2 ) // when within x coordinates of snail
-				{
-					if ( charLocation.Y == i ) //when within y coordinate of snail
-					{
-						hasbeenDamaged = 1;
-						if ( PlayerHealth > 0 )
-							PlayerHealth--;
-					}
-				}
-			}
+			hasbeenDamaged = 1;
+			if ( PlayerHealth > 0 )
+				PlayerHealth--;
 		}
 	}
 }
 
 void checkCollisionFloater()
 {
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < MAPHEIGHT; i++)
 	{
-		for (int j = 0; j < 120; j++)
+		for (int j = 0; j < MAPWIDTH; j++)
 		{
 			if ( map[i][j] == 'M') // if floater spotted !
 			{
@@ -67,9 +101,9 @@ void checkCollisionFloater()
 
 void checkCollisionInnerFear()
 {
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < MAPHEIGHT; i++)
 	{
-		for (int j = 0; j < 120; j++)
+		for (int j = 0; j < MAPWIDTH; j++)
 		{
 			if ( map[i][j] == 'F') // if InnerFear spotted !
 			{
@@ -89,9 +123,9 @@ void checkCollisionInnerFear()
 
 void checkCollisionRat()
 {
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < MAPHEIGHT; i++)
 	{
-		for (int j = 0; j < 120; j++)
+		for (int j = 0; j < MAPWIDTH; j++)
 		{
 			if ( map[i][j] == 'R') // if Rat spotted !
 			{
@@ -111,43 +145,26 @@ void checkCollisionRat()
 
 void updateSnails() // snail movement update
 {
-	for (int i = 0; i < 24; i++)
+	for (unsigned int i = 0; i < MonsterSnail.size(); i++ )
 	{
-		for (int j = 0; j < 120; j++)
+		if ( rand() % 2 == 0 )
 		{
-			if ( map[i][j] == 'S' )
-			{
-				if ( rand() % 2 == 0 ) // movement left
-				{
-					if ( map[i][j-1] != '#' && map[i+1][j-1] == '#' )
-					{
-						gotoXY(j, i);
-						std::cout << "   ";
-						map[i][j] = ' ';
-						map[i][j-1] = 'S';
-					}
-				}
-				else // movement right
-				{
-					if ( map[i][j+3] != '#' && map[i+1][j+1] == '#' )
-					{
-						gotoXY(j, i);
-						std::cout << "   ";
-						map[i][j] = ' ';
-						map[i][j+1] = 'S';
-					}
-				}
-			}
+			if ( map[MonsterSnail[i].y][MonsterSnail[i].x-1] != '#' && map[MonsterSnail[i].y+1][MonsterSnail[i].x-1] == '#' ) // If move left is possible
+				MonsterSnail[i].x--;
+		}
+		else
+		{
+			if ( map[MonsterSnail[i].y][MonsterSnail[i].x+3] != '#' && map[MonsterSnail[i].y+1][MonsterSnail[i].x+3] == '#' ) // If move right is possible
+				MonsterSnail[i].x++;
 		}
 	}
-	//checkMonsterDead('S');
 }
 
 void updateFloater() // floater movement update
 {
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < MAPHEIGHT; i++)
 	{
-		for (int j = 0; j < 120; j++)
+		for (int j = 0; j < MAPWIDTH; j++)
 		{
 			if ( map[i][j] == 'M' )
 			{
@@ -178,9 +195,9 @@ void updateFloater() // floater movement update
 
 void updateInnerFear() // InnerFear movement update
 {
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < MAPHEIGHT; i++)
 	{
-		for (int j = 0; j < 120; j++)
+		for (int j = 0; j < MAPWIDTH; j++)
 		{
 			if ( map[i][j] == 'F' )
 			{
@@ -211,9 +228,9 @@ void updateInnerFear() // InnerFear movement update
 
 void updateRat() // Rat movement update
 {
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < MAPHEIGHT; i++)
 	{
-		for (int j = 0; j < 120; j++)
+		for (int j = 0; j < MAPWIDTH; j++)
 		{
 			if ( map[i][j] == 'R' )
 			{
