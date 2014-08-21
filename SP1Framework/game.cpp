@@ -39,9 +39,10 @@ COORD charLocation;
 COORD consoleSize;
 
 unsigned char map[25][120]; // stores the level map
+unsigned char Signprint[11][101]; // stores the level map
 int checkLevel = 0; // Check current level
 int hasLevelRendered = 0; // Check if level has been rendered. 0 = Not loaded, 1 = Loaded
-
+int signNumber = 0;
 int treasure = 0;//Treasure :DD
 int isBossLevel = 0; //Check if it is a boss level. 0 = No, 1 = Boss, 2= Fishy
 
@@ -630,6 +631,22 @@ void loadLevel(std::string filename) // loads level map from file.
 	LevelMap.close();
 } 
 
+void loadSign(std::string filename) // loads level map from file.
+{
+	std::fstream Signload;
+	Signload.open(filename);
+
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 100; j++)
+		{
+			Signload >> Signprint[i][j];
+		}
+	}
+
+	Signload.close();
+} 
+
 void prepareLevel() // Prepares level map for cout.
 {
 	resetElements();
@@ -722,6 +739,10 @@ void prepareLevel() // Prepares level map for cout.
 				map[i][j] = 234;
 			}
 
+			if ( map[i][j] == '~' ) // Sign
+			{
+				map[i][j] = 209;
+			}
 		}
 	}
 }
@@ -749,6 +770,13 @@ void renderLevel() // Renders map into console
 			{
 				colour(0x0A);
 				std::cout << (char)234; // Portal back
+				colour(0x0F);
+			}
+
+			if ( map[i][j] == 209)
+			{
+				colour(0x07);
+				std::cout << (char)209; // Sign
 				colour(0x0F);
 			}
 
@@ -831,9 +859,9 @@ void renderHP() // displays amount of HP player still has.
 	std::cout << "          ";
 }
 
-void checkForGoal()
+void checkForElement()
 {
-	if (map[charLocation.Y][charLocation.X] == 239)
+	if (map[charLocation.Y][charLocation.X] == 239)//Portal to next
 	{
 		if(checkLevel != 20)
 		{
@@ -843,7 +871,7 @@ void checkForGoal()
 		gamestate = GAME;
 	}
 
-	if (map[charLocation.Y][charLocation.X] == 234)
+	if (map[charLocation.Y][charLocation.X] == 234)//Portal back
 	{
 		if(checkLevel != 1)
 		{
@@ -852,13 +880,67 @@ void checkForGoal()
 		init();
 		gamestate = GAME;
 	}
-}
 
-void checkForTreasure()
-{
-	if (map[charLocation.Y][charLocation.X] == 15)
+	if (map[charLocation.Y][charLocation.X] == 15)//treasure
 	{
+		//clear treasure
 		treasure = treasure + 1;
+	}
+
+	if (map[charLocation.Y][charLocation.X] == 209)//sign
+	{
+		if(signNumber == 1)
+		{
+			loadSign("sign1.txt");
+		}
+
+		else if(signNumber == 2)
+		{
+			loadSign("sign2.txt");
+		}
+
+		else if(signNumber == 3)
+		{
+			loadSign("sign3.txt");
+		}
+
+		else if(signNumber == 4)
+		{
+			loadSign("sign4.txt");
+		}
+
+		else if(signNumber == 5)
+		{
+			loadSign("sign5.txt");
+		}
+
+		gotoXY(30, 26);
+
+		for(int i = 0; i < 10; i++)
+		{
+			for(int j = 0; j < 100; j++)
+			{
+				if ( Signprint[i][j] == '\\')
+				{
+					Signprint[i][j] = ' ';// replace \ with space
+				}
+				std::cout << Signprint[i][j];
+			}
+		}
+	}
+
+	else
+	{
+		gotoXY(30, 26);
+		for(int i = 0; i < 100; i++)
+		{
+			std::cout << " ";
+		}
+		gotoXY(30, 27);
+		for(int i = 0; i < 100; i++)
+		{
+			std::cout << " ";
+		}
 	}
 }
 
@@ -938,6 +1020,7 @@ void init()
 	if ( checkLevel == 1 )
 	{
 		isBossLevel = 0;
+		signNumber = 1;
 		loadLevel("level1.txt");
 		SetConsoleTitle(L"Level One");
 	}
@@ -1096,8 +1179,7 @@ void update(double dt)
 
 	gravity();
 	checkforSpike();
-	checkForGoal();
-	checkForTreasure();
+	checkForElement();
 
 	if ( hasbeenStabbed == 1 ) 
 	{

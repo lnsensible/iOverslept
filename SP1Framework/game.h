@@ -57,16 +57,6 @@ enum Sequence
 	ENDGAME,
 	SHOP,
 	LEVELMENU,
-	LEVELONE,
-	LEVELTWO,
-	LEVELTHREE,
-	LEVELFOUR,
-	LEVELFIVE,
-	LEVELSIX,
-	LEVELSEVEN,
-	LEVELEIGHT,
-	LEVELNINE,
-	LEVELTEN,
 	DEATH,
 };
 
@@ -94,7 +84,7 @@ void updateendmenu(double dt);
 void renderendmenu();
 
 //player environment intewractions.
-void checkForGoal();
+void checkForElement();
 void resetElements();
 
 //Boss functions
