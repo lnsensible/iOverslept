@@ -20,6 +20,12 @@ extern std::vector<Monster> InnerFear;
 extern std::vector<Monster> Rat;
 
 extern int hasbeenStabbed;
+extern int weaponDAMAGE;       
+extern int weaponSPEED;         
+extern int weaponHITCOUNT;   
+extern std::string beforeATTACK,afterATTACK;
+extern std::string weaponHITBOX; 
+extern std::string weaponSTATE;  
 
 extern double jumpDelay;
 extern double fallDelay;
@@ -1068,6 +1074,9 @@ void getInput()
     keyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
 	keyPressed[K_SPACE] = isKeyPressed(VK_SPACE);
 	keyPressed[K_ENTER] = isKeyPressed(VK_RETURN);
+	keyPressed[K_Q] = isKeyPressed(0x51);
+    keyPressed[K_E] = isKeyPressed(0x45);
+    keyPressed[K_C] = isKeyPressed(0x43);
 }
 
 void update(double dt)
@@ -1179,6 +1188,8 @@ void update(double dt)
 			gotoXY(charLocation.X, charLocation.Y); // Preventing screen flickering.
 			std::cout << " "; // Replace character with a space.
 			charLocation.X--; // Move left.
+			WEAPON.X = charLocation.X - 2;
+			rightORleft = false;
 		}
     }
 
@@ -1190,6 +1201,8 @@ void update(double dt)
 			gotoXY(charLocation.X, charLocation.Y); // Preventing screen flickering.
 			std::cout << " "; // Replace character with a space.
 			charLocation.X++;
+			WEAPON.X = charLocation.X + 2;
+			rightORleft = true;
 		}
     }
 
@@ -1201,6 +1214,33 @@ void update(double dt)
     // quits the game if player hits the escape key
     if (keyPressed[K_ESCAPE])
         gamestate = LEVELMENU;
+
+	WEAPON.Y = charLocation.Y;
+        if (keyPressed[K_Q])
+        {
+                rangeORmelee = true;
+        }
+ 
+        if (keyPressed[K_E])
+        {
+                rangeORmelee = false;
+        }
+ 
+        WEAPON_PROPERTIES();
+ 
+        if (keyPressed[K_C])
+        {
+                Atk();
+        }
+ 
+        //for when the player faces the left direction
+        if (rightORleft == false && rangeORmelee == true && weaponSTATE == afterATTACK)
+        {WEAPON.X = charLocation.X - 4;}
+ 
+        if (rightORleft == false && rangeORmelee == false)
+        {WEAPON.X = charLocation.X - 5;
+        if (weaponSTATE == afterATTACK)
+        {WEAPON.X = charLocation.X - 6;}}
 
 	checkforDeath();
 }
@@ -1275,5 +1315,15 @@ void render()
     std::cout << (char)1;
 	colour(0x0F);
 
+	 //render Equipped Weapons
+     gotoXY(WEAPON);
+     if (rangeORmelee == true)
+     {
+		 std::cout<< weaponSTATE;
+	 }
+     else if (rangeORmelee == false)
+     {
+		 std::cout<< weaponSTATE;
+	 }
 }
 

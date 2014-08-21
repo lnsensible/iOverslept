@@ -18,6 +18,11 @@ extern double deltaTime;
 extern double skillDelay;
 extern double bossFrameDelay;
 
+     
+extern bool rangeORmelee;             
+extern bool rightORleft;          
+extern COORD WEAPON;
+
 struct bossAttack {
 	int X;
 	int Y;
@@ -35,6 +40,9 @@ enum Keys
     K_UP,
     K_DOWN,
     K_LEFT,
+	K_C,
+	K_E,
+	K_Q,
     K_RIGHT,
     K_ESCAPE,
 	K_SPACE,
@@ -141,5 +149,9 @@ void jump();
 void gravity();
 void checkforDeath();
 void checkforSpike();
+
+//weapon
+void WEAPON_PROPERTIES();
+void Atk();
 
 #endif // _GAME_H

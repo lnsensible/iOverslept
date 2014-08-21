@@ -16,7 +16,7 @@ extern COORD charLocation;
 extern COORD consoleSize;
 extern int gamestate;
 
-void checkCollisionSnail() // checks if player collies with snail
+void checkCollisionSnail()
 {
 	for (int i = 0; i < 24; i++)
 	{
@@ -38,7 +38,7 @@ void checkCollisionSnail() // checks if player collies with snail
 	}
 }
 
-void checkCollisionFloater() // checks if player collides with floater
+void checkCollisionFloater()
 {
 	for (int i = 0; i < 24; i++)
 	{
@@ -60,7 +60,7 @@ void checkCollisionFloater() // checks if player collides with floater
 	}
 }
 
-void checkCollisionInnerFear() // checks if player collides with innerfear
+void checkCollisionInnerFear()
 {
 	for (int i = 0; i < 24; i++)
 	{
@@ -82,7 +82,7 @@ void checkCollisionInnerFear() // checks if player collides with innerfear
 	}
 }
 
-void checkCollisionRat() // checks if player collides with rat
+void checkCollisionRat()
 {
 	for (int i = 0; i < 24; i++)
 	{
@@ -117,7 +117,7 @@ void updateSnails() // snail movement update
 					if ( map[i][j-1] != '#' && map[i+1][j-1] == '#' )
 					{
 						gotoXY(j, i);
-						std::cout << "   "; // space for snails
+						std::cout << "   ";
 						map[i][j] = ' ';
 						map[i][j-1] = 'S';
 					}
@@ -127,7 +127,7 @@ void updateSnails() // snail movement update
 					if ( map[i][j+3] != '#' && map[i+1][j+1] == '#' )
 					{
 						gotoXY(j, i);
-						std::cout << "   "; // space for snails
+						std::cout << "   ";
 						map[i][j] = ' ';
 						map[i][j+1] = 'S';
 					}
@@ -216,7 +216,7 @@ void updateRat() // Rat movement update
 					if ( map[i][j-1] != '#' && map[i+1][j-1] == '#' )
 					{
 						gotoXY(j, i);
-						std::cout << "       "; // space for rats
+						std::cout << "       ";
 						map[i][j] = ' ';
 						map[i][j-1] = 'R';
 					}
@@ -226,7 +226,7 @@ void updateRat() // Rat movement update
 					if ( map[i][j+7] != '#' && map[i+1][j+7] == '#' )
 					{
 						gotoXY(j, i);
-						std::cout << "       "; // space for rats
+						std::cout << "       ";
 						map[i][j] = ' ';
 						map[i][j+1] = 'R';
 					}
