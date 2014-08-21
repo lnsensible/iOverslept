@@ -46,6 +46,7 @@ int hasLevelRendered = 0; // Check if level has been rendered. 0 = Not loaded, 1
 int signNumber = 0;
 int treasure = 0;//Treasure :DD
 int isBossLevel = 0; //Check if it is a boss level. 0 = No, 1 = Boss, 2= Fishy
+int rerendersign = 0;
 
 double snailMoveDelay = 0; // delay between each snail movement :D
 double floaterMoveDelay = 0; // delay between each floater movement
@@ -632,7 +633,7 @@ void loadLevel(std::string filename) // loads level map from file.
 	LevelMap.close();
 } 
 
-void loadSign(std::string filename) // loads level map from file.
+void loadSign(std::string filename) // loads sign from file.
 {
 	std::fstream Signload;
 	Signload.open(filename);
@@ -929,16 +930,7 @@ void checkForElement()
 
 	else
 	{
-		gotoXY(30, 26);
-		for(int i = 0; i < 100; i++)
-		{
-			std::cout << " ";
-		}
-		gotoXY(30, 27);
-		for(int i = 0; i < 100; i++)
-		{
-			std::cout << " ";
-		}
+		rerendersign = 1;
 	}
 }
 
@@ -1192,6 +1184,8 @@ void update(double dt)
 	checkforSpike();
 	checkForElement();
 
+
+
 	if ( hasbeenStabbed == 1 ) 
 	{
 		colour(0x0F);
@@ -1386,6 +1380,33 @@ void render()
 
 	renderMonster();
 
+	if(rerendersign == 1)
+	{
+		for (int i = 0; i < 24; i++)
+		{
+			for (int j = 0; j < 120; j++)
+			{
+				if ( map[i][j] == 209 ) // re-render Sign
+				{
+					gotoXY(j, i);
+					std::cout << (char)209;
+					rerendersign = 0;
+				}
+			}
+		}
+
+		gotoXY(30, 26);
+		for(int i = 0; i < 100; i++)
+		{
+			std::cout << " ";
+		}
+		gotoXY(30, 27);
+		for(int i = 0; i < 100; i++)
+		{
+			std::cout << " ";
+		}
+	}
+
 	//gotoXY(6, 3);
 	//std::cout << "X: " << charLocation.X << " Y: " << charLocation.Y;
 
@@ -1419,4 +1440,3 @@ void render()
 		 std::cout<< weaponSTATE;
 	 }
 }
-

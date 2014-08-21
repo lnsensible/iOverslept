@@ -19,3 +19,4 @@ x - spike facing up ^
 X - spike facing down v
 T - Treasure
 . - empty space
+~ - Sign
