@@ -1,0 +1,21 @@
+QUENSTORY ~ HE HAS OVERSLEPT AGAIN!
+
+LEVEL DESIGN ELEMENTS
+
+MOBS
+F - Innerfear
+S - Snail
+M - Floater
+R - Rat
+
+Environment / Level elements
+C - Character spawn point
+p - Portal back
+P - Portal to next level
+# - walls
+N - spike facing right >
+n - spike facing left <
+x - spike facing up ^
+X - spike facing down v
+T - Treasure
+. - empty space
