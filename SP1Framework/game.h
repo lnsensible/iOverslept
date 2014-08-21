@@ -88,6 +88,7 @@ void renderendmenu();
 void checkForElement();
 void resetElements();
 void resetCounters();
+void renderUIborders();
 
 //Boss functions
 void PianusStand1();

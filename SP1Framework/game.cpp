@@ -39,7 +39,7 @@ COORD charLocation;
 COORD consoleSize;
 
 unsigned char map[25][120]; // stores the level map
-unsigned char Signprint[11][101]; // stores the level map
+unsigned char Signprint[11][21]; // stores the level map
 int checkLevel = 0; // Check current level
 int checkPrevLevel = 0; // Check previuos level
 int hasLevelRendered = 0; // Check if level has been rendered. 0 = Not loaded, 1 = Loaded
@@ -643,9 +643,10 @@ void loadSign(std::string filename) // loads sign from file.
 	std::fstream Signload;
 	Signload.open(filename);
 
+
 	for (int i = 0; i < 10; i++)
 	{
-		for (int j = 0; j < 100; j++)
+		for (int j = 0; j < 21; j++)
 		{
 			Signload >> Signprint[i][j];
 		}
@@ -861,6 +862,27 @@ void renderHP() // displays amount of HP player still has.
 	colour(0x0F);
 	gotoXY(25, 26); // Clear HP section for render again
 	std::cout << "          ";
+
+	gotoXY(0, 24);
+}
+
+void renderUIborders()
+{
+	gotoXY(0, 24);
+	std::cout << (char)201;
+	for(int i = 0; i < 118; i++)
+	{
+		std::cout << (char)205;
+	}
+	std::cout << (char)187;
+
+	gotoXY(0, 38);
+	std::cout << (char)200;
+	for(int i = 0; i < 118; i++)
+	{
+		std::cout << (char)205;
+	}
+	std::cout << (char)188;
 }
 
 void checkForElement()
@@ -922,13 +944,23 @@ void checkForElement()
 
 		for(int i = 0; i < 10; i++)
 		{
-			for(int j = 0; j < 100; j++)
+			for(int j = 0; j < 21; j++)
 			{
 				if ( Signprint[i][j] == '\\')
 				{
 					Signprint[i][j] = ' ';// replace \ with space
 				}
-				std::cout << Signprint[i][j];
+
+				if (j == 20)
+				{
+					gotoXY(30, 27);
+					std::cout << Signprint[i][j];
+				}
+
+				else
+				{
+					std::cout << Signprint[i][j];
+				}
 			}
 		}
 	}
@@ -1345,6 +1377,7 @@ void render()
 		cls();
 		colour(0x0F);
 		renderLevel();
+		renderUIborders();
 		renderHP();
 		hasLevelRendered = 1;
 	}
@@ -1400,15 +1433,14 @@ void render()
 			}
 		}
 
-		gotoXY(30, 26);
-		for(int i = 0; i < 100; i++)
+		for(int j = 26; j < 36; j++)
 		{
-			std::cout << " ";
-		}
-		gotoXY(30, 27);
-		for(int i = 0; i < 100; i++)
-		{
-			std::cout << " ";
+
+			gotoXY(30, j);
+			for(int i = 0; i < 21; i++)
+			{
+				std::cout << " ";
+			}
 		}
 	}
 
