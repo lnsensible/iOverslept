@@ -40,15 +40,15 @@ int PlayerHealth = 3; // Player's HP. Default = 3.
 
 struct Monster
 {
-	std::vector<int> x;
-	std::vector<int> y;
-	std::vector<int> health;
+	int x;
+	int y;
+	int	health;
 };
 
-Monster MonsterSnail;
-Monster Floater;
-Monster InnerFear;
-Monster Rat;
+std::vector<Monster> MonsterSnail;
+std::vector<Monster> Floater;
+std::vector<Monster> InnerFear;
+std::vector<Monster> Rat;
 
 
 struct bossAttack {
@@ -677,30 +677,46 @@ void prepareLevel() // Prepares level map for cout
 			}
 			if ( map[i][j] == 'S' ) // Snail Monster placeholder ( a @/' )
 			{
-				MonsterSnail.x.push_back(j); // location of X-coordinates of snail
-				MonsterSnail.y.push_back(i); // location of Y-coordinates of snail
-				MonsterSnail.health.push_back(2); // health of snail
+				Monster Monstersnail;
+
+				Monstersnail.x = j; // location of X-coordinates of snail
+				Monstersnail.y = i; // location of Y-coordinates of snail
+				Monstersnail.health = 2; // health of snail
+
+				MonsterSnail.push_back(Monstersnail);
 			}
 
 			if ( map[i][j] == 'M' ) // Floater Monster placeholder ( a ascii 235 )
 			{
-				Floater.x.push_back(j); // location of X-coordinates of floater
-				Floater.y.push_back(i); // location of Y-coordinates of floater
-				Floater.health.push_back(1); // health of floater
+				Monster floater;
+
+				floater.x = j; // location of X-coordinates of floater
+				floater.y = i; // location of Y-coordinates of floater
+				floater.health = 1; // health of floater
+
+				Floater.push_back(floater);
 			}
 
 			if ( map[i][j] == 'F' ) // InnerFear Monster placeholder 
 			{
-				InnerFear.x.push_back(j); // location of X-coordinates of floater
-				InnerFear.y.push_back(i); // location of Y-coordinates of floater
-				InnerFear.health.push_back(1); // health of floater
+				Monster innerfear;
+
+				innerfear.x = j; // location of X-coordinates of InnerFear
+				innerfear.y = i; // location of Y-coordinates of InnerFear
+				innerfear.health = 1; // health of InnerFear
+
+				InnerFear.push_back(innerfear);
 			}
 
 			if ( map[i][j] == 'R' ) // Rat Monster placeholder 
 			{
-				Rat.x.push_back(j); // location of X-coordinates of Rat
-				Rat.y.push_back(i); // location of Y-coordinates of Rat
-				Rat.health.push_back(1); // health of Rat
+				Monster rat;
+
+				rat.x = j; // location of X-coordinates of Rat
+				rat.y = i; // location of Y-coordinates of Rat
+				rat.health = 1; // health of Rat
+
+				Rat.push_back(rat);
 			}
 
 			if ( map[i][j] == 'T' ) // TREASURE HORRYY SHEET $$$
@@ -754,27 +770,27 @@ void renderLevel() // Renders map into console
 			}
 		}
 	}
-	for (unsigned int i = 0; i < (MonsterSnail.x).size(); i++)
+	for (unsigned int i = 0; i < MonsterSnail.size(); i++)
 	{
-		gotoXY( MonsterSnail.x[i], MonsterSnail.y[i] ); // spawns at XY coordinates 
+		gotoXY( MonsterSnail[i].x, MonsterSnail[i].y ); // spawns at XY coordinates 
 		std::cout << "@/'"; // spawn snail appearance 
 	}
 
-	for (unsigned int i = 0; i < (Floater.x).size(); i++)
+	for (unsigned int i = 0; i < Floater.size(); i++)
 	{
-		gotoXY( Floater.x[i], Floater.y[i] ); // spawns at XY coordinates 
+		gotoXY( Floater[i].x, Floater[i].y ); // spawns at XY coordinates 
 		std::cout << (char)235; // spawn floater appearance 
 	}
 
-	for (unsigned int i = 0; i < (InnerFear.x).size(); i++)
+	for (unsigned int i = 0; i < InnerFear.size(); i++)
 	{
-		gotoXY( InnerFear.x[i], InnerFear.y[i] ); // spawns at XY coordinates 
+		gotoXY( InnerFear[i].x, InnerFear[i].y ); // spawns at XY coordinates 
 		std::cout << (char)12; // spawn InnerFear appearance 
 	}
 
-	for (unsigned int i = 0; i < (Rat.x).size(); i++)
+	for (unsigned int i = 0; i < Rat.size(); i++)
 	{
-		gotoXY( Rat.x[i], Rat.y[i] ); // spawns at XY coordinates 
+		gotoXY( Rat[i].x, Rat[i].y ); // spawns at XY coordinates 
 		 std::cout << "~~(_^" << (char)249 << ">"; // spawn Rat appearance 
 	}
 }
@@ -1874,18 +1890,10 @@ void checkforDeath()
 
 void resetElements() // removes monsters and effects on the map
 {
-	(MonsterSnail.x).clear();
-	(MonsterSnail.y).clear();
-	(MonsterSnail.health).clear();
-	(Floater.x).clear();
-	(Floater.y).clear();
-	(Floater.health).clear();
-	(InnerFear.x).clear();
-	(InnerFear.y).clear();
-	(InnerFear.health).clear();
-	(Rat.x).clear();
-	(Rat.y).clear();
-	(Rat.health).clear();
+	MonsterSnail.clear();
+	Floater.clear();
+	InnerFear.clear();
+	Rat.clear();
 	meteor.clear();
 	splint.clear();
 	laser.clear();
@@ -2346,7 +2354,7 @@ void update(double dt)
 		}
 	}
 
-	if ( (MonsterSnail.x).size() != 0 ) // When there are snails
+	if ( MonsterSnail.size() != 0 ) // When there are snails
 	{
 		if ( snailMoveDelay > 0.500 ) // Snails move every 500ms
 		{
@@ -2356,7 +2364,7 @@ void update(double dt)
 		checkCollisionSnail();
 	}
 
-	if ( (Floater.x).size() != 0 ) // When there are floaters
+	if ( Floater.size() != 0 ) // When there are floaters
 	{
 		if ( floaterMoveDelay > 0.750 ) // floaters move every 750ms
 		{
@@ -2366,7 +2374,7 @@ void update(double dt)
 		checkCollisionFloater();
 	}
 
-	if ( (Rat.x).size() != 0 ) // When there are Rats
+	if ( Rat.size() != 0 ) // When there are Rats
 	{
 		if ( RatMoveDelay > 0.250 ) // Rats move every 250ms
 		{
@@ -2376,7 +2384,7 @@ void update(double dt)
 		checkCollisionRat();
 	}
 
-	if ( (InnerFear.x).size() != 0 ) // When there are InnerFears
+	if ( InnerFear.size() != 0 ) // When there are InnerFears
 	{
 		if ( InnerFearMoveDelay > 0.400 ) // InnerFears move every 400ms
 		{
