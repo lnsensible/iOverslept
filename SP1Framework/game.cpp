@@ -966,7 +966,7 @@ void updateSigns()
 	if (map[charLocation.Y][charLocation.X] == 209)//sign
 	{
 		isonSign = 1;
-		for(int i = 0; i < NUMBEROFSIGNS; i++)
+		for(int i = 0; i < NUMBEROFSIGNS + 1; i++)
 		{
 			signtoload = "sign";
 
@@ -1057,7 +1057,7 @@ void init()
 	isBossLevel = 0;
 
 
-	for(int i = 0; i < NUMBEROFLEVELS; i++)
+	for(int i = 0; i < NUMBEROFLEVELS + 1; i++)
 	{
 		leveltoload = "level";
 		
@@ -1073,7 +1073,6 @@ void init()
 
 		if (checkLevel == i)
 		{
-			isBossLevel = 0;
 			std::string L = std::to_string(static_cast<unsigned long long>(i));
 			leveltoload += L;
 			signNumber = i;
