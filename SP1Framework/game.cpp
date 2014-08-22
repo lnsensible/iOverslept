@@ -949,8 +949,7 @@ void checkForElement()
 			loadSign("sign5.txt");
 		}
 
-		gotoXY(30, 26);
-
+		gotoXY(14, 30);
 		for(int i = 0; i < 10; i++)
 		{
 			for(int j = 0; j < 21; j++)
@@ -959,24 +958,9 @@ void checkForElement()
 				{
 					Signprint[i][j] = ' ';// replace \ with space
 				}
-
-				if (j == 20)
-				{
-					gotoXY(30, 27);
 					std::cout << Signprint[i][j];
-				}
-
-				else
-				{
-					std::cout << Signprint[i][j];
-				}
 			}
 		}
-	}
-
-	else
-	{
-		rerendersign = 1;
 	}
 }
 
@@ -1394,23 +1378,10 @@ void render()
 
 	if(rerendersign == 1)
 	{
-		for (int i = 0; i < MAPHEIGHT; i++)
-		{
-			for (int j = 0; j < MAPWIDTH; j++)
-			{
-				if ( map[i][j] == 209 ) // re-render Sign
-				{
-					gotoXY(j, i);
-					std::cout << (char)209;
-					rerendersign = 0;
-				}
-			}
-		}
-
-		for(int j = 26; j < 36; j++)
+		for(int j = 30; j < 40; j++)
 		{
 
-			gotoXY(30, j);
+			gotoXY(14, j);
 			for(int i = 0; i < 21; i++)
 			{
 				std::cout << " ";
