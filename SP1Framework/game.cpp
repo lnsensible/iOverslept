@@ -18,6 +18,7 @@ extern std::vector<Monster> MonsterSnail;
 extern std::vector<Monster> Floater;
 extern std::vector<Monster> InnerFear;
 extern std::vector<Monster> Rat;
+extern std::vector<Monster> Wengyew;
 
 extern int hasbeenStabbed;
 extern int weaponDAMAGE;       
@@ -57,11 +58,13 @@ int Snailcounter = 0; // count number of snails
 int Floatercounter = 0; // count number of floaters
 int InnerFearcounter = 0; // count number of InnerFear
 int Ratcounter = 0; // count number of rats
+int Wengyewcounter = 0; // count number of wengyews
 
 double snailMoveDelay = 0; // delay between each snail movement :D
 double floaterMoveDelay = 0; // delay between each floater movement
 double InnerFearMoveDelay = 0; // delay between each InnerFear movement
 double RatMoveDelay = 0; // delay between each Rat movement
+double WengyewMoveDelay = 0; // delay between each wy movement
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
 
@@ -742,6 +745,19 @@ void prepareLevel() // Prepares level map for cout.
 				map[i][j] = ' '; // replace with a space
 			}
 
+			if ( map[i][j] == 'W' ) // Wengyew Monster placeholder 
+			{
+				Monster wengyew;
+
+				wengyew.x = j; // location of X-coordinates of wengyew
+				wengyew.y = i; // location of Y-coordinates of wengyew
+				wengyew.health = 10; // health of wengyew
+
+				Wengyew.push_back(wengyew); // stores coordinates in a vector
+
+				map[i][j] = ' '; // replace with a space
+			}
+
 			if ( map[i][j] == 'T' ) // TREASURE HORRYY SHEET $$$
 			{
 				map[i][j] = 15;
@@ -804,7 +820,7 @@ void renderLevel() // Renders map into console
 			}
 		}
 	}
-	for (unsigned int i = 0; i < MonsterSnail.size(); i++)
+	/*for (unsigned int i = 0; i < MonsterSnail.size(); i++)
 	{
 		gotoXY( MonsterSnail[i].x, MonsterSnail[i].y ); // spawns at XY coordinates 
 		std::cout << "@/'"; // spawn snail appearance 
@@ -827,6 +843,12 @@ void renderLevel() // Renders map into console
 		gotoXY( Rat[i].x, Rat[i].y ); // spawns at XY coordinates 
 		 std::cout << "~~(_^" << (char)249 << ">"; // spawn Rat appearance 
 	}
+
+	for (unsigned int i = 0; i < Rat.size(); i++)
+	{
+		gotoXY( Rat[i].x, Rat[i].y ); // spawns at XY coordinates 
+		 std::cout << "~~(_^" << (char)249 << ">"; // spawn Rat appearance 
+	}*/
 }
 
 void renderSpikes() // re-render spikes after being stabbed
@@ -1020,6 +1042,7 @@ void resetElements() // removes monsters and effects on the map
 	Floater.clear();
 	InnerFear.clear();
 	Rat.clear();
+	Wengyew.clear();
 	meteor.clear();
 	splint.clear();
 	laser.clear();
@@ -1129,6 +1152,7 @@ void update(double dt)
 	floaterMoveDelay += dt;
 	InnerFearMoveDelay += dt;
 	RatMoveDelay += dt;
+	WengyewMoveDelay += dt;
 	canJump += dt;
     deltaTime = dt;
 
@@ -1216,6 +1240,16 @@ void update(double dt)
 		checkCollisionInnerFear();
 	}
 
+		if ( Wengyew.size() != 0 ) // When there are wengyews
+	{
+		if ( WengyewMoveDelay > 0.100 ) // InnerFears move every 100ms
+		{
+			updateWengyew();
+			WengyewMoveDelay = 0; // reset movement timer
+		}
+		checkCollisionWengyew();
+	}
+
 
     // Updating the location of the character based on the key press
     if (keyPressed[K_LEFT])
@@ -1287,7 +1321,7 @@ void render()
     std::cout << (char)1;
 	colour(0x0F);
 
-	renderSigns();
+	renderSigns();      
 
 	if ( hasbeenDamaged == 1 )
 	{
