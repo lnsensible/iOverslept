@@ -72,6 +72,12 @@ double CatFishMoveDelay = 0; // delay between each CatFish movement
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
 
+//From Weapon.Cpp
+extern struct Bullet_Properties;
+extern void updateBullets();
+extern void spawnBullets();
+extern void Attack();
+
 std::string StoryPage1[7] = {"Quen has been addicted to the game Maplestory since recently when his friend introduced it to him.",
 							 "Trying to surpass his friend, he would sacrifice his sleep and play throughout the night, sleeping",
 						     "for less than 2 hours everyday. Being sleep deprived, he would doze off during lessons, usually   ",
@@ -161,6 +167,7 @@ void updatemainmenu(double dt)
 			charLocation.Y = 24;
 		}
 	}
+
 
 	if(keyPressed[K_ENTER])
 	{
@@ -1341,6 +1348,12 @@ void update(double dt)
 		}
     }
 
+	if (keyPressed[K_C])
+	{
+	Attack();
+	}
+	updateBullets();
+
 	if (keyPressed[K_SPACE])
 	{
 		jump();
@@ -1458,15 +1471,7 @@ void render()
     //gotoXY(0, 0);
     //colour(0x59);
     //std::cout << elapsedTime << "secs" << std::endl;
-
-	 //render Equipped Weapons
-     gotoXY(WEAPON);
-     if (rangeORmelee == true)
-     {
-		 std::cout<< weaponSTATE;
-	 }
-     else if (rangeORmelee == false)
-     {
-		 std::cout<< weaponSTATE;
-	 }
+	
+	 //render Bullets
+	spawnBullets();
 }
