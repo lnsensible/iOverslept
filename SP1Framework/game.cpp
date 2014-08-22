@@ -27,7 +27,7 @@ extern std::string beforeATTACK,afterATTACK;
 extern std::string weaponHITBOX; 
 extern std::string weaponSTATE;  
 
-extern std::string leveltoload = "level";
+std::string leveltoload;
 
 extern double jumpDelay;
 extern double fallDelay;
@@ -1000,7 +1000,7 @@ void renderSigns()
 			for( int j = 0; j < SIGNWIDTH; j++ )
 			{
 				gotoXY(j+80, i+26);
-				if ( Signprint[i][j] == '\\')
+				if ( Signprint[i][j] == '`')
 				{
 					Signprint[i][j] = ' ';// replace \ with space
 				}
@@ -1065,127 +1065,30 @@ void init()
 	bossStatus = 0;
 	isBossLevel = 0;
 
-	//loads level from file
-	if ( checkLevel == 1 )
+
+	for(int i = 0; i < NUMBEROFLEVELS; i++)
 	{
-		isBossLevel = 0;
-		signNumber = 1;
-		loadLevel("level1.txt");
-		SetConsoleTitle(L"Level One");
-	}
-	else if ( checkLevel == 2 )
-	{
-		isBossLevel = 0;
-		loadLevel("level2.txt");
-		SetConsoleTitle(L"Level Two");
-	}
-	else if ( checkLevel == 3 )
-	{
-		isBossLevel = 0;
-		loadLevel("level3.txt");
-		SetConsoleTitle(L"Level Three");
-	}
-	else if ( checkLevel == 4 )
-	{
-		isBossLevel = 0;
-		loadLevel("level4.txt");
-		SetConsoleTitle(L"Level Four");
-	}
-	else if ( checkLevel == 5 )
-	{
-		isBossLevel = 0;
-		loadLevel("level5.txt");
-		SetConsoleTitle(L"Level Five");
-	}
-	else if ( checkLevel == 6 )
-	{
-		isBossLevel = 0;
-		loadLevel("level6.txt");
-		SetConsoleTitle(L"Level Six");
-	}
-	else if ( checkLevel == 7 )
-	{
-		isBossLevel = 0;
-		loadLevel("level7.txt");
-		SetConsoleTitle(L"Level Seven");
-	}
-	else if ( checkLevel == 8 )
-	{
-		isBossLevel = 0;
-		SetConsoleTitle(L"Level Eight");
-		loadLevel("level8.txt");
-	}
-	else if ( checkLevel == 9 )
-	{
-		isBossLevel = 0;
-		loadLevel("level9.txt");
-		SetConsoleTitle(L"Level Nine");
-	}
-	else if ( checkLevel == 10 )
-	{
-		isBossLevel = 1;
-		SetConsoleTitle(L"Level Ten");
-		loadLevel("level10.txt");
-	}
-	else if ( checkLevel == 11 )
-	{
-		isBossLevel = 0;
-		SetConsoleTitle(L"Level Eleven");
-		loadLevel("level11.txt");
-	}
-	else if ( checkLevel == 12 )
-	{
-		isBossLevel = 0;
-		SetConsoleTitle(L"Level Twelve");
-		loadLevel("level12.txt");
-	}
-	else if ( checkLevel == 13 )
-	{
-		isBossLevel = 0;
-		SetConsoleTitle(L"Level Thirteen");
-		loadLevel("level13.txt");
-	}
-	else if ( checkLevel == 14 )
-	{
-		isBossLevel = 0;
-		SetConsoleTitle(L"Level Fourteen");
-		loadLevel("level14.txt");
-	}
-	else if ( checkLevel == 15 )
-	{
-		isBossLevel = 0;
-		SetConsoleTitle(L"Level Fifteen");
-		loadLevel("level15.txt");
-	}
-	else if ( checkLevel == 16 )
-	{
-		isBossLevel = 0;
-		SetConsoleTitle(L"Level Sixteen");
-		loadLevel("level16.txt");
-	}
-	else if ( checkLevel == 17 )
-	{
-		isBossLevel = 0;
-		SetConsoleTitle(L"Level Seventeen");
-		loadLevel("level17.txt");
-	}
-	else if ( checkLevel == 18 )
-	{
-		isBossLevel = 0;
-		SetConsoleTitle(L"Level Eighteen");
-		loadLevel("level18.txt");
-	}
-	else if ( checkLevel == 19 )
-	{
-		isBossLevel = 0;
-		SetConsoleTitle(L"Level Nineteen");
-		loadLevel("level19.txt");
-	}
-	else if ( checkLevel == 20 )
-	{
-		isBossLevel = 2;
-		SetConsoleTitle(L"Level Twenty");
-		loadLevel("level20.txt");
+		leveltoload = "level";
+		
+		if (checkLevel == 10)
+		{
+			isBossLevel = 1;
+		}
+
+		if (checkLevel == 20)
+		{
+			isBossLevel = 2;
+		}
+
+		if (checkLevel == i)
+		{
+			isBossLevel = 0;
+			std::string s = std::to_string(static_cast<unsigned long long>(i));
+			leveltoload += s;
+			signNumber = i;
+		}
+		leveltoload += ".txt";
+		loadLevel(leveltoload);
 	}
 
 	//check if character came from next or prev map
