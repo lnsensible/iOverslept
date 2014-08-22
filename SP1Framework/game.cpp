@@ -695,9 +695,9 @@ void prepareLevel() // Prepares level map for cout.
 				Monstersnail.y = i; // location of Y-coordinates of snail
 				Monstersnail.health = 2; // health of snail
 
-				MonsterSnail.push_back(Monstersnail);
+				MonsterSnail.push_back(Monstersnail); // stores coordinates in vector
 
-				map[i][j] = ' ';
+				map[i][j] = ' '; // replace with a space
 			}
 
 			if ( map[i][j] == 'M' ) // Floater Monster placeholder ( a ascii 235 )
@@ -708,9 +708,9 @@ void prepareLevel() // Prepares level map for cout.
 				floater.y = i; // location of Y-coordinates of floater
 				floater.health = 1; // health of floater
 
-				Floater.push_back(floater);
+				Floater.push_back(floater); // stores coordinates in a vector
 
-				map[i][j] = ' ';
+				map[i][j] = ' '; // replace with a space
 			}
 
 			if ( map[i][j] == 'F' ) // InnerFear Monster placeholder 
@@ -721,9 +721,9 @@ void prepareLevel() // Prepares level map for cout.
 				innerfear.y = i; // location of Y-coordinates of InnerFear
 				innerfear.health = 1; // health of InnerFear
 
-				InnerFear.push_back(innerfear);
+				InnerFear.push_back(innerfear); // stores coordinates in a vector
 
-				map[i][j] = ' ';
+				map[i][j] = ' '; // replace with a space
 			}
 
 			if ( map[i][j] == 'R' ) // Rat Monster placeholder 
@@ -734,9 +734,9 @@ void prepareLevel() // Prepares level map for cout.
 				rat.y = i; // location of Y-coordinates of Rat
 				rat.health = 1; // health of Rat
 
-				Rat.push_back(rat);
+				Rat.push_back(rat); // stores coordinates in a vector
 
-				map[i][j] = ' ';
+				map[i][j] = ' '; // replace with a space
 			}
 
 			if ( map[i][j] == 'T' ) // TREASURE HORRYY SHEET $$$

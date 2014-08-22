@@ -22,130 +22,140 @@ extern int InnerFearcounter;
 extern int Ratcounter;
 
 void renderMonster() // render mobs
-{
-	for (unsigned int i = 0; i < MonsterSnail.size(); i++ )
+{                    
+	for (unsigned int i = 0; i < MonsterSnail.size(); i++ ) // for all the snails
 	{
-		for ( int j = MonsterSnail[i].x-1; j < MonsterSnail[i].x+4; j++)
+		for ( int j = MonsterSnail[i].x-1; j < MonsterSnail[i].x+4; j++) //loop for checking left and right of snail when it moves
 		{
-			gotoXY(j, MonsterSnail[i].y);
-			if ( map[MonsterSnail[i].y][j] == '#' )
+			gotoXY(j, MonsterSnail[i].y); // go to coordinate selected
+			if ( map[MonsterSnail[i].y][j] == '#' ) // and reprint
 			{
-				std::cout << (char)219;
+				std::cout << (char)219; // the wall
 			}
 			else
 			{
-				 std::cout << map[MonsterSnail[i].y][j];
+				 std::cout << map[MonsterSnail[i].y][j]; // print whatever is on the map
 			}
 		}
 
-		gotoXY(MonsterSnail[i].x, MonsterSnail[i].y);
-		std::cout << "@/'";
+		gotoXY(MonsterSnail[i].x, MonsterSnail[i].y); // go to coordinates of snail in the vector 
+		std::cout << "@/'"; // print snail
 	}
-	for (int i = 0; i < MAPHEIGHT; i++)
+
+	for (unsigned int i = 0; i < Floater.size(); i++ ) // for all the floaters
 	{
-		for (int j = 0; j < MAPWIDTH; j++)
+		for ( int j = Floater[i].x-1; j < Floater[i].x+2; j++) // loop for checking left and right of floater when it moves
 		{
-			if ( map[i][j] == 'M' ) // re-render Floaters
+			gotoXY(j, Floater[i].y); // go to coordinate selected
+			if ( map[Floater[i].y][j] == '#' ) // and reprint
 			{
-				gotoXY(j, i);
-				std::cout << (char)235;
+				std::cout << (char)219; // the wall
 			}
-			if ( map[i][j] == 'F' ) // re-render InnerFear after being hit
+			else
 			{
-				gotoXY(j, i);
-				std::cout << (char)12;
+				 std::cout << map[Floater[i].y][j]; // print whatever is on the map
 			}
-			if ( map[i][j] == 'R' ) // re-render Rat after being hit
-			{
-				gotoXY(j, i);
-				std::cout << "~~(_^" << (char)249 << ">";
-			}
-		}	
+		}
+
+		gotoXY(Floater[i].x, Floater[i].y); // go to coordinates of floater in the vector
+		std::cout << (char)235; // print floater
 	}
-}
+
+	for (unsigned int i = 0; i < InnerFear.size(); i++ ) // for all the InnerFears
+	{
+		for ( int j = InnerFear[i].x-1; j < InnerFear[i].x+2; j++) // loop for checking left and right of InnerFear when it moves
+		{
+			gotoXY(j, InnerFear[i].y); // go to coordinate selected
+			if ( map[InnerFear[i].y][j] == '#' ) // and reprint
+			{
+				std::cout << (char)219; // the wall
+			}
+			else
+			{
+				 std::cout << map[InnerFear[i].y][j]; // print whatever is on the map
+			}
+		}
+
+		gotoXY(InnerFear[i].x, InnerFear[i].y); // go to coordinates of InnerFear in the vector
+		std::cout << (char)12; // print InnerFear
+	}
+		
+	for (unsigned int i = 0; i < Rat.size(); i++ ) // for all the Rats
+	{
+		for ( int j = Rat[i].x-1; j < Rat[i].x+8; j++) // loop for checking left and right of Rat when it moves
+		{
+			gotoXY(j, Rat[i].y); // go to coordinate selected
+			if ( map[Rat[i].y][j] == '#' ) // and reprint
+			{
+				std::cout << (char)219; // the wall
+			}
+			else
+			{
+				 std::cout << map[Rat[i].y][j]; // print whatever is on the map
+			}
+		}
+
+		gotoXY(Rat[i].x, Rat[i].y); // go to coordinates of Rat in the vector
+		std::cout << "~~(_^" << (char)249 << ">"; // print Rat
+	}
+}	
+
 
 void checkCollisionSnail()
 {
-	for ( unsigned int i = 0; i < MonsterSnail.size(); i++)
+	for ( unsigned int i = 0; i < MonsterSnail.size(); i++) // for all the Snails
 	{
-		if ( charLocation.X >= MonsterSnail[i].x && charLocation.X <= MonsterSnail[i].x+2 && charLocation.Y == MonsterSnail[i].y)
+		if ( charLocation.X >= MonsterSnail[i].x && charLocation.X <= MonsterSnail[i].x+2 && charLocation.Y == MonsterSnail[i].y) // if player is touching the Snail
 		{
-			hasbeenDamaged = 1;
-			if ( PlayerHealth > 0 )
-				PlayerHealth--;
+			hasbeenDamaged = 1; // damage player by 1
+			if ( PlayerHealth > 0 ) // if player health is more than zero
+				PlayerHealth--; // damage player
 		}
 	}
 }
 
 void checkCollisionFloater()
 {
-	for (int i = 0; i < MAPHEIGHT; i++)
+	for ( unsigned int i = 0; i < Floater.size(); i++) // for all the Floaters
 	{
-		for (int j = 0; j < MAPWIDTH; j++)
+		if ( charLocation.X ==Floater[i].x && charLocation.Y == Floater[i].y) // if player is touching the Floater
 		{
-			if ( map[i][j] == 'M') // if floater spotted !
-			{
-				if ( charLocation.X == j ) // when within x coordinates of floater
-				{
-					if ( charLocation.Y == i ) //when within y coordinate of floater
-					{
-						hasbeenDamaged = 1;
-						if ( PlayerHealth > 0 )
-							PlayerHealth--;
-					}
-				}
-			}
+			hasbeenDamaged = 1; // damage player by 1
+			if ( PlayerHealth > 0 ) // if player health is more than zero
+				PlayerHealth--; // damage player
 		}
 	}
 }
 
 void checkCollisionInnerFear()
 {
-	for (int i = 0; i < MAPHEIGHT; i++)
+	for ( unsigned int i = 0; i < InnerFear.size(); i++) // for all the InnerFears
 	{
-		for (int j = 0; j < MAPWIDTH; j++)
+		if ( charLocation.X ==InnerFear[i].x && charLocation.Y == InnerFear[i].y) // if player is touching the InnerFear
 		{
-			if ( map[i][j] == 'F') // if InnerFear spotted !
-			{
-				if ( charLocation.X == j ) // when within x coordinates of InnerFear
-				{
-					if ( charLocation.Y == i ) //when within y coordinate of InnerFear
-					{
-						hasbeenDamaged = 1;
-						if ( PlayerHealth > 0 )
-							PlayerHealth--;
-					}
-				}
-			}
+			hasbeenDamaged = 1; // damage player by 1
+			if ( PlayerHealth > 0 ) // if player health is more than zero
+				PlayerHealth--; // damage player
 		}
 	}
 }
 
 void checkCollisionRat()
-{
-	for (int i = 0; i < MAPHEIGHT; i++)
 	{
-		for (int j = 0; j < MAPWIDTH; j++)
+	for ( unsigned int i = 0; i < Rat.size(); i++) // for all the Rats
+	{
+		if ( charLocation.X >= Rat[i].x && charLocation.X <= Rat[i].x+2 && charLocation.Y == Rat[i].y) // if player is touching the Rat
 		{
-			if ( map[i][j] == 'R') // if Rat spotted !
-			{
-				if ( charLocation.X >= j && charLocation.X <= j+7 ) // when within x coordinates of Rat
-				{
-					if ( charLocation.Y == i ) //when within y coordinate of Rat
-					{
-						hasbeenDamaged = 1;
-						if ( PlayerHealth > 0 )
-							PlayerHealth--;
-					}
-				}
-			}
+			hasbeenDamaged = 1; // damage player by 1
+			if ( PlayerHealth > 0 ) // if player health is more than zero
+				PlayerHealth--; // damage player
 		}
 	}
 }
 
 void updateSnails() // snail movement update
 {
-	for (unsigned int i = 0; i < MonsterSnail.size(); i++ )
+	for (unsigned int i = 0; i < MonsterSnail.size(); i++ ) // for all Snails
 	{
 		if ( rand() % 2 == 0 )
 		{
@@ -162,99 +172,51 @@ void updateSnails() // snail movement update
 
 void updateFloater() // floater movement update
 {
-	for (int i = 0; i < MAPHEIGHT; i++)
+	for (unsigned int i = 0; i < Floater.size(); i++ ) // for all Floaters
 	{
-		for (int j = 0; j < MAPWIDTH; j++)
+		if ( rand() % 2 == 0 )
 		{
-			if ( map[i][j] == 'M' )
-			{
-				if ( rand() % 2 == 0 ) // movement left
-				{
-					if ( map[i][j-1] != '#' && map[i+1][j-1] == '#' )
-					{
-						gotoXY(j, i);
-						std::cout << " ";
-						map[i][j] = ' ';
-						map[i][j-1] = 'M';
-					}
-				}
-				else // movement right
-				{
-					if ( map[i][j+1] != '#' && map[i+1][j+1] == '#' )
-					{
-						gotoXY(j, i);
-						std::cout << " ";
-						map[i][j] = ' ';
-						map[i][j+1] = 'M';
-					}
-				}
-			}
+			if ( map[Floater[i].y][Floater[i].x-1] != '#' && map[Floater[i].y+1][Floater[i].x-1] == '#' ) // If move left is possible
+				Floater[i].x--;
+		}
+		else
+		{
+			if ( map[Floater[i].y][Floater[i].x+1] != '#' && map[Floater[i].y+1][Floater[i].x+1] == '#' ) // If move right is possible
+				Floater[i].x++;
 		}
 	}
 }
 
 void updateInnerFear() // InnerFear movement update
 {
-	for (int i = 0; i < MAPHEIGHT; i++)
+	for (unsigned int i = 0; i < InnerFear.size(); i++ ) // for all InnerFears
 	{
-		for (int j = 0; j < MAPWIDTH; j++)
+		if ( rand() % 2 == 0 )
 		{
-			if ( map[i][j] == 'F' )
-			{
-				if ( rand() % 2 == 0 ) // movement left
-				{
-					if ( map[i][j-1] != '#' && map[i+1][j-1] == '#' )
-					{
-						gotoXY(j, i);
-						std::cout << " ";
-						map[i][j] = ' ';
-						map[i][j-1] = 'F';
-					}
-				}
-				else // movement right
-				{
-					if ( map[i][j+1] != '#' && map[i+1][j+1] == '#' )
-					{
-						gotoXY(j, i);
-						std::cout << " ";
-						map[i][j] = ' ';
-						map[i][j+1] = 'F';
-					}
-				}
-			}
+			if ( map[InnerFear[i].y][InnerFear[i].x-1] != '#' && map[InnerFear[i].y+1][InnerFear[i].x-1] == '#' ) // If move left is possible
+				InnerFear[i].x--;
+		}
+		else
+		{
+			if ( map[InnerFear[i].y][InnerFear[i].x+1] != '#' && map[InnerFear[i].y+1][InnerFear[i].x+1] == '#' ) // If move right is possible
+				InnerFear[i].x++;
 		}
 	}
 }
 
 void updateRat() // Rat movement update
 {
-	for (int i = 0; i < MAPHEIGHT; i++)
+	for (unsigned int i = 0; i < Rat.size(); i++ ) // for all Rats
 	{
-		for (int j = 0; j < MAPWIDTH; j++)
+		if ( rand() % 2 == 0 )
 		{
-			if ( map[i][j] == 'R' )
-			{
-				if ( rand() % 2 == 0 ) // movement left
-				{
-					if ( map[i][j-1] != '#' && map[i+1][j-1] == '#' )
-					{
-						gotoXY(j, i);
-						std::cout << "       ";
-						map[i][j] = ' ';
-						map[i][j-1] = 'R';
-					}
-				}
-				else // movement right
-				{
-					if ( map[i][j+7] != '#' && map[i+1][j+7] == '#' )
-					{
-						gotoXY(j, i);
-						std::cout << "       ";
-						map[i][j] = ' ';
-						map[i][j+1] = 'R';
-					}
-				}
-			}
+			if ( map[Rat[i].y][Rat[i].x-1] != '#' && map[Rat[i].y+1][Rat[i].x-1] == '#' ) // If move left is possible
+				Rat[i].x--;
+		}
+		else
+		{
+			if ( map[Rat[i].y][Rat[i].x+3] != '#' && map[Rat[i].y+1][Rat[i].x+7] == '#' ) // If move right is possible
+				Rat[i].x++;
 		}
 	}
 }
