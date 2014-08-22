@@ -28,6 +28,7 @@ extern std::string weaponHITBOX;
 extern std::string weaponSTATE;  
 
 std::string leveltoload;
+std::string signtoload;
 
 extern double jumpDelay;
 extern double fallDelay;
@@ -49,6 +50,7 @@ int signNumber = 0;
 int treasure = 0;//Treasure :DD
 int isBossLevel = 0; //Check if it is a boss level. 0 = No, 1 = Boss, 2= Fishy
 int isonSign = 0;//rerender sign
+int NUMBEROFSIGNS = 20;
 int hasMoved = 0; // check if player moved.
 
 int Snailcounter = 0; // count number of snails
@@ -964,30 +966,19 @@ void updateSigns()
 	if (map[charLocation.Y][charLocation.X] == 209)//sign
 	{
 		isonSign = 1;
-		if(signNumber == 1)
+		for(int i = 0; i < NUMBEROFSIGNS; i++)
 		{
-			loadSign("sign1.txt");
+			signtoload = "sign";
+
+			if (signNumber == i)
+			{
+				std::string s = std::to_string(static_cast<unsigned long long>(i));
+				signtoload += s;
+			}
+			signtoload += ".txt";
+			loadSign(signtoload);
 		}
 
-		else if(signNumber == 2)
-		{
-			loadSign("sign2.txt");
-		}
-
-		else if(signNumber == 3)
-		{
-			loadSign("sign3.txt");
-		}
-
-		else if(signNumber == 4)
-		{
-			loadSign("sign4.txt");
-		}
-
-		else if(signNumber == 5)
-		{
-			loadSign("sign5.txt");
-		}
 	}
 }
 
@@ -1083,8 +1074,8 @@ void init()
 		if (checkLevel == i)
 		{
 			isBossLevel = 0;
-			std::string s = std::to_string(static_cast<unsigned long long>(i));
-			leveltoload += s;
+			std::string L = std::to_string(static_cast<unsigned long long>(i));
+			leveltoload += L;
 			signNumber = i;
 		}
 		leveltoload += ".txt";
