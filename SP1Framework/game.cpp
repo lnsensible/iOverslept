@@ -26,6 +26,7 @@ extern int weaponHITCOUNT;
 extern std::string beforeATTACK,afterATTACK;
 extern std::string weaponHITBOX; 
 extern std::string weaponSTATE;  
+extern std::string leveltoload = "level";
 
 extern double jumpDelay;
 extern double fallDelay;
@@ -39,14 +40,14 @@ COORD charLocation;
 COORD consoleSize;
 
 unsigned char map[MAPHEIGHT][MAPWIDTH]; // stores the level map
-unsigned char Signprint[11][21]; // stores the level map
+unsigned char Signprint[SIGNHEIGHT][SIGNWIDTH]; // stores the level map
 int checkLevel = 0; // Check current level
 int checkPrevLevel = 0; // Check previous level
 int hasLevelRendered = 0; // Check if level has been rendered. 0 = Not loaded, 1 = Loaded
 int signNumber = 0;
 int treasure = 0;//Treasure :DD
 int isBossLevel = 0; //Check if it is a boss level. 0 = No, 1 = Boss, 2= Fishy
-int rerendersign = 0;//rerender sign
+int isonSign = 0;//rerender sign
 int hasMoved = 0; // check if player moved.
 
 int Snailcounter = 0; // count number of snails
@@ -645,9 +646,9 @@ void loadSign(std::string filename) // loads sign from file.
 	Signload.open(filename);
 
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < SIGNHEIGHT; i++)
 	{
-		for (int j = 0; j < 21; j++)
+		for (int j = 0; j < SIGNWIDTH; j++)
 		{
 			Signload >> Signprint[i][j];
 		}
@@ -892,6 +893,12 @@ void renderUIborders()
 		std::cout << (char)205;
 	}
 	std::cout << (char)188;
+
+	for(int i = 25; i < 38; i++)
+	{
+		gotoXY(80, i);
+		std::cout << (char)179;
+	}
 }
 
 void checkForElement()
@@ -922,43 +929,68 @@ void checkForElement()
 		treasure = treasure + 1;
 	}
 
-	if (map[charLocation.Y][charLocation.X] == 209)//sign
+	if (map[charLocation.Y][charLocation.X] == 209)//check if player is on the sign
 	{
-		if(signNumber == 1)
-		{
-			loadSign("sign1.txt");
-		}
+		isonSign = 1;
+	}
 
-		else if(signNumber == 2)
-		{
-			loadSign("sign2.txt");
-		}
+	else
+	{
+		isonSign = 0;
+	}
+}
 
-		else if(signNumber == 3)
-		{
-			loadSign("sign3.txt");
-		}
+void renderSign()
+{
+	if(signNumber == 1)
+	{
+		loadSign("sign1.txt");
+	}
 
-		else if(signNumber == 4)
-		{
-			loadSign("sign4.txt");
-		}
+	else if(signNumber == 2)
+	{
+		loadSign("sign2.txt");
+	}
 
-		else if(signNumber == 5)
-		{
-			loadSign("sign5.txt");
-		}
+	else if(signNumber == 3)
+	{
+		loadSign("sign3.txt");
+	}
 
-		gotoXY(14, 30);
-		for(int i = 0; i < 10; i++)
+	else if(signNumber == 4)
+	{
+		loadSign("sign4.txt");
+	}
+
+	else if(signNumber == 5)
+	{
+		loadSign("sign5.txt");
+	}
+	int w = 26;
+	gotoXY(82, w);
+	for(int i = 0; i < SIGNHEIGHT; i++)
+	{
+		for(int j = 0; j < SIGNWIDTH; j++)
 		{
-			for(int j = 0; j < 21; j++)
+			if ( Signprint[i][j] == '`')
 			{
-				if ( Signprint[i][j] == '\\')
-				{
-					Signprint[i][j] = ' ';// replace \ with space
-				}
-					std::cout << Signprint[i][j];
+				Signprint[i][j] = ' ';// replace ` with space
+			}
+
+			if(j == SIGNWIDTH - 1 && w <= 36)
+			{
+				w++;
+				gotoXY(82, w);
+			}
+
+			if(isonSign==1)
+			{
+				std::cout << Signprint[i][j];
+			}
+
+			else
+			{
+				std::cout << " ";
 			}
 		}
 	}
@@ -1183,8 +1215,7 @@ void update(double dt)
 	gravity();
 	checkforSpike();
 	checkForElement();
-
-
+	renderSign();
 
 	if ( hasbeenStabbed == 1 ) 
 	{
@@ -1375,19 +1406,6 @@ void render()
 	}
 
 	renderMonster();
-
-	if(rerendersign == 1)
-	{
-		for(int j = 30; j < 40; j++)
-		{
-
-			gotoXY(14, j);
-			for(int i = 0; i < 21; i++)
-			{
-				std::cout << " ";
-			}
-		}
-	}
 
 	//gotoXY(6, 3);
 	//std::cout << "X: " << charLocation.X << " Y: " << charLocation.Y;

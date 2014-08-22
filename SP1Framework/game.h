@@ -2,6 +2,9 @@
 #define _GAME_H
 #define MAPWIDTH 120
 #define MAPHEIGHT 24
+#define SIGNHEIGHT 12
+#define SIGNWIDTH 38
+#define NUMBEROFLEVELS 20
 
 #include "Framework\timer.h"
 
@@ -91,6 +94,7 @@ void checkForElement();
 void resetElements();
 void resetCounters();
 void renderUIborders();
+void renderSign();
 
 //Boss functions
 void PianusStand1();
