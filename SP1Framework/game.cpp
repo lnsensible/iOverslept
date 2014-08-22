@@ -26,6 +26,7 @@ extern int weaponHITCOUNT;
 extern std::string beforeATTACK,afterATTACK;
 extern std::string weaponHITBOX; 
 extern std::string weaponSTATE;  
+
 extern std::string leveltoload = "level";
 
 extern double jumpDelay;
@@ -894,11 +895,39 @@ void renderUIborders()
 	}
 	std::cout << (char)188;
 
-	for(int i = 25; i < 38; i++)
+	gotoXY(79, 25);
+	std::cout << (char)218;
+	
+	for ( int i = 26; i < 37; i++)
 	{
-		gotoXY(80, i);
+		gotoXY(79, i);
 		std::cout << (char)179;
 	}
+
+	gotoXY(79, 37);
+	std::cout << (char)192;
+
+	gotoXY(MAPWIDTH-2, 25);
+	std::cout << (char)191;
+	
+	for ( int i = 26; i < 37; i++)
+	{
+		gotoXY(MAPWIDTH-2, i);
+		std::cout << (char)179;
+	}
+
+	gotoXY(MAPWIDTH-2, 37);
+	std::cout << (char)217;
+
+	
+	for ( int i = 26; i < 37; i++)
+	{
+		gotoXY(MAPWIDTH-2, i);
+		std::cout << (char)179;
+	}
+
+	gotoXY(MAPWIDTH-2, 37);
+	std::cout << (char)217;
 }
 
 void checkForElement()
@@ -928,71 +957,69 @@ void checkForElement()
 		//clear treasure
 		treasure = treasure + 1;
 	}
+}
 
-	if (map[charLocation.Y][charLocation.X] == 209)//check if player is on the sign
+void updateSigns()
+{
+	if (map[charLocation.Y][charLocation.X] == 209)//sign
 	{
 		isonSign = 1;
-	}
+		if(signNumber == 1)
+		{
+			loadSign("sign1.txt");
+		}
 
-	else
-	{
-		isonSign = 0;
+		else if(signNumber == 2)
+		{
+			loadSign("sign2.txt");
+		}
+
+		else if(signNumber == 3)
+		{
+			loadSign("sign3.txt");
+		}
+
+		else if(signNumber == 4)
+		{
+			loadSign("sign4.txt");
+		}
+
+		else if(signNumber == 5)
+		{
+			loadSign("sign5.txt");
+		}
 	}
 }
 
-void renderSign()
+void renderSigns()
 {
-	if(signNumber == 1)
+	if ( isonSign == 1 )
 	{
-		loadSign("sign1.txt");
-	}
-
-	else if(signNumber == 2)
-	{
-		loadSign("sign2.txt");
-	}
-
-	else if(signNumber == 3)
-	{
-		loadSign("sign3.txt");
-	}
-
-	else if(signNumber == 4)
-	{
-		loadSign("sign4.txt");
-	}
-
-	else if(signNumber == 5)
-	{
-		loadSign("sign5.txt");
-	}
-	int w = 26;
-	gotoXY(82, w);
-	for(int i = 0; i < SIGNHEIGHT; i++)
-	{
-		for(int j = 0; j < SIGNWIDTH; j++)
+		for( int i = 0; i < SIGNHEIGHT; i++ )
 		{
-			if ( Signprint[i][j] == '`')
+			for( int j = 0; j < SIGNWIDTH; j++ )
 			{
-				Signprint[i][j] = ' ';// replace ` with space
-			}
-
-			if(j == SIGNWIDTH - 1 && w <= 36)
-			{
-				w++;
-				gotoXY(82, w);
-			}
-
-			if(isonSign==1)
-			{
-				std::cout << Signprint[i][j];
-			}
-
-			else
-			{
-				std::cout << " ";
+				gotoXY(j+80, i+26);
+				if ( Signprint[i][j] == '\\')
+				{
+					Signprint[i][j] = ' ';// replace \ with space
+				}
+					std::cout << Signprint[i][j];
 			}
 		}
+		isonSign = 2;
+	}
+	else if ( isonSign == 2 )
+	{
+		for( int i = 0; i < SIGNHEIGHT; i++ )
+		{
+			for( int j = 0; j < SIGNWIDTH; j++ )
+			{
+				gotoXY(j+80, i+26);
+				std::cout << ' ';
+			}
+		}
+		isonSign = 0;
 	}
 }
 
@@ -1215,7 +1242,7 @@ void update(double dt)
 	gravity();
 	checkforSpike();
 	checkForElement();
-	renderSign();
+	updateSigns();
 
 	if ( hasbeenStabbed == 1 ) 
 	{
@@ -1367,6 +1394,7 @@ void render()
     std::cout << (char)1;
 	colour(0x0F);
 
+	renderSigns();
 
 	if ( hasbeenDamaged == 1 )
 	{
