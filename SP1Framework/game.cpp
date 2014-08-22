@@ -19,6 +19,7 @@ extern std::vector<Monster> Floater;
 extern std::vector<Monster> InnerFear;
 extern std::vector<Monster> Rat;
 extern std::vector<Monster> Wengyew;
+extern std::vector<Monster> CatFish;
 
 extern int hasbeenStabbed;
 extern int weaponDAMAGE;       
@@ -60,12 +61,14 @@ int Floatercounter = 0; // count number of floaters
 int InnerFearcounter = 0; // count number of InnerFear
 int Ratcounter = 0; // count number of rats
 int Wengyewcounter = 0; // count number of wengyews
+int CatFishcounter = 0; // count number of CatFish
 
 double snailMoveDelay = 0; // delay between each snail movement :D
 double floaterMoveDelay = 0; // delay between each floater movement
 double InnerFearMoveDelay = 0; // delay between each InnerFear movement
 double RatMoveDelay = 0; // delay between each Rat movement
 double WengyewMoveDelay = 0; // delay between each wy movement
+double CatFishMoveDelay = 0; // delay between each CatFish movement
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
 
@@ -778,6 +781,19 @@ void prepareLevel() // Prepares level map for cout.
 				map[i][j] = ' '; // replace with a space
 			}
 
+			if ( map[i][j] == 'Y' ) // CatFish Monster placeholder 
+			{
+				Monster catFish;
+
+				catFish.x = j; // location of X-coordinates of CatFish
+				catFish.y = i; // location of Y-coordinates of CatFish
+				catFish.health = 5; // health of CatFish
+
+				CatFish.push_back(catFish); // stores coordinates in a vector
+
+				map[i][j] = ' '; // replace with a space
+			}
+
 			if ( map[i][j] == 'T' ) // TREASURE HORRYY SHEET $$$
 			{
 				map[i][j] = 15;
@@ -1076,6 +1092,7 @@ void resetElements() // removes monsters and effects on the map
 	InnerFear.clear();
 	Rat.clear();
 	Wengyew.clear();
+	CatFish.clear();
 	meteor.clear();
 	splint.clear();
 	laser.clear();
@@ -1103,7 +1120,11 @@ void init()
 	fallDelay = 0.0;
 	jumpDelay = 0.0;
 	snailMoveDelay = 0.0;
+	floaterMoveDelay = 0.0;
+	InnerFearMoveDelay = 0.0;
 	RatMoveDelay = 0.0;
+	WengyewMoveDelay = 0.0;
+	CatFishMoveDelay = 0.0;
 
 	PlayerHealth = 3; //-------------------------
 
@@ -1187,6 +1208,7 @@ void update(double dt)
 	InnerFearMoveDelay += dt;
 	RatMoveDelay += dt;
 	WengyewMoveDelay += dt;
+	CatFishMoveDelay += dt;
 	canJump += dt;
     deltaTime = dt;
 
@@ -1236,7 +1258,7 @@ void update(double dt)
 
 	if ( MonsterSnail.size() != 0 ) // When there are snails
 	{
-		if ( snailMoveDelay > 0.500 ) // Snails move every 500ms
+		if ( snailMoveDelay > 1.000 ) // Snails move every 1000ms
 		{
 			updateSnails();
 			snailMoveDelay = 0; // reset movement timer
@@ -1276,12 +1298,22 @@ void update(double dt)
 
 		if ( Wengyew.size() != 0 ) // When there are wengyews
 	{
-		if ( WengyewMoveDelay > 0.100 ) // InnerFears move every 100ms
+		if ( WengyewMoveDelay > 0.100 ) // wengyews move every 100ms
 		{
 			updateWengyew();
 			WengyewMoveDelay = 0; // reset movement timer
 		}
 		checkCollisionWengyew();
+	}
+
+		if ( CatFish.size() != 0 ) // When there are CatFishes
+	{
+		if ( CatFishMoveDelay > 0.450 ) // CatFishes move every 450ms
+		{
+			updateCatFish();
+			CatFishMoveDelay = 0; // reset movement timer
+		}
+		checkCollisionCatFish();
 	}
 
 

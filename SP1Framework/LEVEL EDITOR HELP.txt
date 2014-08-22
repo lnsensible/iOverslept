@@ -7,6 +7,8 @@ F - Innerfear
 S - Snail
 M - Floater
 R - Rat
+W - Wengyew
+Y - CatFish
 
 Environment / Level elements
 C - Character spawn point

@@ -12,6 +12,7 @@ std::vector<Monster> Floater;
 std::vector<Monster> InnerFear;
 std::vector<Monster> Rat;
 std::vector<Monster> Wengyew;
+std::vector<Monster> CatFish;
 
 extern COORD charLocation;
 extern COORD consoleSize;
@@ -22,6 +23,7 @@ extern int Floatercounter;
 extern int InnerFearcounter;
 extern int Ratcounter;
 extern int Wengyewcounter;
+extern int CatFishcounter;
 
 void renderMonster() // render mobs
 {                    
@@ -119,7 +121,27 @@ void renderMonster() // render mobs
 		gotoXY(Wengyew[i].x, Wengyew[i].y); // go to coordinates of wengyew in the vector
 		std::cout << (char)244 << (char)229 << (char)247 << (char)229 << (char)245; // print wengyew
 	}
-}	
+	
+
+	for (unsigned int i = 0; i < CatFish.size(); i++ ) // for all the CatFishes
+	{
+		for ( int j = CatFish[i].x-1; j < CatFish[i].x+8; j++) // loop for checking left and right of CatFish when it moves
+		{
+			gotoXY(j, CatFish[i].y); // go to coordinate selected
+			if ( map[CatFish[i].y][j] == '#' ) // and reprint
+			{
+				std::cout << (char)219; // the wall
+			}
+			else
+			{
+				 std::cout << map[CatFish[i].y][j]; // print whatever is on the map
+			}
+		}
+
+		gotoXY(CatFish[i].x, CatFish[i].y); // go to coordinates of CatFish in the vector
+		std::cout << ">)))^" << (char)249 << ">"; // print CatFish
+	}
+}
 
 void checkCollisionSnail()
 {
@@ -178,6 +200,19 @@ void checkCollisionWengyew()
 	for ( unsigned int i = 0; i < Wengyew.size(); i++) // for all the Wengyews
 	{
 		if ( charLocation.X >= Wengyew[i].x && charLocation.X <= Wengyew[i].x+4 && charLocation.Y == Wengyew[i].y) // if player is touching the Wengyew
+		{
+			hasbeenDamaged = 1; // damage player by 1
+			if ( PlayerHealth > 0 ) // if player health is more than zero
+				PlayerHealth--; // damage player
+		}
+	}
+}
+
+void checkCollisionCatFish()
+	{
+	for ( unsigned int i = 0; i < CatFish.size(); i++) // for all the CatFishes
+	{
+		if ( charLocation.X >= CatFish[i].x && charLocation.X <= CatFish[i].x+6 && charLocation.Y == CatFish[i].y) // if player is touching the CatFish
 		{
 			hasbeenDamaged = 1; // damage player by 1
 			if ( PlayerHealth > 0 ) // if player health is more than zero
@@ -254,11 +289,11 @@ void updateRat() // Rat movement update
 	}
 }
 
-void updateWengyew() // Rat movement update
+void updateWengyew() // Wengyew movement update
 {
-	for (unsigned int i = 0; i < Wengyew.size(); i++ ) // for all wengyews
+	for (unsigned int i = 0; i < Wengyew.size(); i++ ) // for all Wengyews
 	{
-		if ( charLocation.Y == Wengyew[i].y ) // if character same Y coordinate as wengyew
+		if ( charLocation.Y == Wengyew[i].y ) // if character same Y coordinate as Wengyew
 		{
 			if ( charLocation.X <= Wengyew[i].x ) // if character on wengyew's left
 			{
@@ -280,6 +315,23 @@ void updateWengyew() // Rat movement update
 		{
 			if ( map[Wengyew[i].y][Wengyew[i].x+3] != '#' && map[Wengyew[i].y+1][Wengyew[i].x+7] == '#' ) // If move right is possible
 				Wengyew[i].x++;
+		}
+	}
+}
+
+void updateCatFish() // CatFish movement update
+{
+	for (unsigned int i = 0; i < CatFish.size(); i++ ) // for all CatFishes
+	{
+		if ( rand() % 2 == 0 )
+		{
+			if ( map[CatFish[i].y][CatFish[i].x-1] != '#' && map[CatFish[i].y+1][CatFish[i].x-1] == '#' ) // If move left is possible
+				CatFish[i].x--;
+		}
+		else
+		{
+			if ( map[CatFish[i].y][CatFish[i].x+3] != '#' && map[CatFish[i].y+1][CatFish[i].x+7] == '#' ) // If move right is possible
+				CatFish[i].x++;
 		}
 	}
 }
