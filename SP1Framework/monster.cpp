@@ -177,7 +177,7 @@ void checkCollisionWengyew()
 	{
 	for ( unsigned int i = 0; i < Wengyew.size(); i++) // for all the Wengyews
 	{
-		if ( charLocation.X >= Wengyew[i].x && charLocation.X <= Wengyew[i].x+5 && charLocation.Y == Wengyew[i].y) // if player is touching the Wengyew
+		if ( charLocation.X >= Wengyew[i].x && charLocation.X <= Wengyew[i].x+4 && charLocation.Y == Wengyew[i].y) // if player is touching the Wengyew
 		{
 			hasbeenDamaged = 1; // damage player by 1
 			if ( PlayerHealth > 0 ) // if player health is more than zero
@@ -265,7 +265,7 @@ void updateWengyew() // Rat movement update
 				if ( map[Wengyew[i].y][Wengyew[i].x-1] != '#' && map[Wengyew[i].y+1][Wengyew[i].x-1] == '#' ) // If move left is possible
 					Wengyew[i].x--;
 			}
-			else if ( charLocation.X >= Wengyew[i].x ) // if character on wengyews' right
+			else // if character on wengyews' right
 			{
 				if ( map[Wengyew[i].y][Wengyew[i].x+3] != '#' && map[Wengyew[i].y+1][Wengyew[i].x+7] == '#' ) // If move right is possible
 					Wengyew[i].x++;

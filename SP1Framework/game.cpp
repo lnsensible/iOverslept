@@ -52,6 +52,7 @@ int treasure = 0;//Treasure :DD
 int isBossLevel = 0; //Check if it is a boss level. 0 = No, 1 = Boss, 2= Fishy
 int isonSign = 0;//rerender sign
 int NUMBEROFSIGNS = 20;
+int hasStoryRendered = 0; // check if story has been render. 0 = nope, 1 = yep.
 int hasMoved = 0; // check if player moved.
 
 int Snailcounter = 0; // count number of snails
@@ -67,6 +68,25 @@ double RatMoveDelay = 0; // delay between each Rat movement
 double WengyewMoveDelay = 0; // delay between each wy movement
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
+
+std::string StoryPage1[7] = {"Quen has been addicted to the game Maplestory since recently when his friend introduced it to him.",
+							 "Trying to surpass his friend, he would sacrifice his sleep and play throughout the night, sleeping",
+						     "for less than 2 hours everyday. Being sleep deprived, he would doze off during lessons, usually   ",
+						     "getting him into trouble. However, this didn't stop him from playing. Eventually, Quen decided to ",
+						     "stay awake throughout the night, and catch some sleep during school. But this sleep wasn't enough,",
+					         "and one night, he was so tired that his brain forced him to fall asleep. But he was still thinking",
+						     "of Maplestory, and so he started dreaming...."};
+
+std::string StoryPage2[4] = {"Quen was mentally awake when he entered his dream. He recognised his surroundings to be that of   ",
+							 "Maplestory's. He figured that his wish to be able to play Maplestory forever has been granted, and",
+							 "he's now living within the Maple World. Quen makes up his mind to become stronger in order to",
+							 "explore the world. But first, he must learn how to move around in this world..."};
+
+std::string StoryPage3[5] = {"Quen notices something moving further ahead. Upon moving closer, he sees that its a snail. Its    ",
+							 "just like when he was just starting out in Maplestory. Now that he wasn't just using a keyboard    ",
+							 "to control his character on a screen, he wondered if he could fight in this world too.            ",
+							 "",
+							 "And so, his journey continues..."};
 
 void initmainmenu()
 {
@@ -820,35 +840,6 @@ void renderLevel() // Renders map into console
 			}
 		}
 	}
-	/*for (unsigned int i = 0; i < MonsterSnail.size(); i++)
-	{
-		gotoXY( MonsterSnail[i].x, MonsterSnail[i].y ); // spawns at XY coordinates 
-		std::cout << "@/'"; // spawn snail appearance 
-	}
-
-	for (unsigned int i = 0; i < Floater.size(); i++)
-	{
-		gotoXY( Floater[i].x, Floater[i].y ); // spawns at XY coordinates 
-		std::cout << (char)235; // spawn floater appearance 
-	}
-
-	for (unsigned int i = 0; i < InnerFear.size(); i++)
-	{
-		gotoXY( InnerFear[i].x, InnerFear[i].y ); // spawns at XY coordinates 
-		std::cout << (char)12; // spawn InnerFear appearance 
-	}
-
-	for (unsigned int i = 0; i < Rat.size(); i++)
-	{
-		gotoXY( Rat[i].x, Rat[i].y ); // spawns at XY coordinates 
-		 std::cout << "~~(_^" << (char)249 << ">"; // spawn Rat appearance 
-	}
-
-	for (unsigned int i = 0; i < Rat.size(); i++)
-	{
-		gotoXY( Rat[i].x, Rat[i].y ); // spawns at XY coordinates 
-		 std::cout << "~~(_^" << (char)249 << ">"; // spawn Rat appearance 
-	}*/
 }
 
 void renderSpikes() // re-render spikes after being stabbed
@@ -1036,6 +1027,48 @@ void renderSigns()
 	}
 }
 
+void renderStory()
+{
+		if ( checkLevel == 1 ) // render story
+	{
+		if ( hasStoryRendered == 0 )
+		{
+			for ( unsigned int i = 0; i < 7; i++) 
+			{	
+				gotoXY(6+6, i+5);
+				std::cout << StoryPage1[i];
+			}
+			hasStoryRendered = 1;
+		}
+	}
+
+	if ( checkLevel == 2 ) // render story
+	{
+		if ( hasStoryRendered == 0 )
+		{
+			for ( unsigned int i = 0; i < 4; i++)
+			{	
+				gotoXY(6+6, i+5);
+				std::cout << StoryPage2[i];
+			}
+			hasStoryRendered = 1;
+		}
+	}
+	
+	if ( checkLevel == 3 ) // render story
+	{
+		if ( hasStoryRendered == 0 )
+		{
+			for ( unsigned int i = 0; i < 5; i++)
+			{	
+				gotoXY(6+6, i+5);
+				std::cout << StoryPage3[i];
+			}
+			hasStoryRendered = 1;
+		}
+	}
+}
+
 void resetElements() // removes monsters and effects on the map
 {
 	MonsterSnail.clear();
@@ -1078,6 +1111,7 @@ void init()
 	hasbeenDamaged = 0;
 	bossStatus = 0;
 	isBossLevel = 0;
+	hasStoryRendered = 0;
 
 
 	for(int i = 0; i < NUMBEROFLEVELS + 1; i++)
@@ -1308,7 +1342,21 @@ void render()
 			for ( int j = charLocation.Y-1; j <= charLocation.Y+1; j++)
 			{
 				gotoXY(i, j);
-				if ( map[j][i] != '#' )
+				if ( map[j][i] == '#' )
+					std::cout << (char)219;
+				else if ( map[j][i] == 234 )
+				{
+					colour(0x0A);
+					std::cout << (char)234;
+					colour(0x0F);
+				}
+				else if ( map[j][i] == 239 )
+				{
+					colour(0x0A);
+					std::cout << (char)239;
+					colour(0x0F);
+				}
+				else
 					std::cout << map[j][i];
 			}
 		}
@@ -1321,7 +1369,8 @@ void render()
     std::cout << (char)1;
 	colour(0x0F);
 
-	renderSigns();      
+	renderSigns();  
+	renderStory();
 
 	if ( hasbeenDamaged == 1 )
 	{
