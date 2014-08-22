@@ -21,6 +21,8 @@ extern std::vector<Monster> Rat;
 extern std::vector<Monster> Wengyew;
 extern std::vector<Monster> CatFish;
 
+extern std::vector<Bullets_Properties> Bullets;
+
 extern int hasbeenStabbed;
 extern int weaponDAMAGE;       
 extern int weaponSPEED;         
@@ -55,6 +57,7 @@ int isonSign = 0;//rerender sign
 int NUMBEROFSIGNS = 20;
 int hasStoryRendered = 0; // check if story has been render. 0 = nope, 1 = yep.
 int hasMoved = 0; // check if player moved.
+int playerFacing = 0; // 0 = left, 1 = right
 
 int Snailcounter = 0; // count number of snails
 int Floatercounter = 0; // count number of floaters
@@ -71,12 +74,6 @@ double WengyewMoveDelay = 0; // delay between each wy movement
 double CatFishMoveDelay = 0; // delay between each CatFish movement
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
-
-//From Weapon.Cpp
-extern struct Bullet_Properties;
-extern void updateBullets();
-extern void spawnBullets();
-extern void Attack();
 
 std::string StoryPage1[7] = {"Quen has been addicted to the game Maplestory since recently when his friend introduced it to him.",
 							 "Trying to surpass his friend, he would sacrifice his sleep and play throughout the night, sleeping",
@@ -1323,6 +1320,11 @@ void update(double dt)
 		checkCollisionCatFish();
 	}
 
+	if ( Bullets.size() != 0 )
+	{
+		updateBullets();
+	}
+
 
     // Updating the location of the character based on the key press
     if (keyPressed[K_LEFT])
@@ -1333,7 +1335,7 @@ void update(double dt)
 			gotoXY(charLocation.X, charLocation.Y); // Preventing screen flickering.
 			hasMoved = 1;
 			charLocation.X--; // Move left.
-			
+			playerFacing = 0;
 		}
     }
 
@@ -1345,14 +1347,14 @@ void update(double dt)
 			gotoXY(charLocation.X, charLocation.Y); // Preventing screen flickering.
 			hasMoved = 1;
 			charLocation.X++;
+			playerFacing = 1;
 		}
     }
 
 	if (keyPressed[K_C])
 	{
-	Attack();
+		Attack();
 	}
-	updateBullets();
 
 	if (keyPressed[K_SPACE])
 	{
@@ -1406,6 +1408,12 @@ void render()
 			}
 		}
 		hasMoved = 0;
+	}
+
+	//render bullets
+	if ( Bullets.size() != 0 )
+	{
+		spawnBullets();
 	}
 
 	// render character
@@ -1472,6 +1480,4 @@ void render()
     //colour(0x59);
     //std::cout << elapsedTime << "secs" << std::endl;
 	
-	 //render Bullets
-	spawnBullets();
 }
