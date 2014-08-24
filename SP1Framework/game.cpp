@@ -51,13 +51,14 @@ int checkLevel = 0; // Check current level
 int checkPrevLevel = 0; // Check previous level
 int hasLevelRendered = 0; // Check if level has been rendered. 0 = Not loaded, 1 = Loaded
 int signNumber = 0;
-int treasure = 0;//Treasure :DD
 int isBossLevel = 0; //Check if it is a boss level. 0 = No, 1 = Boss, 2= Fishy
 int isonSign = 0;//rerender sign
 int NUMBEROFSIGNS = 20;
 int hasStoryRendered = 0; // check if story has been render. 0 = nope, 1 = yep.
 int hasMoved = 0; // check if player moved.
 int playerFacing = 0; // 0 = left, 1 = right
+int MoneyCount; //The amount of money you have
+int treasure = 1;
 
 int Snailcounter = 0; // count number of snails
 int Floatercounter = 0; // count number of floaters
@@ -798,10 +799,11 @@ void prepareLevel() // Prepares level map for cout.
 				map[i][j] = ' '; // replace with a space
 			}
 
-			if ( map[i][j] == 'T' ) // TREASURE HORRYY SHEET $$$
+			if ( map[i][j] == 'T' && treasure == 1) // TREASURE HORRYY SHEET $$$
 			{
 				map[i][j] = 15;
 			}
+
 
 			if ( map[i][j] == 'P' ) // Portal to next
 			{
@@ -990,7 +992,8 @@ void checkForElement()
 	if (map[charLocation.Y][charLocation.X] == 15)//treasure
 	{
 		//clear treasure
-		treasure = treasure + 1;
+		treasure = 0;
+		MoneyCount = MoneyCount + 10;
 	}
 }
 
