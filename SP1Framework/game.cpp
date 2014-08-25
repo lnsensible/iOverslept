@@ -55,15 +55,17 @@ int gamestate = 0;
 COORD charLocation;
 COORD consoleSize;
 
+int NUMBEROFSIGNS = 30;
+
 unsigned char map[MAPHEIGHT][MAPWIDTH]; // stores the level map
-unsigned char Signprint[SIGNHEIGHT][SIGNWIDTH]; // stores the level map
+unsigned char Signprint[SIGNHEIGHT][SIGNWIDTH]; // stores the sign
+unsigned char Savedata[DATAHEIGHT][DATAWIDTH]; //stores values of savedata
 int checkLevel = 0; // Check current level
 int checkPrevLevel = 0; // Check previous level
 int hasLevelRendered = 0; // Check if level has been rendered. 0 = Not loaded, 1 = Loaded
 int signNumber = 0;
 int isBossLevel = 0; //Check if it is a boss level. 0 = No, 1 = Boss, 2= Fishy
 int isonSign = 0;//rerender sign
-int NUMBEROFSIGNS = 30;
 int hasStoryRendered = 0; // check if story has been render. 0 = nope, 1 = yep.
 int hasMoved = 0; // check if player moved.
 int playerFacing = 0; // 0 = left, 1 = right
@@ -677,6 +679,23 @@ void renderendmenu()
 	std::cout << (char)16;
 	colour(0x0F);
 }
+
+void loadGame() // loads game from file.
+{
+	std::fstream Savefile;
+	Savefile.open("playersave.txt");
+
+
+	for (int i = 0; i < DATAHEIGHT; i++)
+	{
+		for (int j = 0; j < DATAWIDTH; j++)
+		{
+			Savefile >> Savedata[i][j];
+		}
+	}
+
+	Savefile.close();
+} 
 
 void loadLevel(std::string filename) // loads level map from file.
 {

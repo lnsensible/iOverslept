@@ -5,6 +5,8 @@
 #define SIGNHEIGHT 12
 #define SIGNWIDTH 38
 #define NUMBEROFLEVELS 30
+#define DATAHEIGHT 10
+#define DATAWIDTH 20
 
 #include "Framework\timer.h"
 
