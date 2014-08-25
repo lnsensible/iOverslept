@@ -30,7 +30,7 @@ extern std::vector<Monster> Rat;
 extern std::vector<Monster> Wengyew;
 extern std::vector<Monster> CatFish;
 
-extern std::vector<Bullets_Properties> Bullets;
+extern std::vector<Skill_Properties> CKey;
 
 extern int hasbeenStabbed;
 extern int weaponDAMAGE;       
@@ -83,6 +83,13 @@ double WengyewMoveDelay = 0; // delay between each wy movement
 double CatFishMoveDelay = 0; // delay between each CatFish movement
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
+
+//WEapons
+extern void Attack(std::vector<Skill_Properties>& Skill);
+extern void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill);
+extern void checkCollisionWithWall(std::vector<Skill_Properties>& Skill);
+extern void updateSkill(std::vector<Skill_Properties>& Skill);
+extern void spawnSkill(std::vector<Skill_Properties>& Skill);
 
 std::string StoryPage1[7] = {"Quen has been addicted to the game Maplestory since recently when his friend introduced it to him.",
 							 "Trying to surpass his friend, he would sacrifice his sleep and play throughout the night, sleeping",
@@ -1361,9 +1368,9 @@ void update(double dt)
 		checkCollisionCatFish();
 	}
 
-	if ( Bullets.size() != 0 )
+	if ( CKey.size() != 0 )
 	{
-		updateBullets();
+		updateSkill(CKey);
 	}
 
 
@@ -1394,7 +1401,7 @@ void update(double dt)
 
 	if (keyPressed[K_C])
 	{
-		Attack();
+		Attack(CKey);
 	}
 
 	if (keyPressed[K_SPACE])
@@ -1452,10 +1459,10 @@ void render()
 		hasMoved = 0;
 	}
 
-	//render bullets
-	if ( Bullets.size() != 0 )
+	//render Skill
+	if ( CKey.size() != 0 )
 	{
-		spawnBullets();
+		spawnSkill(CKey);
 	}
 
 	// render character

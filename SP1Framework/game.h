@@ -44,11 +44,12 @@ struct Monster
 	int	health;
 };
 
-struct Bullets_Properties{
+struct Skill_Properties{
 	int x, y;
 	bool faceWhere; // left = false, right = true
 	int Damage;
 	bool isRENDERED; // if 1, render. if 0, clear and remove
+	int Range;
 };
 
 enum Keys
@@ -187,8 +188,8 @@ void spawnWhere();
 
 //weapon
 void Attack();
-void spawnBullets();
-void updateBullets();
+void spawnSkill();
+void updateSkill();
 void checkCollisionWithMonster();
 void checkCollisionWithWall();
 

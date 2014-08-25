@@ -19,169 +19,202 @@ extern std::vector<Monster> Wengyew;
 extern std::vector<Monster> CatFish;
 extern std::vector<Monster> DeadFish;
 
-std::vector<Bullets_Properties> Bullets;
+std::vector<Skill_Properties> Bullets;
+std::vector<Skill_Properties> CKey = Bullets;
 
-void Attack()
+void initSkill()
+{
+	for (unsigned int x =0; x<Bullets.size(); ++x)
+	{
+		Bullets[x].Damage = 1;
+		Bullets[x].Range = 5;
+	}
+
+}
+
+void Attack(std::vector<Skill_Properties>& Skill)
 {
 	if ( playerFacing == 0 ) // if facing left,
 	{
-		Bullets_Properties addBullet;
+		Skill_Properties addBullet;
 		addBullet.x = charLocation.X-1;
 		addBullet.y = charLocation.Y;
 		addBullet.faceWhere = false;
 		addBullet.isRENDERED = true;
-		addBullet.Damage = 1;
 
-		Bullets.push_back(addBullet);
+		Skill.push_back(addBullet);
 	}
 	else if ( playerFacing == 1 ) // if facing right
 	{
-		Bullets_Properties addBullet;
+		Skill_Properties addBullet;
 		addBullet.x = charLocation.X+1;
 		addBullet.y = charLocation.Y;
 		addBullet.faceWhere = true;
 		addBullet.isRENDERED = true;
-		addBullet.Damage = 1;
-
-		Bullets.push_back(addBullet);
+		Skill.push_back(addBullet);
 	}
 }
 
-void checkCollisionWithMonster() 
+void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 {
 	for ( unsigned int i = 0; i < MonsterSnail.size(); i++)
 	{
-		for ( unsigned int j = 0; j < Bullets.size(); j++)
+		for ( unsigned int j = 0; j < Skill.size(); j++)
 		{
-			if (Bullets[j].x == MonsterSnail[i].x && Bullets[j].y == MonsterSnail[i].y)
+			if (Skill[j].x == MonsterSnail[i].x && Skill[j].y == MonsterSnail[i].y)
 			{
-				MonsterSnail[i].health -= Bullets[j].Damage;
-				Bullets.erase(Bullets.begin() + j); // remove bullets
+				MonsterSnail[i].health -= Skill[j].Damage;
+				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
 				j = 0;
 			}
 		}
 	}
-		/*//there is a way to make the cursor invisible when rendering. go google pls.
-		for ( unsigned int j = 0; j<Floater.size(); j ++)
-		{
-			if (Bullets[i].x == Floater[j].x && Bullets[i].y == Floater[j].y)
-			{
-				Floater[j].health -= Bullets[i].Damage;
-				Bullets.erase(Bullets.begin() + i);
-				//checkMonsterDead();
-				if (Floater[j].health <= 0)
-				{
-					Floater.erase(Floater.begin() + j);
-				}
-			}
-		}
 
-		for (unsigned int j = 0; j<InnerFear.size(); j ++)
-		{
-			if (Bullets[i].x == InnerFear[j].x && Bullets[i].y == InnerFear[j].y)
-			{
-				InnerFear[j].health -= Bullets[i].Damage;
-				Bullets.erase(Bullets.begin() + i);
-				checkMonsterDead();
-				if (InnerFear[j].health <= 0)
-				{
-					InnerFear.erase(InnerFear.begin() + j);
-				}
-			}
-		}
-
-		for ( unsigned int j = 0; j<Wengyew.size(); j ++)
-		{
-			if (Bullets[i].x == Wengyew[j].x && Bullets[i].y == Wengyew[j].y)
-			{
-				Wengyew[j].health -= Bullets[i].Damage;
-				Bullets.erase(Bullets.begin() + i);
-				checkMonsterDead();
-				if (Wengyew[j].health <= 0)
-				{
-					Wengyew.erase(Wengyew.begin() + j);
-				}
-			}
-		}
-
-		for ( unsigned int j = 0; j < Rat.size(); j ++)
-		{
-			if (Bullets[i].x == Rat[j].x && Bullets[i].y == Rat[j].y)
-			{
-				Rat[j].health -= Bullets[i].Damage;
-				Bullets.erase(Bullets.begin() + i);
-				checkMonsterDead();
-				if (Rat[j].health <= 0)
-				{
-					Rat.erase(Rat.begin() + j);
-				}
-			}
-		}
-
-		for ( unsigned int j = 0; j < CatFish.size(); j ++)
-		{
-			if (Bullets[i].x == CatFish[j].x && Bullets[i].y == CatFish[j].y)
-			{
-				CatFish[j].health -= Bullets[i].Damage;
-				Bullets.erase(Bullets.begin() + i);
-				checkMonsterDead();
-				if (CatFish[j].health <= 0)
-				{
-					CatFish.erase(CatFish.begin() + j);
-				}
-			}
-		}*/
-}
-
-void checkCollisionWithWall()
-{
-	for ( unsigned int i = 0; i < Bullets.size(); ++i )
+	for ( unsigned int i = 0; i < InnerFear.size(); i++)
 	{
-		if ( map[Bullets[i].y][Bullets[i].x] == '#' ) 
+		for ( unsigned int j = 0; j < Skill.size(); j++)
 		{
-			Bullets[i].isRENDERED = false;
+			if (Skill[j].x == InnerFear[i].x && Skill[j].y == InnerFear[i].y)
+			{
+				InnerFear[i].health -= Skill[j].Damage;
+				Skill.erase(Skill.begin() + j); // remove Skill
+				checkMonsterDead();
+				i = 0;
+				j = 0;
+			}
+		}
+	}
+
+	for ( unsigned int i = 0; i < Floater.size(); i++)
+	{
+		for ( unsigned int j = 0; j < Skill.size(); j++)
+		{
+			if (Skill[j].x == Floater[i].x && Skill[j].y == Floater[i].y)
+			{
+				Floater[i].health -= Skill[j].Damage;
+				Skill.erase(Skill.begin() + j); // remove Skill
+				checkMonsterDead();
+				i = 0;
+				j = 0;
+			}
+		}
+	}
+
+	for ( unsigned int i = 0; i < Rat.size(); i++)
+	{
+		for ( unsigned int j = 0; j < Skill.size(); j++)
+		{
+			if (Skill[j].x == Rat[i].x && Skill[j].y == Rat[i].y)
+			{
+				Rat[i].health -= Skill[j].Damage;
+				Skill.erase(Skill.begin() + j); // remove Skill
+				checkMonsterDead();
+				i = 0;
+				j = 0;
+			}
+		}
+	}
+
+	for ( unsigned int i = 0; i < Wengyew.size(); i++)
+	{
+		for ( unsigned int j = 0; j < Skill.size(); j++)
+		{
+			if (Skill[j].x == Wengyew[i].x && Skill[j].y == Wengyew[i].y)
+			{
+				Wengyew[i].health -= Skill[j].Damage;
+				Skill.erase(Skill.begin() + j); // remove Skill
+				checkMonsterDead();
+				i = 0;
+				j = 0;
+			}
+		}
+	}
+
+	for ( unsigned int i = 0; i < CatFish.size(); i++)
+	{
+		for ( unsigned int j = 0; j < Skill.size(); j++)
+		{
+			if (Skill[j].x == CatFish[i].x && Skill[j].y == CatFish[i].y)
+			{
+				CatFish[i].health -= Skill[j].Damage;
+				Skill.erase(Skill.begin() + j); // remove Skill
+				checkMonsterDead();
+				i = 0;
+				j = 0;
+			}
+		}
+	}
+
+	for ( unsigned int i = 0; i < DeadFish.size(); i++)
+	{
+		for ( unsigned int j = 0; j < Skill.size(); j++)
+		{
+			if (Skill[j].x == DeadFish[i].x && Skill[j].y == DeadFish[i].y)
+			{
+				DeadFish[i].health -= Skill[j].Damage;
+				Skill.erase(Skill.begin() + j); // remove Skill
+				checkMonsterDead();
+				i = 0;
+				j = 0;
+			}
 		}
 	}
 }
 
-
-void updateBullets()
+void checkCollisionWithWall(std::vector<Skill_Properties>& Skill)
 {
-	for (unsigned int h = 0; h < Bullets.size(); ++h)
+	for ( unsigned int i = 0; i < Skill.size(); ++i )
 	{
-		if (Bullets[h].faceWhere == false)
+		if ( map[Skill[i].y][Skill[i].x] == '#' ) 
 		{
-			Bullets[h].x -= 1;
+			Skill[i].isRENDERED = false;
 		}
-		else if (Bullets[h].faceWhere == true)
-		{
-			Bullets[h].x += 1;
-		}
-		checkCollisionWithMonster();
-		checkCollisionWithWall();
 	}
 }
 
-void spawnBullets(){
-	for(unsigned int x = 0; x < Bullets.size(); ++x)
+void updateSkill(std::vector<Skill_Properties>& Skill)
+{
+	int checkRange = 0;
+	for (unsigned int h = 0; h < Skill.size(); ++h)
 	{
-		if ( Bullets[x].isRENDERED == false ) // need to remove bullet
+		if (Skill[h].faceWhere == false)
+		{
+			Skill[h].x -= 1;
+		}
+		else if (Skill[h].faceWhere == true)
+		{
+			Skill[h].x += 1;
+		}
+		if (checkRange == Skill[h].Range)
+		{
+			Skill.erase(Skill.begin() + h);
+		}
+		checkCollisionWithMonster(Skill);
+		checkCollisionWithWall(Skill);
+
+	}
+}
+
+void spawnSkill(std::vector<Skill_Properties>& Skill){
+	for(unsigned int x = 0; x < Skill.size(); ++x)
+	{
+		if ( Skill[x].isRENDERED == false ) // need to remove bullet
 		{
 
-			gotoXY(Bullets[x].x-1, Bullets[x].y);
-			if ( map[Bullets[x].y][Bullets[x].x-1] == '#' ) // if wall
+			gotoXY(Skill[x].x-1, Skill[x].y);
+			if ( map[Skill[x].y][Skill[x].x-1] == '#' ) // if wall
 			{
 				std::cout << (char)219;
 			}
-			else if ( map[Bullets[x].y][Bullets[x].x-1] == 234 )
+			else if ( map[Skill[x].y][Skill[x].x-1] == 234 )
 			{
 				colour(0x0A);
 				std::cout << (char)234;
 				colour(0x0F);
 			}
-			else if ( map[Bullets[x].y][Bullets[x].x-1] == 239 )
+			else if ( map[Skill[x].y][Skill[x].x-1] == 239 )
 			{
 				colour(0x0A);
 				std::cout << (char)239;
@@ -189,21 +222,21 @@ void spawnBullets(){
 			}
 			else
 			{
-			std::cout<< map[Bullets[x].y][Bullets[x].x-1];
+				std::cout<< map[Skill[x].y][Skill[x].x-1];
 			}
 
-			gotoXY(Bullets[x].x, Bullets[x].y);
-			if ( map[Bullets[x].y][Bullets[x].x] == '#' ) // if wall
+			gotoXY(Skill[x].x, Skill[x].y);
+			if ( map[Skill[x].y][Skill[x].x] == '#' ) // if wall
 			{
 				std::cout << (char)219;
 			}
-			else if ( map[Bullets[x].y][Bullets[x].x] == 234 )
+			else if ( map[Skill[x].y][Skill[x].x] == 234 )
 			{
 				colour(0x0A);
 				std::cout << (char)234;
 				colour(0x0F);
 			}
-			else if ( map[Bullets[x].y][Bullets[x].x] == 239 )
+			else if ( map[Skill[x].y][Skill[x].x] == 239 )
 			{
 				colour(0x0A);
 				std::cout << (char)239;
@@ -211,21 +244,21 @@ void spawnBullets(){
 			}
 			else
 			{
-			std::cout<< map[Bullets[x].y][Bullets[x].x];
+				std::cout<< map[Skill[x].y][Skill[x].x];
 			}
 
-			gotoXY(Bullets[x].x+1, Bullets[x].y);
-			if ( map[Bullets[x].y][Bullets[x].x+1] == '#' ) // if wall
+			gotoXY(Skill[x].x+1, Skill[x].y);
+			if ( map[Skill[x].y][Skill[x].x+1] == '#' ) // if wall
 			{
 				std::cout << (char)219;
 			}
-			else if ( map[Bullets[x].y][Bullets[x].x+1] == 234 )
+			else if ( map[Skill[x].y][Skill[x].x+1] == 234 )
 			{
 				colour(0x0A);
 				std::cout << (char)234;
 				colour(0x0F);
 			}
-			else if ( map[Bullets[x].y][Bullets[x].x+1] == 239 )
+			else if ( map[Skill[x].y][Skill[x].x+1] == 239 )
 			{
 				colour(0x0A);
 				std::cout << (char)239;
@@ -233,25 +266,25 @@ void spawnBullets(){
 			}
 			else
 			{
-			std::cout<< map[Bullets[x].y][Bullets[x].x+1];
+				std::cout<< map[Skill[x].y][Skill[x].x+1];
 			}
 
-			Bullets.erase(Bullets.begin() + x);
+			Skill.erase(Skill.begin() + x);
 		}
 		else
 		{
-			if ( Bullets[x].faceWhere == false )
+			if ( Skill[x].faceWhere == false )
 			{
-				gotoXY(Bullets[x].x+1, Bullets[x].y);
-				std::cout<< map[Bullets[x].y][Bullets[x].x+1];
-				gotoXY(Bullets[x].x, Bullets[x].y);
+				gotoXY(Skill[x].x+1, Skill[x].y);
+				std::cout<< map[Skill[x].y][Skill[x].x+1];
+				gotoXY(Skill[x].x, Skill[x].y);
 				std::cout<<"o";
 			}
-			else if ( Bullets[x].faceWhere == true )
+			else if ( Skill[x].faceWhere == true )
 			{
-				gotoXY(Bullets[x].x-1, Bullets[x].y);
-				std::cout<< map[Bullets[x].y][Bullets[x].x-1];
-				gotoXY(Bullets[x].x, Bullets[x].y);
+				gotoXY(Skill[x].x-1, Skill[x].y);
+				std::cout<< map[Skill[x].y][Skill[x].x-1];
+				gotoXY(Skill[x].x, Skill[x].y);
 				std::cout<<"o";
 			}
 		}
