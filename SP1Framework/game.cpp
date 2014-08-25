@@ -30,6 +30,7 @@ extern std::vector<Monster> Rat;
 extern std::vector<Monster> Wengyew;
 extern std::vector<Monster> CatFish;
 extern std::vector<Monster> DeadFish;
+extern std::vector<Monster> LiveFish;
 
 extern std::vector<Skill_Properties> CKey;
 extern std::vector<Skill_Properties> EKey;
@@ -79,6 +80,7 @@ int Ratcounter = 0; // count number of rats
 int Wengyewcounter = 0; // count number of wengyews
 int CatFishcounter = 0; // count number of CatFish
 int DeadFishcounter = 0; // count number of DeadFish
+int LiveFishcounter = 0; // count number of LiveFish
 
 double snailMoveDelay = 0; // delay between each snail movement :D
 double floaterMoveDelay = 0; // delay between each floater movement
@@ -87,10 +89,11 @@ double RatMoveDelay = 0; // delay between each Rat movement
 double WengyewMoveDelay = 0; // delay between each wy movement
 double CatFishMoveDelay = 0; // delay between each CatFish movement
 double DeadFishMoveDelay = 0; // delay between each DeadFish movement
+double LiveFishMoveDelay = 0; // delay between each LiveFish movement
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
 
-//WEapons
+//Weapons
 extern void Attack(std::vector<Skill_Properties>& Skill);
 extern void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill);
 extern void checkCollisionWithWall(std::vector<Skill_Properties>& Skill);
@@ -906,6 +909,19 @@ void prepareLevel() // Prepares level map for cout.
 				map[i][j] = ' '; // replace with a space
 			}
 
+			if( map[i][j] == 'L' ) // DeadFish Monster placeholder
+			{
+				Monster liveFish;
+
+				liveFish.x = j; // location of X-coordinates of LiveFish
+				liveFish.y = i; // location of Y-coordinates of LiveFish
+				liveFish.health = 2; // health of LiveFish
+
+				LiveFish.push_back(liveFish); // stores coordinates in a vector
+
+				map[i][j] = ' '; // replace with a space
+			}
+
 			if ( map[i][j] == 'T') // TREASURE HORRYY SHEET $$$
 			{
 				map[i][j] = 15;
@@ -1165,6 +1181,7 @@ void resetElements() // removes monsters and effects on the map
 	Wengyew.clear();
 	CatFish.clear();
 	DeadFish.clear();
+	LiveFish.clear();
 	meteor.clear();
 	splint.clear();
 	laser.clear();
@@ -1200,6 +1217,7 @@ void init()
 	WengyewMoveDelay = 0.0;
 	CatFishMoveDelay = 0.0;
 	DeadFishMoveDelay = 0.0;
+	LiveFishMoveDelay = 0.0;
 
 	PlayerHealth = 3; //-------------------------
 
@@ -1214,7 +1232,7 @@ void init()
 	{
 		leveltoload = "level";
 		
-		if (checkLevel == 10)
+		if (checkLevel == 17)
 		{
 			isBossLevel = 1;
 			bosscurrentHP = bossHP;
@@ -1287,6 +1305,7 @@ void update(double dt)
 	WengyewMoveDelay += dt;
 	CatFishMoveDelay += dt;
 	DeadFishMoveDelay += dt;
+	LiveFishMoveDelay += dt;
 	hitboxDelay += dt;
 	canJump += dt;
     deltaTime = dt;
@@ -1418,6 +1437,16 @@ void update(double dt)
 			DeadFishMoveDelay = 0; // reset movement timer
 		}
 		checkCollisionDeadFish();
+	}
+
+		if ( LiveFish.size() != 0 ) // When there are LiveFishes
+	{
+		if ( LiveFishMoveDelay > 0.250 ) // LiveFishes move every 250ms
+		{
+			updateLiveFish();
+			LiveFishMoveDelay = 0; // reset movement timer
+		}
+		checkCollisionLiveFish();
 	}
 
 	if ( CKey.size() != 0 )

@@ -10,6 +10,7 @@ R - Rat
 W - Wengyew
 Y - CatFish
 D - DeadFish
+L - LiveFish
 
 Environment / Level elements
 C - Character spawn point

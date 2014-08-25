@@ -14,6 +14,7 @@ std::vector<Monster> Rat;
 std::vector<Monster> Wengyew;
 std::vector<Monster> CatFish;
 std::vector<Monster> DeadFish;
+std::vector<Monster> LiveFish;
 
 extern COORD charLocation;
 extern COORD consoleSize;
@@ -26,12 +27,13 @@ extern int Ratcounter;
 extern int Wengyewcounter;
 extern int CatFishcounter;
 extern int DeadFishcounter;
+extern int LiveFishcounter;
 
 void renderMonster() // render mobs
 {                    
 	for (unsigned int i = 0; i < MonsterSnail.size(); i++ ) // for all the snails
 	{
-		for ( int j = MonsterSnail[i].x-1; j < MonsterSnail[i].x+4; j++) //loop for checking left and right of snail when it moves
+		for ( int j = MonsterSnail[i].x-1; j < MonsterSnail[i].x+5; j++) //loop for checking left and right of snail when it moves
 		{
 			gotoXY(j, MonsterSnail[i].y); // go to coordinate selected
 			if ( map[MonsterSnail[i].y][j] == '#' ) // and reprint
@@ -88,7 +90,7 @@ void renderMonster() // render mobs
 		
 	for (unsigned int i = 0; i < Rat.size(); i++ ) // for all the Rats
 	{
-		for ( int j = Rat[i].x-1; j < Rat[i].x+8; j++) // loop for checking left and right of Rat when it moves
+		for ( int j = Rat[i].x-1; j < Rat[i].x+9; j++) // loop for checking left and right of Rat when it moves
 		{
 			gotoXY(j, Rat[i].y); // go to coordinate selected
 			if ( map[Rat[i].y][j] == '#' ) // and reprint
@@ -107,7 +109,7 @@ void renderMonster() // render mobs
 
 	for (unsigned int i = 0; i < Wengyew.size(); i++ ) // for all the wengyews
 	{
-		for ( int j = Wengyew[i].x-2; j < Wengyew[i].x+7; j++) // loop for checking left and right of wengyews when it moves
+		for ( int j = Wengyew[i].x-1; j < Wengyew[i].x+7; j++) // loop for checking left and right of wengyews when it moves
 		{
 			gotoXY(j, Wengyew[i].y); // go to coordinate selected
 			if ( map[Wengyew[i].y][j] == '#' ) // and reprint
@@ -127,7 +129,7 @@ void renderMonster() // render mobs
 
 	for (unsigned int i = 0; i < CatFish.size(); i++ ) // for all the CatFishes
 	{
-		for ( int j = CatFish[i].x-1; j < CatFish[i].x+8; j++) // loop for checking left and right of CatFish when it moves
+		for ( int j = CatFish[i].x-1; j < CatFish[i].x+9; j++) // loop for checking left and right of CatFish when it moves
 		{
 			gotoXY(j, CatFish[i].y); // go to coordinate selected
 			if ( map[CatFish[i].y][j] == '#' ) // and reprint
@@ -146,7 +148,7 @@ void renderMonster() // render mobs
 
 	for (unsigned int i = 0; i < DeadFish.size(); i++ ) // for all the DeadFishes
 	{
-		for ( int j = DeadFish[i].x-1; j < DeadFish[i].x+8; j++) // loop for checking left and right of DeadFish when it moves
+		for ( int j = DeadFish[i].x-1; j < DeadFish[i].x+7; j++) // loop for checking left and right of DeadFish when it moves
 		{
 			gotoXY(j, DeadFish[i].y); // go to coordinate selected
 			if ( map[DeadFish[i].y][j] == '#' ) // and reprint
@@ -161,6 +163,25 @@ void renderMonster() // render mobs
 
 		gotoXY(DeadFish[i].x, DeadFish[i].y); // go to coordinates of DeadFish in the vector
 		std::cout << ">++*>"; // print DeadFish
+	}
+
+	for (unsigned int i = 0; i < LiveFish.size(); i++ ) // for all the LiveFishes
+	{
+		for ( int j = LiveFish[i].x-2; j < LiveFish[i].x+6; j++) // loop for checking left and right of LiveFish when it moves
+		{
+			gotoXY(j, LiveFish[i].y); // go to coordinate selected
+			if ( map[LiveFish[i].y][j] == '#' ) // and reprint
+			{
+				std::cout << (char)219; // the wall
+			}
+			else
+			{
+				 std::cout << map[LiveFish[i].y][j]; // print whatever is on the map
+			}
+		}
+
+		gotoXY(LiveFish[i].x, LiveFish[i].y); // go to coordinates of LiveFish in the vector
+		std::cout << ">((" << (char)248 << ">"; // print LiveFish
 	}
 }
 
@@ -247,6 +268,19 @@ void checkCollisionDeadFish()
 	for ( unsigned int i = 0; i < DeadFish.size(); i++) // for all the DeadFishes
 	{
 		if ( charLocation.X >= DeadFish[i].x && charLocation.X <= DeadFish[i].x+4 && charLocation.Y == DeadFish[i].y) // if player is touching the DeadFish
+		{
+			hasbeenDamaged = 1; // damage player by 1
+			if ( PlayerHealth > 0 ) // if player health is more than zero
+				PlayerHealth--; // damage player
+		}
+	}
+}
+
+void checkCollisionLiveFish()
+	{
+	for ( unsigned int i = 0; i < LiveFish.size(); i++) // for all the LiveFishes
+	{
+		if ( charLocation.X >= LiveFish[i].x && charLocation.X <= LiveFish[i].x+4 && charLocation.Y == LiveFish[i].y) // if player is touching the LiveFish
 		{
 			hasbeenDamaged = 1; // damage player by 1
 			if ( PlayerHealth > 0 ) // if player health is more than zero
@@ -381,7 +415,7 @@ void updateDeadFish() // DeadFish movement update
 				if ( map[DeadFish[i].y][DeadFish[i].x-1] != '#' && map[DeadFish[i].y+1][DeadFish[i].x-1] == '#' ) // If move left is possible
 					DeadFish[i].x--;
 			}
-			else // if character on DeadFish' right
+			else // if character on DeadFish's right
 			{
 				if ( map[DeadFish[i].y][DeadFish[i].x+3] != '#' && map[DeadFish[i].y+1][DeadFish[i].x+7] == '#' ) // If move right is possible
 					DeadFish[i].x++;
@@ -396,6 +430,36 @@ void updateDeadFish() // DeadFish movement update
 		{
 			if ( map[DeadFish[i].y][DeadFish[i].x+5] != '#' && map[DeadFish[i].y+1][DeadFish[i].x+7] == '#' ) // If move right is possible
 				DeadFish[i].x++;
+		}
+	}
+}
+
+void updateLiveFish() // LiveFish movement update
+{
+	for (unsigned int i = 0; i < LiveFish.size(); i++ ) // for all LiveFishes
+	{
+		if ( charLocation.Y == LiveFish[i].y ) // if character same Y coordinate as LiveFish
+		{
+			if ( charLocation.X <= LiveFish[i].x ) // if character on LiveFish's left
+			{
+				if ( map[LiveFish[i].y][LiveFish[i].x+6] != '#' && map[LiveFish[i].y+1][LiveFish[i].x+6] == '#' ) // If move right is possible
+					LiveFish[i].x++;
+			}
+			else // if character on LiveFish's right
+			{
+				if ( map[LiveFish[i].y][LiveFish[i].x-1] != '#' && map[LiveFish[i].y+1][LiveFish[i].x-1] == '#' ) // If move left is possible
+					LiveFish[i].x--;
+			}
+		}
+		if ( rand() % 2 == 0 )
+		{
+			if ( map[LiveFish[i].y][LiveFish[i].x-1] != '#' && map[LiveFish[i].y+1][LiveFish[i].x-1] == '#' ) // If move left is possible
+				LiveFish[i].x--;
+		}
+		else
+		{
+			if ( map[LiveFish[i].y][LiveFish[i].x+6] != '#' && map[LiveFish[i].y+1][LiveFish[i].x+6] == '#' ) // If move right is possible
+				LiveFish[i].x++;
 		}
 	}
 }
@@ -483,6 +547,26 @@ void checkMonsterDead()
 			map[DeadFish[i].y][DeadFish[i].x] = ' ';
 
 			DeadFish.erase(DeadFish.begin() + i);// remove deadfish from map
+		}
+	}
+
+	for (unsigned int i = 0; i < LiveFish.size(); i++)
+	{
+		if ( LiveFish[i].health <= 0 )
+		{
+			gotoXY(LiveFish[i].x, LiveFish[i].y);
+			std::cout << "     ";
+			map[LiveFish[i].y][LiveFish[i].x] = ' ';
+
+			Monster fkuirespawn;
+			fkuirespawn.x = LiveFish[i].x;
+			fkuirespawn.y = LiveFish[i].y;
+			fkuirespawn.health = 4;
+
+			DeadFish.push_back(fkuirespawn);
+
+			LiveFish.erase(LiveFish.begin() + i);// remove livefish from map
+
 		}
 	}
 }

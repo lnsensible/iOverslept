@@ -18,6 +18,7 @@ extern std::vector<Monster> Rat;
 extern std::vector<Monster> Wengyew;
 extern std::vector<Monster> CatFish;
 extern std::vector<Monster> DeadFish;
+extern std::vector<Monster> LiveFish;
 extern std::vector<Monster> PianusHitbox;
 extern void checkMonsterDead();
 
@@ -153,6 +154,21 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 			if (Skill[j].x == DeadFish[i].x && Skill[j].y == DeadFish[i].y)
 			{
 				DeadFish[i].health -= Skill[j].Damage;
+				Skill.erase(Skill.begin() + j); // remove Skill
+				checkMonsterDead();
+				i = 0;
+				j = 0;
+			}
+		}
+	}
+
+	for ( unsigned int i = 0; i < LiveFish.size(); i++)
+	{
+		for ( unsigned int j = 0; j < Skill.size(); j++)
+		{
+			if (Skill[j].x == LiveFish[i].x && Skill[j].y == LiveFish[i].y)
+			{
+				LiveFish[i].health -= Skill[j].Damage;
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
