@@ -18,18 +18,23 @@ extern std::vector<Monster> Rat;
 extern std::vector<Monster> Wengyew;
 extern std::vector<Monster> CatFish;
 extern std::vector<Monster> DeadFish;
+extern std::vector<Monster> PianusHitbox;
+extern void checkMonsterDead();
 
-std::vector<Skill_Properties> FireOrb;
+
+
+std::vector<Skill_Properties> FireOrb,LightningOrb,WaterOrb;
 std::vector<Skill_Properties> CKey = FireOrb;
 
 void initSkill()
 {
 	for (unsigned int x =0; x<FireOrb.size(); ++x)
 	{
-		FireOrb[x].Damage = 1;
+		FireOrb[x].Damage = 100;
 		FireOrb[x].Range = 50;
 	}
 }
+
 
 void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 {
@@ -77,6 +82,24 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 			}
 		}
 	}
+
+	/*
+	for ( unsigned int i = 0; i < PianusHitbox.size(); i++)//PIanus thingy
+	{
+		for ( unsigned int j = 0; j < Skill.size(); j++)
+		{
+			if (Skill[j].x == PianusHitbox[i].x && Skill[j].y == PianusHitbox[i].y)
+			{
+				PianusHitbox[i].health -= Skill[j].Damage;
+				Skill.erase(FireOrb.begin() + j); // remove Skill
+				checkMonsterDead();
+				i = 0;
+				j = 0;
+			}
+		}
+	}
+	*/
+
 
 	for ( unsigned int i = 0; i < InnerFear.size(); i++)
 	{
@@ -277,6 +300,11 @@ void spawnSkill(std::vector<Skill_Properties>& Skill){
 				colour(0x04);
 				std::cout<<(char)15;
 				colour(0x0F);
+				/*if (Skill[x].Range <= 5) //Melee Attack
+		    {
+		       Skill[]
+		
+		    }*/
 			}
 			else if ( Skill[x].faceWhere == true )
 			{
@@ -286,7 +314,7 @@ void spawnSkill(std::vector<Skill_Properties>& Skill){
 				colour(0x04);
 				std::cout<<(char)15;
 				colour(0x0F);
-				
+
 			}
 		}
 	}

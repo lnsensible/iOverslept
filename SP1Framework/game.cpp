@@ -96,6 +96,7 @@ extern void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill);
 extern void checkCollisionWithWall(std::vector<Skill_Properties>& Skill);
 extern void updateSkill(std::vector<Skill_Properties>& Skill);
 extern void spawnSkill(std::vector<Skill_Properties>& Skill);
+int playerEquip = 0;
 
 std::string StoryPage1[7] = {"Quen has been addicted to the game Maplestory since recently when his friend introduced it to him.",
 							 "Trying to surpass his friend, he would sacrifice his sleep and play throughout the night, sleeping",
@@ -1295,6 +1296,8 @@ void update(double dt)
 	checkForElement();
 	updateSigns();
 
+	//updateSkills(); if projectile, move projectile. if not projectile, do whatever needs to be done. 
+
 	if ( hasbeenStabbed == 1 ) 
 	{
 		colour(0x0F);
@@ -1450,6 +1453,19 @@ void update(double dt)
 	if (keyPressed[K_C])
 	{
 		Attack(CKey);
+			/*)
+		if ( playerEquipp == 0 )
+		{
+			Attack(FireOrb);
+		}
+		else if ( playerEquip == 1 )
+		{
+			Attack(LightningOrb);
+		}
+		else if ()
+		{
+			Atack(*URWF
+		}*/
 	}
 
 	if (keyPressed[K_SPACE])

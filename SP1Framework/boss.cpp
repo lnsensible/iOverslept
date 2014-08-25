@@ -27,7 +27,7 @@ extern int isBossLevel;
 extern COORD charLocation;
 extern COORD consoleSize;
 extern int gamestate;
-extern std::vector<Skill_Properties> FireOrb;
+extern std::vector<Skill_Properties> CKey;
 
 std::vector<bossAttack> meteor;
 std::vector<bossAttack> splint;
@@ -389,7 +389,7 @@ void renderLava()
 				}
 			}
 		}
-		
+
 		lava.clear(); // remove lava
 	}
 }
@@ -458,7 +458,7 @@ void bossMeteor1()
 	gotoXY(60, 19);	std::cout << "  +I            77IIII======            ";
 	gotoXY(60, 20);	std::cout << "   +III7777777IIIIII?=~=";
 	gotoXY(60, 21);	std::cout << ",~~~.+IIIIIIIIIII??+.~:,,";
-	
+
 }
 
 void bossMeteor2()
@@ -481,7 +481,7 @@ void bossMeteor2()
 	gotoXY(60, 19);	std::cout << "  +I            77IIII======";
 	gotoXY(60, 20);	std::cout << "   +III7777777IIIIII?=~=";
 	gotoXY(60, 21);	std::cout << ",~~~.+IIIIIIIIIII??+.~:,,";
-	
+
 }
 
 void bossMeteor3()
@@ -522,7 +522,7 @@ void bossMeteorEffect() // spawns meteors !
 
 void updateMeteor() // moves meteors and adjust coordinates
 {
-	
+
 	for (unsigned int i = 0; i < meteor.size(); i++ ) // for all the meteors
 	{
 		if ( meteor[i].Y < 19 ) // when meteor is still falling ~
@@ -735,7 +735,7 @@ void bossSplintEffect()
 	bossAttack Splint;
 	Splint.X = 22;
 	Splint.Y = 22;
-	
+
 	splint.push_back(Splint);
 }
 
@@ -934,28 +934,28 @@ void checkBossStatus()
 	if ( bosscurrentHP == 0 )
 	{
 		if ( bossFrameDelay > 1.0 ) // first frame
+		{
+			if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
 			{
-				if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
-				{
-					bossDead2();
-				}
-				else if ( bossFrameDelay > 3.0 ) // third frame
-				{
-					bossDead3();
-					map[21][41] = (char)239;
-					map[19][21] = (char)209;
-					renderLevel();
-					bossFrameDelay -= 3.0;
-					isBossLevel = 0;
-					bossStatus = 0;
-					skillDelay = 0;
-					// reset to standing animation ~
-				}
-				else
-				{
-					bossDead1();
-				}
+				bossDead2();
 			}
+			else if ( bossFrameDelay > 3.0 ) // third frame
+			{
+				bossDead3();
+				map[21][41] = (char)239;
+				map[19][21] = (char)209;
+				renderLevel();
+				bossFrameDelay -= 3.0;
+				isBossLevel = 0;
+				bossStatus = 0;
+				skillDelay = 0;
+				// reset to standing animation ~
+			}
+			else
+			{
+				bossDead1();
+			}
+		}
 	}
 	else
 	{
@@ -1038,28 +1038,28 @@ void checkPianusStatus()
 	if ( pianuscurrentHP == 0 )
 	{
 		if ( bossFrameDelay > 1.0 ) // first frame
+		{
+			if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
 			{
-				if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
-				{
-					pianusDead2();
-				}
-				else if ( bossFrameDelay > 3.0 ) // third frame
-				{
-					pianusDead3();
-					map[15][8] = (char)239;
-					map[15][21] = (char)209;
-					renderLevel();
-					bossFrameDelay -= 3.0;
-					isBossLevel = 0;
-					bossStatus = 0;
-					skillDelay = 0;
-					// reset to standing animation ~
-				}
-				else
-				{
-					pianusDead1();
-				}
+				pianusDead2();
 			}
+			else if ( bossFrameDelay > 3.0 ) // third frame
+			{
+				pianusDead3();
+				map[15][8] = (char)239;
+				map[15][21] = (char)209;
+				renderLevel();
+				bossFrameDelay -= 3.0;
+				isBossLevel = 0;
+				bossStatus = 0;
+				skillDelay = 0;
+				// reset to standing animation ~
+			}
+			else
+			{
+				pianusDead1();
+			}
+		}
 	}
 	else
 	{
@@ -1338,7 +1338,7 @@ void renderPianusHitbox()
 				}
 				else
 				{
-					 std::cout << map[PianusHitbox[0].y][i]; // print whatever is on the map
+					std::cout << map[PianusHitbox[0].y][i]; // print whatever is on the map
 				}
 			}
 
@@ -1357,7 +1357,7 @@ void renderPianusHitbox()
 				}
 				else
 				{
-					 std::cout << map[PianusHitbox[0].y][i]; // print whatever is on the map
+					std::cout << map[PianusHitbox[0].y][i]; // print whatever is on the map
 				}
 			}
 			PianusHitbox.erase(PianusHitbox.begin()); // remove first hitbox
@@ -1421,14 +1421,14 @@ void checkCollisionHitbox()
 {
 	if ( BossHitbox.size() != 0 )
 	{
-		for ( unsigned int i = 0; i < FireOrb.size(); i++ ) // if bullet hit hitbox
+		for ( unsigned int i = 0; i < CKey.size(); i++ ) // if bullet hit hitbox
 		{
-			if ( FireOrb[i].x == BossHitbox[0].X && FireOrb[i].y == BossHitbox[0].Y ) // if hit
+			if ( CKey[i].x == BossHitbox[0].X && CKey[i].y == BossHitbox[0].Y ) // if hit
 			{
 				if ( bosscurrentHP - 1 != 0 )
 				{
 					bosscurrentHP--;
-					FireOrb[i].isRENDERED = false;
+					CKey[i].isRENDERED = false;
 					BossHitbox.erase(BossHitbox.begin()); // remove both
 					break; // no need to continue checking
 				}
@@ -1436,13 +1436,16 @@ void checkCollisionHitbox()
 				{
 					bossFrameDelay = 0.0;
 					bosscurrentHP--;
-					FireOrb[i].isRENDERED = false;
+					CKey[i].isRENDERED = false;
 					BossHitbox.erase(BossHitbox.begin()); // remove both
 					break; // no need to continue checking
 				}
 			}
 		}
 	}
+
+	
+
 	if ( PianusHitbox.size() != 0 )
 	{
 		if ( charLocation.X >= PianusHitbox[0].x && charLocation.X <= PianusHitbox[0].x+2 && charLocation.Y == PianusHitbox[0].y) // if player is touching hitbox ( fishy )
@@ -1452,13 +1455,14 @@ void checkCollisionHitbox()
 				PlayerHealth--; // damage player
 		}
 
-		for ( unsigned int i = 0; i < FireOrb.size(); i++ ) // if bullet hit hitbox
+		//
+		for ( unsigned int i = 0; i < CKey.size(); i++ ) // if bullet hit hitbox
 		{
-			if ( FireOrb[i].x == PianusHitbox[0].x && FireOrb[i].y == PianusHitbox[0].y || FireOrb[i].x-1 == PianusHitbox[0].x && FireOrb[i].y == PianusHitbox[0].y ) // if hit
+			if ( CKey[i].x == PianusHitbox[0].x && CKey[i].y == PianusHitbox[0].y || CKey[i].x-1 == PianusHitbox[0].x && CKey[i].y == PianusHitbox[0].y ) // if hit
 			{
 				if ( PianusHitbox[0].health > 0 )
 				{
-					FireOrb[i].isRENDERED = false;
+					CKey[i].isRENDERED = false;
 					PianusHitbox[0].health--;
 				}
 				else
@@ -1467,14 +1471,14 @@ void checkCollisionHitbox()
 					{
 						RemovePianusHitbox = 1;
 						pianuscurrentHP--;
-						FireOrb[i].isRENDERED = false;
+						CKey[i].isRENDERED = false;
 						break; // no need to continue checking
 					}
 					else
 					{
 						bossFrameDelay = 0.0;
 						pianuscurrentHP--;
-						FireOrb[i].isRENDERED = false;
+						CKey[i].isRENDERED = false;
 						PianusHitbox.erase(PianusHitbox.begin()); // remove both
 						break; // no need to continue checking
 					}
@@ -1483,4 +1487,5 @@ void checkCollisionHitbox()
 		}
 	}
 }
+
 
