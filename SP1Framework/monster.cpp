@@ -338,17 +338,15 @@ void updateCatFish() // CatFish movement update
 
 void checkMonsterDead()
 {
-	for (int i = 0; i < Snailcounter; i++)
+	for (unsigned int i = 0; i < MonsterSnail.size(); i++)
 	{
+		if ( MonsterSnail[i].health <= 0 )
 		{
-			if ( MonsterSnail[i].health <= 0 )
-			{
-				gotoXY(MonsterSnail[i].x, MonsterSnail[i].y);
-				std::cout << "   ";
-				map[MonsterSnail[i].y][MonsterSnail[i].x] = ' ';
+			gotoXY(MonsterSnail[i].x, MonsterSnail[i].y);
+			std::cout << "   ";
+			map[MonsterSnail[i].y][MonsterSnail[i].x] = ' ';
 
-				MonsterSnail.erase(MonsterSnail.begin() + i);// remove snail from map, nt sure if it works
-			}
+			MonsterSnail.erase(MonsterSnail.begin() + i);// remove snail from map, nt sure if it works
 		}
 	}
 }

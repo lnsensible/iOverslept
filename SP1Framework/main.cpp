@@ -32,8 +32,18 @@ void SetWindow(int Width, int Height)  //Sets size of console... taken from 3dbu
     SetConsoleWindowInfo(Handle, TRUE, &Rect);            // Set Window Size 
     } 
 
+void hidecursor()
+{
+   HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+   CONSOLE_CURSOR_INFO info;
+   info.dwSize = 100;
+   info.bVisible = FALSE;
+   SetConsoleCursorInfo(consoleHandle, &info);
+}
+
 int main()
 {
+	hidecursor();
 	SetWindow(120, 40); // sets size of window to 120 width 40 height
     mainLoop();  // main loop
     shutdown();  // do clean up, if any. free memory.

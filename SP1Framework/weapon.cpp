@@ -9,7 +9,7 @@
 #include <vector>
 
 extern COORD charLocation;
-extern int playerFacing; // 0 = left, 1 = right
+extern int playerFacing; //0 = left, 1 = right
 
 extern std::vector<Monster> MonsterSnail;
 extern std::vector<Monster> Floater;
