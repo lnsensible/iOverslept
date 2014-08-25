@@ -173,12 +173,14 @@ void checkCollisionInnerFear();
 void checkCollisionRat();
 void checkCollisionWengyew();
 void checkCollisionCatFish();
+void checkCollisionDeadFish();
 void updateSnails();
 void updateFloater();
 void updateInnerFear();
 void updateRat();
 void updateWengyew();
 void updateCatFish();
+void updateDeadFish();
 void checkMonsterDead();
 void renderMonster();
 

@@ -29,6 +29,7 @@ extern std::vector<Monster> InnerFear;
 extern std::vector<Monster> Rat;
 extern std::vector<Monster> Wengyew;
 extern std::vector<Monster> CatFish;
+extern std::vector<Monster> DeadFish;
 
 extern std::vector<Skill_Properties> CKey;
 extern std::vector<Skill_Properties> EKey;
@@ -77,6 +78,7 @@ int InnerFearcounter = 0; // count number of InnerFear
 int Ratcounter = 0; // count number of rats
 int Wengyewcounter = 0; // count number of wengyews
 int CatFishcounter = 0; // count number of CatFish
+int DeadFishcounter = 0; // count number of DeadFish
 
 double snailMoveDelay = 0; // delay between each snail movement :D
 double floaterMoveDelay = 0; // delay between each floater movement
@@ -84,6 +86,7 @@ double InnerFearMoveDelay = 0; // delay between each InnerFear movement
 double RatMoveDelay = 0; // delay between each Rat movement
 double WengyewMoveDelay = 0; // delay between each wy movement
 double CatFishMoveDelay = 0; // delay between each CatFish movement
+double DeadFishMoveDelay = 0; // delay between each DeadFish movement
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
 
@@ -889,6 +892,19 @@ void prepareLevel() // Prepares level map for cout.
 				map[i][j] = ' '; // replace with a space
 			}
 
+			if( map[i][j] == 'D' ) // DeadFish Monster placeholder
+			{
+				Monster deadFish;
+
+				deadFish.x = j; // location of X-coordinates of DeadFish
+				deadFish.y = i; // location of Y-coordinates of DeadFish
+				deadFish.health = 4; // health of DeadFish
+
+				DeadFish.push_back(deadFish); // stores coordinates in a vector
+
+				map[i][j] = ' '; // replace with a space
+			}
+
 			if ( map[i][j] == 'T') // TREASURE HORRYY SHEET $$$
 			{
 				map[i][j] = 15;
@@ -1147,6 +1163,7 @@ void resetElements() // removes monsters and effects on the map
 	Rat.clear();
 	Wengyew.clear();
 	CatFish.clear();
+	DeadFish.clear();
 	meteor.clear();
 	splint.clear();
 	laser.clear();
@@ -1181,6 +1198,7 @@ void init()
 	RatMoveDelay = 0.0;
 	WengyewMoveDelay = 0.0;
 	CatFishMoveDelay = 0.0;
+	DeadFishMoveDelay = 0.0;
 
 	PlayerHealth = 3; //-------------------------
 
@@ -1267,6 +1285,7 @@ void update(double dt)
 	RatMoveDelay += dt;
 	WengyewMoveDelay += dt;
 	CatFishMoveDelay += dt;
+	DeadFishMoveDelay += dt;
 	hitboxDelay += dt;
 	canJump += dt;
     deltaTime = dt;
@@ -1386,6 +1405,16 @@ void update(double dt)
 			CatFishMoveDelay = 0; // reset movement timer
 		}
 		checkCollisionCatFish();
+	}
+
+		if ( DeadFish.size() != 0 ) // When there are DeadFishes
+	{
+		if ( DeadFishMoveDelay > 0.250 ) // DeadFishes move every 250ms
+		{
+			updateDeadFish();
+			DeadFishMoveDelay = 0; // reset movement timer
+		}
+		checkCollisionDeadFish();
 	}
 
 	if ( CKey.size() != 0 )

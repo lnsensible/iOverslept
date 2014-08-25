@@ -13,6 +13,7 @@ std::vector<Monster> InnerFear;
 std::vector<Monster> Rat;
 std::vector<Monster> Wengyew;
 std::vector<Monster> CatFish;
+std::vector<Monster> DeadFish;
 
 extern COORD charLocation;
 extern COORD consoleSize;
@@ -24,6 +25,7 @@ extern int InnerFearcounter;
 extern int Ratcounter;
 extern int Wengyewcounter;
 extern int CatFishcounter;
+extern int DeadFishcounter;
 
 void renderMonster() // render mobs
 {                    
@@ -141,6 +143,25 @@ void renderMonster() // render mobs
 		gotoXY(CatFish[i].x, CatFish[i].y); // go to coordinates of CatFish in the vector
 		std::cout << ">)))^" << (char)249 << ">"; // print CatFish
 	}
+
+	for (unsigned int i = 0; i < DeadFish.size(); i++ ) // for all the DeadFishes
+	{
+		for ( int j = DeadFish[i].x-1; j < DeadFish[i].x+8; j++) // loop for checking left and right of DeadFish when it moves
+		{
+			gotoXY(j, DeadFish[i].y); // go to coordinate selected
+			if ( map[DeadFish[i].y][j] == '#' ) // and reprint
+			{
+				std::cout << (char)219; // the wall
+			}
+			else
+			{
+				 std::cout << map[DeadFish[i].y][j]; // print whatever is on the map
+			}
+		}
+
+		gotoXY(DeadFish[i].x, DeadFish[i].y); // go to coordinates of DeadFish in the vector
+		std::cout << ">++*>"; // print DeadFish
+	}
 }
 
 void checkCollisionSnail()
@@ -213,6 +234,19 @@ void checkCollisionCatFish()
 	for ( unsigned int i = 0; i < CatFish.size(); i++) // for all the CatFishes
 	{
 		if ( charLocation.X >= CatFish[i].x && charLocation.X <= CatFish[i].x+6 && charLocation.Y == CatFish[i].y) // if player is touching the CatFish
+		{
+			hasbeenDamaged = 1; // damage player by 1
+			if ( PlayerHealth > 0 ) // if player health is more than zero
+				PlayerHealth--; // damage player
+		}
+	}
+}
+
+void checkCollisionDeadFish()
+	{
+	for ( unsigned int i = 0; i < DeadFish.size(); i++) // for all the DeadFishes
+	{
+		if ( charLocation.X >= DeadFish[i].x && charLocation.X <= DeadFish[i].x+4 && charLocation.Y == DeadFish[i].y) // if player is touching the DeadFish
 		{
 			hasbeenDamaged = 1; // damage player by 1
 			if ( PlayerHealth > 0 ) // if player health is more than zero
@@ -313,7 +347,7 @@ void updateWengyew() // Wengyew movement update
 		}
 		else
 		{
-			if ( map[Wengyew[i].y][Wengyew[i].x+3] != '#' && map[Wengyew[i].y+1][Wengyew[i].x+7] == '#' ) // If move right is possible
+			if ( map[Wengyew[i].y][Wengyew[i].x+5] != '#' && map[Wengyew[i].y+1][Wengyew[i].x+7] == '#' ) // If move right is possible
 				Wengyew[i].x++;
 		}
 	}
@@ -332,6 +366,36 @@ void updateCatFish() // CatFish movement update
 		{
 			if ( map[CatFish[i].y][CatFish[i].x+3] != '#' && map[CatFish[i].y+1][CatFish[i].x+7] == '#' ) // If move right is possible
 				CatFish[i].x++;
+		}
+	}
+}
+
+void updateDeadFish() // DeadFish movement update
+{
+	for (unsigned int i = 0; i < DeadFish.size(); i++ ) // for all DeadFishes
+	{
+		if ( charLocation.Y == DeadFish[i].y ) // if character same Y coordinate as DeadFish
+		{
+			if ( charLocation.X <= DeadFish[i].x ) // if character on DeadFish's left
+			{
+				if ( map[DeadFish[i].y][DeadFish[i].x-1] != '#' && map[DeadFish[i].y+1][DeadFish[i].x-1] == '#' ) // If move left is possible
+					DeadFish[i].x--;
+			}
+			else // if character on DeadFish' right
+			{
+				if ( map[DeadFish[i].y][DeadFish[i].x+3] != '#' && map[DeadFish[i].y+1][DeadFish[i].x+7] == '#' ) // If move right is possible
+					DeadFish[i].x++;
+			}
+		}
+		if ( rand() % 2 == 0 )
+		{
+			if ( map[DeadFish[i].y][DeadFish[i].x-1] != '#' && map[DeadFish[i].y+1][DeadFish[i].x-1] == '#' ) // If move left is possible
+				DeadFish[i].x--;
+		}
+		else
+		{
+			if ( map[DeadFish[i].y][DeadFish[i].x+5] != '#' && map[DeadFish[i].y+1][DeadFish[i].x+7] == '#' ) // If move right is possible
+				DeadFish[i].x++;
 		}
 	}
 }
@@ -407,6 +471,18 @@ void checkMonsterDead()
 			map[CatFish[i].y][CatFish[i].x] = ' ';
 
 			CatFish.erase(CatFish.begin() + i);// remove catfish from map
+		}
+	}
+
+	for (unsigned int i = 0; i < DeadFish.size(); i++)
+	{
+		if ( DeadFish[i].health <= 0 )
+		{
+			gotoXY(DeadFish[i].x, DeadFish[i].y);
+			std::cout << "     ";
+			map[DeadFish[i].y][DeadFish[i].x] = ' ';
+
+			DeadFish.erase(DeadFish.begin() + i);// remove deadfish from map
 		}
 	}
 }

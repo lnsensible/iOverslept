@@ -123,6 +123,21 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		}
 	}
 
+	for ( unsigned int i = 0; i < DeadFish.size(); i++)
+	{
+		for ( unsigned int j = 0; j < Skill.size(); j++)
+		{
+			if (Skill[j].x == DeadFish[i].x && Skill[j].y == DeadFish[i].y)
+			{
+				DeadFish[i].health -= Skill[j].Damage;
+				Skill.erase(Skill.begin() + j); // remove Skill
+				checkMonsterDead();
+				i = 0;
+				j = 0;
+			}
+		}
+	}
+
 
 }
 

@@ -9,6 +9,7 @@ M - Floater
 R - Rat
 W - Wengyew
 Y - CatFish
+D - DeadFish
 
 Environment / Level elements
 C - Character spawn point
