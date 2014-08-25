@@ -349,4 +349,64 @@ void checkMonsterDead()
 			MonsterSnail.erase(MonsterSnail.begin() + i);// remove snail from map, nt sure if it works
 		}
 	}
+
+	for (unsigned int i = 0; i < Floater.size(); i++)
+	{
+		if ( Floater[i].health <= 0 )
+		{
+			gotoXY(Floater[i].x, Floater[i].y);
+			std::cout << " ";
+			map[Floater[i].y][Floater[i].x] = ' ';
+
+			Floater.erase(Floater.begin() + i);// remove floater from map, nt sure if it works
+		}
+	}
+
+	for (unsigned int i = 0; i < InnerFear.size(); i++)
+	{
+		if ( InnerFear[i].health <= 0 )
+		{
+			gotoXY(InnerFear[i].x, InnerFear[i].y);
+			std::cout << " ";
+			map[InnerFear[i].y][InnerFear[i].x] = ' ';
+
+			InnerFear.erase(InnerFear.begin() + i);// remove floater from map, nt sure if it works
+		}
+	}
+
+	for (unsigned int i = 0; i < Rat.size(); i++)
+	{
+		if ( Rat[i].health <= 0 )
+		{
+			gotoXY(Rat[i].x, Rat[i].y);
+			std::cout << "       ";
+			map[Rat[i].y][Rat[i].x] = ' ';
+
+			Rat.erase(Rat.begin() + i);// remove floater from map, nt sure if it works
+		}
+	}
+
+	for (unsigned int i = 0; i < Wengyew.size(); i++)
+	{
+		if ( Wengyew[i].health <= 0 )
+		{
+			gotoXY(Wengyew[i].x, Wengyew[i].y);
+			std::cout << "     ";
+			map[Wengyew[i].y][Wengyew[i].x] = ' ';
+
+			Wengyew.erase(Wengyew.begin() + i);// remove floater from map, nt sure if it works
+		}
+	}
+
+	for (unsigned int i = 0; i < CatFish.size(); i++)
+	{
+		if ( CatFish[i].health <= 0 )
+		{
+			gotoXY(CatFish[i].x, CatFish[i].y);
+			std::cout << "       ";
+			map[CatFish[i].y][CatFish[i].x] = ' ';
+
+			CatFish.erase(CatFish.begin() + i);// remove floater from map, nt sure if it works
+		}
+	}
 }

@@ -17,6 +17,7 @@ extern std::vector<Monster> InnerFear;
 extern std::vector<Monster> Rat;
 extern std::vector<Monster> Wengyew;
 extern std::vector<Monster> CatFish;
+extern std::vector<Monster> DeadFish;
 
 std::vector<Bullets_Properties> Bullets;
 
@@ -46,7 +47,7 @@ void Attack()
 	}
 }
 
-void checkCollisionWithMonster()
+void checkCollisionWithMonster() 
 {
 	for ( unsigned int i = 0; i < MonsterSnail.size(); i++)
 	{
