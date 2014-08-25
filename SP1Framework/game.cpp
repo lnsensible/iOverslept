@@ -61,7 +61,7 @@ int NUMBEROFSIGNS = 30;
 
 unsigned char map[MAPHEIGHT][MAPWIDTH]; // stores the level map
 unsigned char Signprint[SIGNHEIGHT][SIGNWIDTH]; // stores the sign
-unsigned char Savedata[DATAHEIGHT][DATAWIDTH]; //stores values of savedata
+unsigned int Savedata[DATAHEIGHT][DATAWIDTH]; //stores values of savedata
 int checkLevel = 0; // Check current level
 int checkPrevLevel = 0; // Check previous level
 int hasLevelRendered = 0; // Check if level has been rendered. 0 = Not loaded, 1 = Loaded
@@ -72,6 +72,7 @@ int hasStoryRendered = 0; // check if story has been render. 0 = nope, 1 = yep.
 int hasMoved = 0; // check if player moved.
 int playerFacing = 0; // 0 = left, 1 = right
 int MoneyCount; //The amount of money you have
+int NewGame = 1; //If first time play
 
 int Snailcounter = 0; // count number of snails
 int Floatercounter = 0; // count number of floaters
@@ -305,134 +306,15 @@ void updatelevelmenu(double dt)
 	{
 		hasLevelRendered = 0;
 
-		if(charLocation.X == 46)
+		loadGame();
+		if(NewGame == 0)
 		{
-			if(charLocation.Y == 23)
-			{
-				checkLevel = 1;
-			}
-
-			else if(charLocation.Y == 25)
-			{
-				checkLevel = 11;
-			}
+			loadGameUpdate();
 		}
 
-		else if(charLocation.X == 49)
+		else
 		{
-			if(charLocation.Y == 23)
-			{
-				checkLevel = 2;
-			}
-
-			else if(charLocation.Y == 25)
-			{
-				checkLevel = 12;
-			}
-		}
-
-		else if(charLocation.X == 52)
-		{
-			if(charLocation.Y == 23)
-			{
-				checkLevel = 3;
-			}
-
-			else if(charLocation.Y == 25)
-			{
-				checkLevel = 13;
-			}
-		}
-
-		else if(charLocation.X == 55)
-		{
-			if(charLocation.Y == 23)
-			{
-				checkLevel = 4;
-			}
-
-			else if(charLocation.Y == 25)
-			{
-				checkLevel = 14;
-			}
-		}
-
-		else if(charLocation.X == 58)
-		{
-			if(charLocation.Y == 23)
-			{
-				checkLevel = 5;
-			}
-
-			else if(charLocation.Y == 25)
-			{
-				checkLevel = 15;
-			}
-		}
-
-		else if(charLocation.X == 61)
-		{
-			if(charLocation.Y == 23)
-			{
-				checkLevel = 6;
-			}
-
-			else if(charLocation.Y == 25)
-			{
-				checkLevel = 16;
-			}
-		}
-
-		else if(charLocation.X == 64)
-		{
-			if(charLocation.Y == 23)
-			{
-				checkLevel = 7;
-			}
-
-			else if(charLocation.Y == 25)
-			{
-				checkLevel = 17;
-			}
-		}
-
-		else if(charLocation.X == 67)
-		{
-			if(charLocation.Y == 23)
-			{
-				checkLevel = 8;
-			}
-
-			else if(charLocation.Y == 25)
-			{
-				checkLevel = 18;
-			}
-		}
-
-		else if(charLocation.X == 70)
-		{
-			if(charLocation.Y == 23)
-			{
-				checkLevel = 9;
-			}
-
-			else if(charLocation.Y == 25)
-			{
-				checkLevel = 19;
-			}
-		}
-
-		else if(charLocation.X == 73)
-		{
-			if(charLocation.Y == 23)
-			{
-				checkLevel = 10;
-			}
-
-			else if(charLocation.Y == 25)
-			{
-				checkLevel = 20;
-			}
+			checkLevel = 1;
 		}
 
 		gamestate = GAME;
@@ -560,6 +442,7 @@ void updatedeathmenu(double dt)
 
 	if(keyPressed[K_ENTER])
 	{
+		PlayerHealth = 3;
 		if(charLocation.X == 60)
 		{
 			gamestate = LEVELMENU;
@@ -569,6 +452,11 @@ void updatedeathmenu(double dt)
 		{
 			gamestate = GAME;
 		}
+	}
+
+	if(keyPressed[K_ESCAPE])
+	{
+		gamestate = LEVELMENU;
 	}
 }
 void renderdeathmenu()
@@ -687,22 +575,43 @@ void renderendmenu()
 	colour(0x0F);
 }
 
+bool fileExists(std::string fileName)
+{
+    std::ifstream infile(fileName);
+    return infile.good();
+}
+
 void loadGame() // loads game from file.
 {
 	std::fstream Savefile;
 	Savefile.open("playersave.txt");
 
+	int tf = fileExists("playersave.txt");
 
-	for (int i = 0; i < DATAHEIGHT; i++)
+	if(tf == true)
 	{
-		for (int j = 0; j < DATAWIDTH; j++)
+		for (int i = 0; i < DATAHEIGHT; i++)
 		{
-			Savefile >> Savedata[i][j];
+			for (int j = 0; j < DATAWIDTH; j++)
+			{
+				Savefile >> Savedata[i][j];
+			}
 		}
+		NewGame = 0;
+	}
+	else
+	{
+		NewGame = 1;
 	}
 
 	Savefile.close();
-} 
+}
+void loadGameUpdate()
+{
+	MoneyCount = Savedata[0][0];
+	PlayerHealth = Savedata[0][1];
+	checkLevel = Savedata[0][2];
+}
 
 void loadLevel(std::string filename) // loads level map from file.
 {
@@ -987,36 +896,6 @@ void renderLevel() // Renders map into console
 	}
 }
 
-void renderSpikes() // re-render spikes after being stabbed
-{
-	for (int i = 0; i < MAPHEIGHT; i++)
-	{
-		for (int j = 0; j < MAPWIDTH; j++)
-		{
-			if ( map[i][j] == 30 ) // Floor trap placeholder
-			{
-				gotoXY(j, i);
-				std::cout << map[i][j];
-			}
-			if ( map[i][j] == 31 ) // Ceiling trap placeholder
-			{
-				gotoXY(j, i);
-				std::cout << map[i][j];
-			}
-			if ( map[i][j] == 17 ) // Wall trap placeholder ( a spike facing left )
-			{
-				gotoXY(j, i);
-				std::cout << map[i][j];
-			}
-			if ( map[i][j] == 16 ) // Wall trap placeholder ( a spike facing right )
-			{
-				gotoXY(j, i);
-				std::cout << map[i][j];
-			}
-		}
-	}
-}
-
 void renderUIborders()
 {
 	gotoXY(0, 24);
@@ -1217,16 +1096,12 @@ void init()
 	WengyewMoveDelay = 0.0;
 	CatFishMoveDelay = 0.0;
 	DeadFishMoveDelay = 0.0;
-	LiveFishMoveDelay = 0.0;
-
-	PlayerHealth = 3; //-------------------------
 
 	hasbeenStabbed = 0;
 	hasbeenDamaged = 0;
 	bossStatus = 0;
 	isBossLevel = 0;
 	hasStoryRendered = 0;
-
 
 	for(int i = 0; i < NUMBEROFLEVELS + 1; i++)
 	{
@@ -1320,7 +1195,7 @@ void update(double dt)
 	if ( hasbeenStabbed == 1 ) 
 	{
 		colour(0x0F);
-		renderSpikes();
+
 		hasbeenStabbed = 0;
 		gotoXY(14, 8);
 	}
