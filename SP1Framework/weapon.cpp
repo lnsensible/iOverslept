@@ -19,39 +19,15 @@ extern std::vector<Monster> Wengyew;
 extern std::vector<Monster> CatFish;
 extern std::vector<Monster> DeadFish;
 
-std::vector<Skill_Properties> Bullets;
-std::vector<Skill_Properties> CKey = Bullets;
+std::vector<Skill_Properties> FireOrb;
+std::vector<Skill_Properties> CKey = FireOrb;
 
 void initSkill()
 {
-	for (unsigned int x =0; x<Bullets.size(); ++x)
+	for (unsigned int x =0; x<FireOrb.size(); ++x)
 	{
-		Bullets[x].Damage = 1;
-		Bullets[x].Range = 5;
-	}
-
-}
-
-void Attack(std::vector<Skill_Properties>& Skill)
-{
-	if ( playerFacing == 0 ) // if facing left,
-	{
-		Skill_Properties addBullet;
-		addBullet.x = charLocation.X-1;
-		addBullet.y = charLocation.Y;
-		addBullet.faceWhere = false;
-		addBullet.isRENDERED = true;
-
-		Skill.push_back(addBullet);
-	}
-	else if ( playerFacing == 1 ) // if facing right
-	{
-		Skill_Properties addBullet;
-		addBullet.x = charLocation.X+1;
-		addBullet.y = charLocation.Y;
-		addBullet.faceWhere = true;
-		addBullet.isRENDERED = true;
-		Skill.push_back(addBullet);
+		FireOrb[x].Damage = 1;
+		FireOrb[x].Range = 50;
 	}
 }
 
@@ -64,21 +40,6 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 			if (Skill[j].x == MonsterSnail[i].x && Skill[j].y == MonsterSnail[i].y)
 			{
 				MonsterSnail[i].health -= Skill[j].Damage;
-				Skill.erase(Skill.begin() + j); // remove Skill
-				checkMonsterDead();
-				i = 0;
-				j = 0;
-			}
-		}
-	}
-
-	for ( unsigned int i = 0; i < InnerFear.size(); i++)
-	{
-		for ( unsigned int j = 0; j < Skill.size(); j++)
-		{
-			if (Skill[j].x == InnerFear[i].x && Skill[j].y == InnerFear[i].y)
-			{
-				InnerFear[i].health -= Skill[j].Damage;
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -117,6 +78,21 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		}
 	}
 
+	for ( unsigned int i = 0; i < InnerFear.size(); i++)
+	{
+		for ( unsigned int j = 0; j < Skill.size(); j++)
+		{
+			if (Skill[j].x == InnerFear[i].x && Skill[j].y == InnerFear[i].y)
+			{
+				InnerFear[i].health -= Skill[j].Damage;
+				Skill.erase(Skill.begin() + j); // remove Skill
+				checkMonsterDead();
+				i = 0;
+				j = 0;
+			}
+		}
+	}
+
 	for ( unsigned int i = 0; i < Wengyew.size(); i++)
 	{
 		for ( unsigned int j = 0; j < Skill.size(); j++)
@@ -147,20 +123,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		}
 	}
 
-	for ( unsigned int i = 0; i < DeadFish.size(); i++)
-	{
-		for ( unsigned int j = 0; j < Skill.size(); j++)
-		{
-			if (Skill[j].x == DeadFish[i].x && Skill[j].y == DeadFish[i].y)
-			{
-				DeadFish[i].health -= Skill[j].Damage;
-				Skill.erase(Skill.begin() + j); // remove Skill 
-				checkMonsterDead();
-				i = 0;
-				j = 0;
-			}
-		}
-	}
+
 }
 
 void checkCollisionWithWall(std::vector<Skill_Properties>& Skill)
@@ -174,9 +137,31 @@ void checkCollisionWithWall(std::vector<Skill_Properties>& Skill)
 	}
 }
 
+void Attack(std::vector<Skill_Properties>& Skill)
+{
+	if ( playerFacing == 0 ) // if facing left,
+	{
+		Skill_Properties addBullet;
+		addBullet.x = charLocation.X-1;
+		addBullet.y = charLocation.Y;
+		addBullet.faceWhere = false;
+		addBullet.isRENDERED = true;
+
+		Skill.push_back(addBullet);
+	}
+	else if ( playerFacing == 1 ) // if facing right
+	{
+		Skill_Properties addBullet;
+		addBullet.x = charLocation.X+1;
+		addBullet.y = charLocation.Y;
+		addBullet.faceWhere = true;
+		addBullet.isRENDERED = true;
+		Skill.push_back(addBullet);
+	}
+}
+
 void updateSkill(std::vector<Skill_Properties>& Skill)
 {
-	int checkRange = 0;
 	for (unsigned int h = 0; h < Skill.size(); ++h)
 	{
 		if (Skill[h].faceWhere == false)
@@ -186,10 +171,6 @@ void updateSkill(std::vector<Skill_Properties>& Skill)
 		else if (Skill[h].faceWhere == true)
 		{
 			Skill[h].x += 1;
-		}
-		if (checkRange == Skill[h].Range)
-		{
-			Skill.erase(Skill.begin() + h);
 		}
 		checkCollisionWithMonster(Skill);
 		checkCollisionWithWall(Skill);
@@ -278,14 +259,19 @@ void spawnSkill(std::vector<Skill_Properties>& Skill){
 				gotoXY(Skill[x].x+1, Skill[x].y);
 				std::cout<< map[Skill[x].y][Skill[x].x+1];
 				gotoXY(Skill[x].x, Skill[x].y);
-				std::cout<<"o";
+				colour(0x04);
+				std::cout<<(char)15;
+				colour(0x0F);
 			}
 			else if ( Skill[x].faceWhere == true )
 			{
 				gotoXY(Skill[x].x-1, Skill[x].y);
 				std::cout<< map[Skill[x].y][Skill[x].x-1];
 				gotoXY(Skill[x].x, Skill[x].y);
-				std::cout<<"o";
+				colour(0x04);
+				std::cout<<(char)15;
+				colour(0x0F);
+				
 			}
 		}
 	}

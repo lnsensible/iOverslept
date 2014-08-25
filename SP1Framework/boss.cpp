@@ -27,7 +27,7 @@ extern int isBossLevel;
 extern COORD charLocation;
 extern COORD consoleSize;
 extern int gamestate;
-extern std::vector<Bullets_Properties> Bullets;
+extern std::vector<Skill_Properties> FireOrb;
 
 std::vector<bossAttack> meteor;
 std::vector<bossAttack> splint;
@@ -1421,14 +1421,14 @@ void checkCollisionHitbox()
 {
 	if ( BossHitbox.size() != 0 )
 	{
-		for ( unsigned int i = 0; i < Bullets.size(); i++ ) // if bullet hit hitbox
+		for ( unsigned int i = 0; i < FireOrb.size(); i++ ) // if bullet hit hitbox
 		{
-			if ( Bullets[i].x == BossHitbox[0].X && Bullets[i].y == BossHitbox[0].Y ) // if hit
+			if ( FireOrb[i].x == BossHitbox[0].X && FireOrb[i].y == BossHitbox[0].Y ) // if hit
 			{
 				if ( bosscurrentHP - 1 != 0 )
 				{
 					bosscurrentHP--;
-					Bullets[i].isRENDERED = false;
+					FireOrb[i].isRENDERED = false;
 					BossHitbox.erase(BossHitbox.begin()); // remove both
 					break; // no need to continue checking
 				}
@@ -1436,7 +1436,7 @@ void checkCollisionHitbox()
 				{
 					bossFrameDelay = 0.0;
 					bosscurrentHP--;
-					Bullets[i].isRENDERED = false;
+					FireOrb[i].isRENDERED = false;
 					BossHitbox.erase(BossHitbox.begin()); // remove both
 					break; // no need to continue checking
 				}
@@ -1452,13 +1452,13 @@ void checkCollisionHitbox()
 				PlayerHealth--; // damage player
 		}
 
-		for ( unsigned int i = 0; i < Bullets.size(); i++ ) // if bullet hit hitbox
+		for ( unsigned int i = 0; i < FireOrb.size(); i++ ) // if bullet hit hitbox
 		{
-			if ( Bullets[i].x == PianusHitbox[0].x && Bullets[i].y == PianusHitbox[0].y || Bullets[i].x-1 == PianusHitbox[0].x && Bullets[i].y == PianusHitbox[0].y ) // if hit
+			if ( FireOrb[i].x == PianusHitbox[0].x && FireOrb[i].y == PianusHitbox[0].y || FireOrb[i].x-1 == PianusHitbox[0].x && FireOrb[i].y == PianusHitbox[0].y ) // if hit
 			{
 				if ( PianusHitbox[0].health > 0 )
 				{
-					Bullets[i].isRENDERED = false;
+					FireOrb[i].isRENDERED = false;
 					PianusHitbox[0].health--;
 				}
 				else
@@ -1467,14 +1467,14 @@ void checkCollisionHitbox()
 					{
 						RemovePianusHitbox = 1;
 						pianuscurrentHP--;
-						Bullets[i].isRENDERED = false;
+						FireOrb[i].isRENDERED = false;
 						break; // no need to continue checking
 					}
 					else
 					{
 						bossFrameDelay = 0.0;
 						pianuscurrentHP--;
-						Bullets[i].isRENDERED = false;
+						FireOrb[i].isRENDERED = false;
 						PianusHitbox.erase(PianusHitbox.begin()); // remove both
 						break; // no need to continue checking
 					}

@@ -31,6 +31,7 @@ extern std::vector<Monster> Wengyew;
 extern std::vector<Monster> CatFish;
 
 extern std::vector<Skill_Properties> CKey;
+extern std::vector<Skill_Properties> EKey;
 
 extern int hasbeenStabbed;
 extern int weaponDAMAGE;       
@@ -1373,7 +1374,6 @@ void update(double dt)
 		updateSkill(CKey);
 	}
 
-
     // Updating the location of the character based on the key press
     if (keyPressed[K_LEFT])
     {
@@ -1465,6 +1465,7 @@ void render()
 		spawnSkill(CKey);
 	}
 
+
 	// render character
     gotoXY(charLocation);
     colour(0x0C);
@@ -1516,6 +1517,7 @@ void render()
 
 		checkPianusStatus();
 	}
+
 
 	renderMonster();
 

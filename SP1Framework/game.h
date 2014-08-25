@@ -50,6 +50,7 @@ struct Skill_Properties{
 	int Damage;
 	bool isRENDERED; // if 1, render. if 0, clear and remove
 	int Range;
+	char skillASCII;
 };
 
 enum Keys
