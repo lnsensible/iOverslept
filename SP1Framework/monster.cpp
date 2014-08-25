@@ -358,7 +358,7 @@ void checkMonsterDead()
 			std::cout << " ";
 			map[Floater[i].y][Floater[i].x] = ' ';
 
-			Floater.erase(Floater.begin() + i);// remove floater from map
+			Floater.erase(Floater.begin() + i);// remove floater from map, nt sure if it works
 		}
 	}
 
@@ -370,7 +370,7 @@ void checkMonsterDead()
 			std::cout << " ";
 			map[InnerFear[i].y][InnerFear[i].x] = ' ';
 
-			InnerFear.erase(InnerFear.begin() + i);// remove InnerFear from map
+			InnerFear.erase(InnerFear.begin() + i);// remove floater from map, nt sure if it works
 		}
 	}
 
@@ -382,7 +382,7 @@ void checkMonsterDead()
 			std::cout << "       ";
 			map[Rat[i].y][Rat[i].x] = ' ';
 
-			Rat.erase(Rat.begin() + i);// remove Rat from map
+			Rat.erase(Rat.begin() + i);// remove floater from map, nt sure if it works
 		}
 	}
 
@@ -394,7 +394,7 @@ void checkMonsterDead()
 			std::cout << "     ";
 			map[Wengyew[i].y][Wengyew[i].x] = ' ';
 
-			Wengyew.erase(Wengyew.begin() + i);// remove Wengyew from map
+			Wengyew.erase(Wengyew.begin() + i);// remove floater from map, nt sure if it works
 		}
 	}
 
@@ -406,7 +406,7 @@ void checkMonsterDead()
 			std::cout << "       ";
 			map[CatFish[i].y][CatFish[i].x] = ' ';
 
-			CatFish.erase(CatFish.begin() + i);// remove CatFish from map
+			CatFish.erase(CatFish.begin() + i);// remove floater from map, nt sure if it works
 		}
 	}
 }
