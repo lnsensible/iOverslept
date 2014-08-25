@@ -8,17 +8,33 @@
 #include <vector>
 
 int bossStatus = 0; // Check what the boss is currently doing. 0 = Standing, 1 = Using skill1, 2 = using skill2. 
+int Randomzxc = 0; // determine where hitbox will spawn.
+int RemovePianusHitbox = 0; // 0 = no need to remove, 1 = remove
 double skillDelay = 0; // delay between using skills
 double bossFrameDelay = 0; // delay between boss animations
+double hitboxDelay = 0; // delay between hitbox movement
+
+const int bossHP = 20; // max hp= 20
+const int pianusHP = 20; // max hp= 20
+int bosscurrentHP = 0;
+int pianuscurrentHP = 0;
+
+char bossHPbar[20];
+char pianusHPbar[20];
+
+extern int isBossLevel;
 
 extern COORD charLocation;
 extern COORD consoleSize;
 extern int gamestate;
+extern std::vector<Bullets_Properties> Bullets;
 
 std::vector<bossAttack> meteor;
 std::vector<bossAttack> splint;
 std::vector<bossAttack> laser;
 std::vector<bossAttack> lava;
+std::vector<bossAttack> BossHitbox;
+std::vector<Monster> PianusHitbox;
 
 int PewPew = 0; // 0 = no shoot laser, 1 = pewpew, 2 = delete laser
 int SpewSpew = 0; // 0 = no lava flood, 1 = spewspew, 2 = delete lava
@@ -268,7 +284,7 @@ void pianusLavaEffect()
 	}
 }
 
-void pianusDeath1()
+void pianusDead1()
 {
 	gotoXY(65, 7);	std::cout << "                                        ";
 	gotoXY(65, 8);	std::cout << "                                        ";
@@ -287,7 +303,7 @@ void pianusDeath1()
 	gotoXY(65, 21);	std::cout << "    +++=~::,.~~~~~~~~,:..:+,...=,...:   ";
 }
 
-void pianusDeath2()
+void pianusDead2()
 {
 	gotoXY(65, 7);	std::cout << "                                        ";
 	gotoXY(65, 8);	std::cout << "                                        ";
@@ -306,7 +322,7 @@ void pianusDeath2()
 	gotoXY(65, 21);	std::cout << "    +++=~::,.~~~~~~~~,:..:+,...=,...:   ";
 }
 
-void pianusDeath3()
+void pianusDead3()
 {
 	gotoXY(65, 7);	std::cout << "                                        ";
 	gotoXY(65, 8);	std::cout << "                                        ";
@@ -723,7 +739,7 @@ void bossSplintEffect()
 	splint.push_back(Splint);
 }
 
-void bossDeath1()
+void bossDead1()
 {
 	gotoXY(50, 4);	std::cout << "                                                     ";
 	gotoXY(50, 5);	std::cout << "                                                     ";
@@ -744,7 +760,8 @@ void bossDeath1()
 	gotoXY(50, 20);	std::cout << "            +I            77IIII======               ";
 	gotoXY(50, 21);	std::cout << "           +IIIIII7777777IIIIIIII======              ";
 }
-void bossDeath2()
+
+void bossDead2()
 {
 	gotoXY(50, 4);	std::cout << "                                                     ";
 	gotoXY(50, 5);	std::cout << "                                                     ";
@@ -765,7 +782,8 @@ void bossDeath2()
 	gotoXY(50, 20);	std::cout << "            +777            77II?===   =             ";
 	gotoXY(50, 21);	std::cout << "           +IIIIII7777777IIIIIIIIIII===              ";
 }
-void bossDeath3()
+
+void bossDead3()
 {
 	gotoXY(50, 4);	std::cout << "                                                     ";
 	gotoXY(50, 5);	std::cout << "                                                     ";
@@ -880,7 +898,7 @@ void checkCollisionLaser()
 {
 	if ( laser.size() != 0 ) // confirming there is a splint
 	{
-		if ( charLocation.Y >= laser[0].Y -6 && charLocation.Y <= laser[0].Y +2 ) // if player standing within y coordinates of laser attack
+		if ( charLocation.Y >= laser[0].Y -6 && charLocation.Y <= laser[0].Y +1 ) // if player standing within y coordinates of laser attack
 		{
 			if ( charLocation.X == laser[0].X ) // if player is within the splint
 			{
@@ -913,74 +931,103 @@ void checkCollisionLava()
 
 void checkBossStatus()
 {
-	if ( skillDelay > 5.0 )
+	if ( bosscurrentHP == 0 )
 	{
-		bossStatus = ( rand() % 2 + 1 ); // Changes boss status to either 1 or 2 ( use either skill1 or skill2 ).
-		skillDelay = 0.0; // reset skillDelay;
+		if ( bossFrameDelay > 1.0 ) // first frame
+			{
+				if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
+				{
+					bossDead2();
+				}
+				else if ( bossFrameDelay > 3.0 ) // third frame
+				{
+					bossDead3();
+					map[21][41] = (char)239;
+					map[19][21] = (char)209;
+					renderLevel();
+					bossFrameDelay -= 3.0;
+					isBossLevel = 0;
+					bossStatus = 0;
+					skillDelay = 0;
+					// reset to standing animation ~
+				}
+				else
+				{
+					bossDead1();
+				}
+			}
 	}
-    else if ( skillDelay < 0.5 && bossStatus == 0 )
+	else
 	{
-		bossStatus = 0; // not using skill, boss is standing
-	}
+		if ( skillDelay > 5.0 )
+		{
+			bossStatus = ( rand() % 2 + 1 ); // Changes boss status to either 1 or 2 ( use either skill1 or skill2 ).
+			skillDelay -= 5.0; // reset skillDelay;
+		}
+		else if ( skillDelay < 0.5 && bossStatus == 0 )
+		{
+			bossStatus = 0; // not using skill, boss is standing
+		}
 
-	if ( bossStatus == 0 ) // when boss is standing
-	{
-		if ( bossFrameDelay > 1.0 ) // first frame
+		if ( bossStatus == 0 ) // when boss is standing
 		{
-			if ( bossFrameDelay > 2.0 ) //second frame
+			if ( bossFrameDelay > 1.0 ) // first frame
 			{
-				bossStand2();
-				bossFrameDelay = 0.0;
-			}
-			else
-			{
-				bossStand1();
+				if ( bossFrameDelay > 2.0 ) //second frame
+				{
+					bossStand2();
+					bossFrameDelay -= 2.0;
+				}
+				else
+				{
+					bossStand1();
+				}
 			}
 		}
-	}
-	else if ( bossStatus == 1 ) // boss is using first skill (meteor)
-	{
-		if ( bossFrameDelay > 1.0 ) // first frame
+		else if ( bossStatus == 1 ) // boss is using first skill (meteor)
 		{
-			if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
+			if ( bossFrameDelay > 1.0 ) // first frame
 			{
-				bossMeteor2();
-			}
-			else if ( bossFrameDelay > 3.0 ) // third frame
-			{
-				bossMeteor3();
-				bossMeteorEffect();
-				bossFrameDelay = 0;
-				bossStatus = 0;
-				skillDelay = 0;
-				// reset to standing animation ~
-			}
-			else
-			{
-				bossMeteor1();
+				if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
+				{
+					bossMeteor2();
+				}
+				else if ( bossFrameDelay > 3.0 ) // third frame
+				{
+					bossMeteor3();
+					bossMeteorEffect();
+					bossFrameDelay -= 3.0;
+					bossStatus = 0;
+					skillDelay = 0;
+					// reset to standing animation ~
+				}
+				else
+				{
+					bossMeteor1();
+				}
 			}
 		}
-	}
-	else if ( bossStatus == 2 )
-	{
-		if ( bossFrameDelay > 1.0 ) // first frame
+		else if ( bossStatus == 2 )
 		{
-			if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
+			if ( bossFrameDelay > 1.0 ) // first frame
 			{
-				bossSplint2();
-			}
-			else if ( bossFrameDelay > 3.0 ) // third frame
-			{
-				bossSplint3();
-				bossSplintEffect();
-				bossFrameDelay = 0;
-				bossStatus = 0;
-				skillDelay = 0;
-				// reset to standing animation ~
-			}
-			else
-			{
-				bossSplint1();
+				if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
+				{
+					bossSplint2();
+				}
+				else if ( bossFrameDelay > 3.0 ) // third frame
+				{
+					bossSplint3();
+					bossSplintEffect();
+					bossFrameDelay -= 3.0;
+					bossStatus = 0;
+					skillDelay = 0;
+					// reset to standing animation ~
+				}
+				else
+				{
+					bossSplint1();
+				}
 			}
 		}
 	}
@@ -988,74 +1035,450 @@ void checkBossStatus()
 
 void checkPianusStatus()
 {
-	if ( skillDelay > 5.0 )
+	if ( pianuscurrentHP == 0 )
 	{
-		bossStatus = ( rand() % 2 + 1 ); // Changes boss status to either 1 or 2 ( use either skill1 or skill2 ).
-		skillDelay = 0.0; // reset skillDelay;
+		if ( bossFrameDelay > 1.0 ) // first frame
+			{
+				if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
+				{
+					pianusDead2();
+				}
+				else if ( bossFrameDelay > 3.0 ) // third frame
+				{
+					pianusDead3();
+					map[15][8] = (char)239;
+					map[15][21] = (char)209;
+					renderLevel();
+					bossFrameDelay -= 3.0;
+					isBossLevel = 0;
+					bossStatus = 0;
+					skillDelay = 0;
+					// reset to standing animation ~
+				}
+				else
+				{
+					pianusDead1();
+				}
+			}
 	}
-    else if ( skillDelay < 0.5 && bossStatus == 0 )
+	else
 	{
-		bossStatus = 0; // not using skill, boss is standing
-	}
+		if ( skillDelay > 5.0 )
+		{
+			bossStatus = ( rand() % 2 + 1 ); // Changes boss status to either 1 or 2 ( use either skill1 or skill2 ).
+			skillDelay -= 5.0; // reset skillDelay;
+		}
+		else if ( skillDelay < 0.5 && bossStatus == 0 )
+		{
+			bossStatus = 0; // not using skill, boss is standing
+		}
 
-	if ( bossStatus == 0 ) // when boss is standing
-	{
-		if ( bossFrameDelay > 1.0 ) // first frame
+		if ( bossStatus == 0 ) // when boss is standing
 		{
-			if ( bossFrameDelay > 2.0 ) //second frame
+			if ( bossFrameDelay > 1.0 ) // first frame
 			{
-				pianusStand2();
-				bossFrameDelay = 0.0;
+				if ( bossFrameDelay > 2.0 ) //second frame
+				{
+					pianusStand2();
+					bossFrameDelay -= 2.0;
+				}
+				else
+				{
+					pianusStand1();
+				}
 			}
-			else
+		}
+		else if ( bossStatus == 1 ) // boss is using first skill (meteor)
+		{
+			if ( bossFrameDelay > 1.0 ) // first frame
 			{
-				pianusStand1();
+				if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
+				{
+					pianusLaser2();
+				}
+				else if ( bossFrameDelay > 3.0 ) // third frame
+				{
+					pianusLaser3();
+					pianusLaserEffect();
+					bossFrameDelay -= 3.0;
+					bossStatus = 0;
+					skillDelay = 0;
+					// reset to standing animation ~
+				}
+				else
+				{
+					pianusLaser1();
+				}
+			}
+		}
+		else if ( bossStatus == 2 )
+		{
+			if ( bossFrameDelay > 1.0 ) // first frame
+			{
+				if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
+				{
+					pianusLava2();
+				}
+				else if ( bossFrameDelay > 3.0 ) // third frame
+				{
+					pianusLava3();
+					pianusLavaEffect();
+					bossFrameDelay -= 3.0;
+					bossStatus = 0;
+					skillDelay = 0;
+					// reset to standing animation ~
+				}
+				else
+				{
+					pianusLava1();
+				}
 			}
 		}
 	}
-	else if ( bossStatus == 1 ) // boss is using first skill (meteor)
+}
+
+void updateBossHitbox()
+{
+	if ( hitboxDelay > 5.0 )
 	{
-		if ( bossFrameDelay > 1.0 ) // first frame
+		hitboxDelay -= 5.0; // reset
+
+		bossAttack spawnHitbox;
+
+		Randomzxc = ( rand() % 9 ); // randomly spawn the hitbox on a platform
+
+		if ( Randomzxc == 0 )
 		{
-			if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
+			spawnHitbox.X = 14;
+			spawnHitbox.Y = 5;
+
+			BossHitbox.push_back(spawnHitbox);
+		}
+		else if ( Randomzxc == 1 )
+		{
+			spawnHitbox.X = 14;
+			spawnHitbox.Y = 5;
+
+			BossHitbox.push_back(spawnHitbox);
+		}
+		else if ( Randomzxc == 2 )
+		{
+			spawnHitbox.X = 28;
+			spawnHitbox.Y = 5;
+
+			BossHitbox.push_back(spawnHitbox);
+		}
+		else if ( Randomzxc == 3 )
+		{
+			spawnHitbox.X = 21;
+			spawnHitbox.Y = 7;
+
+			BossHitbox.push_back(spawnHitbox);
+		}
+		else if ( Randomzxc == 4 )
+		{
+			spawnHitbox.X = 14;
+			spawnHitbox.Y = 9;
+
+			BossHitbox.push_back(spawnHitbox);
+		}
+		else if ( Randomzxc == 5 )
+		{
+			spawnHitbox.X = 28;
+			spawnHitbox.Y = 9;
+
+			BossHitbox.push_back(spawnHitbox);
+		}
+		else if ( Randomzxc == 6 )
+		{
+			spawnHitbox.X = 21;
+			spawnHitbox.Y = 11;
+
+			BossHitbox.push_back(spawnHitbox);
+		}
+		else if ( Randomzxc == 7 )
+		{
+			spawnHitbox.X = 14;
+			spawnHitbox.Y = 13;
+
+			BossHitbox.push_back(spawnHitbox);
+		}
+		else if ( Randomzxc == 8 )
+		{
+			spawnHitbox.X = 28;
+			spawnHitbox.Y = 13;
+
+			BossHitbox.push_back(spawnHitbox);
+		}
+		else if ( Randomzxc == 9 )
+		{
+			spawnHitbox.X = 21;
+			spawnHitbox.Y = 15;
+
+			BossHitbox.push_back(spawnHitbox);
+		}
+	}
+}
+
+void updatePianusHitbox()
+{
+	if ( hitboxDelay > 10.0 )
+	{
+		hitboxDelay -= 10.0; // reset
+
+		Monster spawnHitbox;
+
+		Randomzxc = ( rand() % 6 ); // randomly spawn the hitbox on a platform
+		gotoXY(0, 0);
+		std::cout << Randomzxc;
+		if ( Randomzxc == 0 )
+		{
+			spawnHitbox.x = 21;
+			spawnHitbox.y = 15;
+			spawnHitbox.health = 3;
+
+			PianusHitbox.push_back(spawnHitbox);
+		}
+		else if ( Randomzxc == 1 )
+		{
+			spawnHitbox.x = 35;
+			spawnHitbox.y = 15;
+			spawnHitbox.health = 3;
+
+			PianusHitbox.push_back(spawnHitbox);
+		}
+		else if ( Randomzxc == 2 )
+		{
+			spawnHitbox.x = 15;
+			spawnHitbox.y = 17;
+			spawnHitbox.health = 3;
+
+			PianusHitbox.push_back(spawnHitbox);
+		}
+		else if ( Randomzxc == 3 )
+		{
+			spawnHitbox.x = 28;
+			spawnHitbox.y = 17;
+			spawnHitbox.health = 3;
+
+			PianusHitbox.push_back(spawnHitbox);
+		}
+		else if ( Randomzxc == 4 )
+		{
+			spawnHitbox.x = 14;
+			spawnHitbox.y = 19;
+			spawnHitbox.health = 3;
+
+			PianusHitbox.push_back(spawnHitbox);
+		}
+		else if ( Randomzxc == 5 )
+		{
+			spawnHitbox.x = 21;
+			spawnHitbox.y = 19;
+			spawnHitbox.health = 3;
+
+			PianusHitbox.push_back(spawnHitbox);
+		}
+		else if ( Randomzxc == 6 )
+		{
+			spawnHitbox.x = 35;
+			spawnHitbox.y = 19;
+			spawnHitbox.health = 3;
+
+			PianusHitbox.push_back(spawnHitbox);
+		}
+	}
+	else if ( PianusHitbox.size() != 0 )
+	{
+		if ( rand() % 2 == 0 )
+		{
+			if ( map[PianusHitbox[0].y][PianusHitbox[0].x-1] != '#' && map[PianusHitbox[0].y+1][PianusHitbox[0].x-1] == '#' ) // If move left is possible
+				PianusHitbox[0].x--;
+		}
+		else
+		{
+			if ( map[PianusHitbox[0].y][PianusHitbox[0].x+4] != '#' && map[PianusHitbox[0].y+1][PianusHitbox[0].x+4] == '#' ) // If move right is possible
+				PianusHitbox[0].x++;
+		}
+	}
+}
+
+void renderBossHitbox()
+{
+	if ( bosscurrentHP != 0 )
+	{
+		if ( BossHitbox.size() == 1 )
+		{
+			gotoXY(BossHitbox[0].X, BossHitbox[0].Y );
+			std::cout << (char)3;
+		}
+		if ( BossHitbox.size() > 1 )
+		{
+			gotoXY(BossHitbox[0].X, BossHitbox[0].Y );
+			std::cout << " ";
+			BossHitbox.erase(BossHitbox.begin()); // remove first hitbox
+			gotoXY(BossHitbox[0].X, BossHitbox[0].Y );
+			std::cout << (char)3;
+		}
+	}
+}
+
+void renderPianusHitbox()
+{                 
+	if ( PianusHitbox.size() != 0 )
+	{
+		if ( PianusHitbox.size() == 1 )
+		{
+			for ( int i = PianusHitbox[0].x-1; i < PianusHitbox[0].x+4; i++) //loop and renders map ( prevent flickering)
 			{
-				pianusLaser2();
+				gotoXY(i, PianusHitbox[0].y); // go to coordinate selected
+				if ( map[PianusHitbox[0].y][i] == '#' ) // and reprint
+				{
+					std::cout << (char)219; // the wall
+				}
+				else
+				{
+					 std::cout << map[PianusHitbox[0].y][i]; // print whatever is on the map
+				}
 			}
-			else if ( bossFrameDelay > 3.0 ) // third frame
+
+			gotoXY(PianusHitbox[0].x, PianusHitbox[0].y); // go to coordinates of hitbox in the vector 
+			std::cout << "<><"; // print hitbox ( fish)
+		}
+
+		if ( PianusHitbox.size() > 1 )
+		{
+			for ( int i = PianusHitbox[0].x-1; i < PianusHitbox[0].x+4; i++) //loop and renders map ( prevent flickering)
 			{
-				pianusLaser3();
-				pianusLaserEffect();
-				bossFrameDelay = 0;
-				bossStatus = 0;
-				skillDelay = 0;
-				// reset to standing animation ~
+				gotoXY(i, PianusHitbox[0].y); // go to coordinate selected
+				if ( map[PianusHitbox[0].y][i] == '#' ) // and reprint
+				{
+					std::cout << (char)219; // the wall
+				}
+				else
+				{
+					 std::cout << map[PianusHitbox[0].y][i]; // print whatever is on the map
+				}
 			}
-			else
+			PianusHitbox.erase(PianusHitbox.begin()); // remove first hitbox
+			gotoXY(PianusHitbox[0].x, PianusHitbox[0].y); // go to coordinates of hitbox in the vector 
+			std::cout << "<><"; // print hitbox ( fish)
+		}
+	}
+}
+
+void removePianusHitbox()
+{
+	gotoXY(PianusHitbox[0].x-1, PianusHitbox[0].y);
+	std::cout << "     ";
+	PianusHitbox.erase(PianusHitbox.begin()); // remove both
+	RemovePianusHitbox = 0;
+}
+
+void bossRenderHP()
+{
+	gotoXY(55, 3);
+	if ( bosscurrentHP != 0 )
+	{
+		std::cout << "Boss HP: ";
+		for ( int i = 0; i < bosscurrentHP; i++ )
+		{
+			std::cout << (char)178;
+		}
+		for ( int i = 0; i < bossHP - bosscurrentHP; i++)
+		{
+			std::cout << (char)176;
+		}
+	}
+	else
+	{
+		std::cout << "                                  ";
+	}
+}
+
+void pianusRenderHP()
+{
+	gotoXY(55, 3);
+	if ( pianuscurrentHP != 0 )
+	{
+		std::cout << "Boss HP: ";
+		for ( int i = 0; i < pianuscurrentHP; i++ )
+		{
+			std::cout << (char)178;
+		}
+		for ( int i = 0; i < pianusHP - pianuscurrentHP; i++)
+		{
+			std::cout << (char)176;
+		}
+	}
+	else
+	{
+		std::cout << "                                  ";
+	}
+}
+
+void checkCollisionHitbox()
+{
+	if ( BossHitbox.size() != 0 )
+	{
+		for ( unsigned int i = 0; i < Bullets.size(); i++ ) // if bullet hit hitbox
+		{
+			if ( Bullets[i].x == BossHitbox[0].X && Bullets[i].y == BossHitbox[0].Y ) // if hit
 			{
-				pianusLaser1();
+				if ( bosscurrentHP - 1 != 0 )
+				{
+					bosscurrentHP--;
+					Bullets[i].isRENDERED = false;
+					BossHitbox.erase(BossHitbox.begin()); // remove both
+					break; // no need to continue checking
+				}
+				else
+				{
+					bossFrameDelay = 0.0;
+					bosscurrentHP--;
+					Bullets[i].isRENDERED = false;
+					BossHitbox.erase(BossHitbox.begin()); // remove both
+					break; // no need to continue checking
+				}
 			}
 		}
 	}
-	else if ( bossStatus == 2 )
+	if ( PianusHitbox.size() != 0 )
 	{
-		if ( bossFrameDelay > 1.0 ) // first frame
+		if ( charLocation.X >= PianusHitbox[0].x && charLocation.X <= PianusHitbox[0].x+2 && charLocation.Y == PianusHitbox[0].y) // if player is touching hitbox ( fishy )
 		{
-			if ( bossFrameDelay > 2.0 && bossFrameDelay <= 3.0) // second frame
+			hasbeenDamaged = 1; // damage player by 1
+			if ( PlayerHealth > 0 ) // if player health is more than zero
+				PlayerHealth--; // damage player
+		}
+
+		for ( unsigned int i = 0; i < Bullets.size(); i++ ) // if bullet hit hitbox
+		{
+			if ( Bullets[i].x == PianusHitbox[0].x && Bullets[i].y == PianusHitbox[0].y || Bullets[i].x-1 == PianusHitbox[0].x && Bullets[i].y == PianusHitbox[0].y ) // if hit
 			{
-				pianusLava2();
-			}
-			else if ( bossFrameDelay > 3.0 ) // third frame
-			{
-				pianusLava3();
-				pianusLavaEffect();
-				bossFrameDelay = 0;
-				bossStatus = 0;
-				skillDelay = 0;
-				// reset to standing animation ~
-			}
-			else
-			{
-				pianusLava1();
+				if ( PianusHitbox[0].health > 0 )
+				{
+					Bullets[i].isRENDERED = false;
+					PianusHitbox[0].health--;
+				}
+				else
+				{
+					if ( pianuscurrentHP - 1 != 0 )
+					{
+						RemovePianusHitbox = 1;
+						pianuscurrentHP--;
+						Bullets[i].isRENDERED = false;
+						break; // no need to continue checking
+					}
+					else
+					{
+						bossFrameDelay = 0.0;
+						pianuscurrentHP--;
+						Bullets[i].isRENDERED = false;
+						PianusHitbox.erase(PianusHitbox.begin()); // remove both
+						break; // no need to continue checking
+					}
+				}
 			}
 		}
 	}

@@ -13,6 +13,15 @@ extern std::vector<bossAttack> meteor;
 extern std::vector<bossAttack> splint;
 extern std::vector<bossAttack> laser;
 extern std::vector<bossAttack> lava;
+extern std::vector<bossAttack> BossHitbox;
+extern std::vector<Monster> PianusHitbox;
+extern char bossHPbar;
+extern char pianusHPbar;
+extern int bosscurrentHP;
+extern int pianuscurrentHP;
+extern int RemovePianusHitbox;
+
+extern double hitboxDelay;
 
 extern std::vector<Monster> MonsterSnail;
 extern std::vector<Monster> Floater;
@@ -480,6 +489,8 @@ void initdeathmenu()
 
 	SetConsoleTitle(L"Death Menu");
 
+	resetElements();
+
 	// Get console width and height
 	CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
 
@@ -577,6 +588,8 @@ void initendmenu()
 	GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &csbi );
 	consoleSize.X = csbi.srWindow.Right + 1;
 	consoleSize.Y = csbi.srWindow.Bottom + 1;
+
+	
 
 	charLocation.X = 47;
 	charLocation.Y = 22;
@@ -1111,6 +1124,8 @@ void resetElements() // removes monsters and effects on the map
 	splint.clear();
 	laser.clear();
 	lava.clear();
+	BossHitbox.clear();
+	PianusHitbox.clear();
 }
 
 void init()
@@ -1156,11 +1171,13 @@ void init()
 		if (checkLevel == 10)
 		{
 			isBossLevel = 1;
+			bosscurrentHP = bossHP;
 		}
 
 		if (checkLevel == 20)
 		{
 			isBossLevel = 2;
+			pianuscurrentHP = pianusHP;
 		}
 
 		if (checkLevel == i)
@@ -1223,6 +1240,7 @@ void update(double dt)
 	RatMoveDelay += dt;
 	WengyewMoveDelay += dt;
 	CatFishMoveDelay += dt;
+	hitboxDelay += dt;
 	canJump += dt;
     deltaTime = dt;
 
@@ -1241,33 +1259,46 @@ void update(double dt)
 
 	if ( isBossLevel == 1 )
 	{
-		
-		if ( meteor.size() != 0 ) // If there are meteors
+		if ( bosscurrentHP != 0 )
 		{
-			updateMeteor();
-			checkCollisionMeteor();
-		}
+			updateBossHitbox();
+			checkCollisionHitbox();
+			if ( meteor.size() != 0 ) // If there are meteors
+			{
+				updateMeteor();
+				checkCollisionMeteor();
+			}
 
-		if ( splint.size() != 0 ) // If boss used splint
-		{
-			updateSplint();
-			checkCollisionSplint();
+			if ( splint.size() != 0 ) // If boss used splint
+			{
+				updateSplint();
+				checkCollisionSplint();
+			}
 		}
+		else
+			resetElements();
 	}
 
 	if ( isBossLevel == 2 )
 	{
-		if ( laser.size() != 0 ) // If there's laser
+		if ( pianuscurrentHP != 0 )
 		{
-			updateLaser();
-			checkCollisionLaser();
-		}
+			updatePianusHitbox();
+			checkCollisionHitbox();
+			if ( laser.size() != 0 ) // If there's laser
+			{
+				updateLaser();
+				checkCollisionLaser();
+			}
 
-		if ( lava.size() != 0 ) // If there's lava
-		{
-			updateLava();
-			checkCollisionLava();
+			if ( lava.size() != 0 ) // If there's lava
+			{
+				updateLava();
+				checkCollisionLava();
+			}
 		}
+		else
+			resetElements();
 	}
 
 	if ( MonsterSnail.size() != 0 ) // When there are snails
@@ -1444,6 +1475,8 @@ void render()
 	
 	if ( isBossLevel == 1 ) // These renders only occur when it's a boss level
 	{
+		bossRenderHP();
+		renderBossHitbox();
 		if ( meteor.size() != 0 ) // If boss spawned meteors
 		{
 			renderMeteor();
@@ -1459,6 +1492,10 @@ void render()
 
 	if ( isBossLevel == 2 )
 	{
+		if ( RemovePianusHitbox == 1 )
+			removePianusHitbox();
+		pianusRenderHP();
+		renderPianusHitbox();
 		if ( laser.size() != 0 ) // If laz0r
 		{
 			renderLaser();

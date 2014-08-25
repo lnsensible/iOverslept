@@ -24,6 +24,9 @@ extern double elapsedTime;
 extern double deltaTime;
 extern double skillDelay;
 extern double bossFrameDelay;
+
+extern const int bossHP;
+extern const int pianusHP;
  
 extern bool rangeORmelee;             
 extern bool rightORleft;          
@@ -104,6 +107,7 @@ void renderHP();
 void renderMoney();
 void renderUIborders();
 void renderSign();
+void renderLevel();
 
 //Boss functions
 void PianusStand1();
@@ -114,9 +118,9 @@ void PianusLava3();
 void PianusLaser1();
 void PianusLaser2();
 void PianusLaser3();
-void PianusDeath1();
-void PianusDeath2();
-void PianusDeath3();
+void PianusDead1();
+void PianusDead2();
+void PianusDead3();
 void PianusLaserEffect();
 void PianusLavaEffect();
 void updateLaser();
@@ -126,6 +130,10 @@ void renderLava();
 void checkPianusStatus();
 void checkCollisionLaser();
 void checkCollisionLava();
+void pianusRenderHP();
+void updatePianusHitbox();
+void renderPianusHitbox();
+void removePianusHitbox();
 
 void BossStand1();
 void BossStand2();
@@ -135,9 +143,9 @@ void BossSplint3();
 void BossMeteor1();
 void BossMeteor2();
 void BossMeteor3();
-void BossDeath1();
-void BossDeath2();
-void BossDeath3();
+void BossDead1();
+void BossDead2();
+void BossDead3();
 void BossSplintEffect();
 void BossMeteorEffect();
 void updateSplint();
@@ -149,6 +157,10 @@ void checkCollisionSplint();
 void checkCollisionMeteor();
 void checkCollisionLava();
 void checkCollisionLaser();
+void checkCollisionHitbox();
+void bossRenderHP();
+void updateBossHitbox();
+void renderBossHitbox();
 
 // Monster functions
 void checkCollisionSnail();
