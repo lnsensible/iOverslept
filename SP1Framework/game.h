@@ -100,6 +100,8 @@ void renderendmenu();
 void checkForElement();
 void resetElements();
 void resetCounters();
+void renderHP();
+void renderMoney();
 void renderUIborders();
 void renderSign();
 

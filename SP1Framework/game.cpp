@@ -58,7 +58,6 @@ int hasStoryRendered = 0; // check if story has been render. 0 = nope, 1 = yep.
 int hasMoved = 0; // check if player moved.
 int playerFacing = 0; // 0 = left, 1 = right
 int MoneyCount; //The amount of money you have
-int treasure = 1;
 
 int Snailcounter = 0; // count number of snails
 int Floatercounter = 0; // count number of floaters
@@ -690,6 +689,57 @@ void loadSign(std::string filename) // loads sign from file.
 
 	Signload.close();
 } 
+void updateSigns()
+{
+	if (map[charLocation.Y][charLocation.X] == 209)//sign
+	{
+		isonSign = 1;
+		for(int i = 0; i < NUMBEROFSIGNS + 1; i++)
+		{
+			signtoload = "sign";
+
+			if (signNumber == i)
+			{
+				std::string s = std::to_string(static_cast<unsigned long long>(i));
+				signtoload += s;
+			}
+			signtoload += ".txt";
+			loadSign(signtoload);
+		}
+
+	}
+}
+void renderSigns()
+{
+	if ( isonSign == 1 )
+	{
+		for( int i = 0; i < SIGNHEIGHT; i++ )
+		{
+			for( int j = 0; j < SIGNWIDTH; j++ )
+			{
+				gotoXY(j+80, i+26);
+				if ( Signprint[i][j] == '`')
+				{
+					Signprint[i][j] = ' ';// replace \ with space
+				}
+					std::cout << Signprint[i][j];
+			}
+		}
+		isonSign = 2;
+	}
+	else if ( isonSign == 2 )
+	{
+		for( int i = 0; i < SIGNHEIGHT; i++ )
+		{
+			for( int j = 0; j < SIGNWIDTH; j++ )
+			{
+				gotoXY(j+80, i+26);
+				std::cout << ' ';
+			}
+		}
+		isonSign = 0;
+	}
+}
 
 void prepareLevel() // Prepares level map for cout.
 {
@@ -799,7 +849,7 @@ void prepareLevel() // Prepares level map for cout.
 				map[i][j] = ' '; // replace with a space
 			}
 
-			if ( map[i][j] == 'T' && treasure == 1) // TREASURE HORRYY SHEET $$$
+			if ( map[i][j] == 'T') // TREASURE HORRYY SHEET $$$
 			{
 				map[i][j] = 15;
 			}
@@ -894,26 +944,6 @@ void renderSpikes() // re-render spikes after being stabbed
 	}
 }
 
-void renderHP() // displays amount of HP player still has.
-{
-	gotoXY(14, 26); // Clear HP section for render again
-	std::cout << "        ";
-	colour(0x0F);
-	gotoXY(6, 26);
-	std::cout << "Health: ";
-	gotoXY(14, 26);
-	colour(0x0C);
-	for ( int i = 0; i < PlayerHealth; i++ )
-	{
-		std::cout << (char)3 << " ";
-	}
-	colour(0x0F);
-	gotoXY(25, 26); // Clear HP section for render again
-	std::cout << "          ";
-
-	gotoXY(0, 24);
-}
-
 void renderUIborders()
 {
 	gotoXY(0, 24);
@@ -966,6 +996,36 @@ void renderUIborders()
 	gotoXY(MAPWIDTH-2, 37);
 	std::cout << (char)217;
 }
+void renderHP() // displays amount of HP player still has.
+{
+	gotoXY(14, 26); // Clear HP section for render again
+	std::cout << "        ";
+	colour(0x0F);
+	gotoXY(6, 26);
+	std::cout << "Health: ";
+	gotoXY(14, 26);
+	colour(0x0C);
+	for ( int i = 0; i < PlayerHealth; i++ )
+	{
+		std::cout << (char)3 << " ";
+	}
+	colour(0x0F);
+	gotoXY(25, 26); // Clear HP section for render again
+	std::cout << "          ";
+
+	gotoXY(0, 24);
+}
+void renderMoney()
+{
+	gotoXY(50, 26);
+	{
+		std::cout << "        ";
+	}
+	gotoXY(40, 26);
+	std::cout << "Quennies: ";
+	gotoXY(50, 26);
+	std::cout << MoneyCount;
+}
 
 void checkForElement()
 {
@@ -991,62 +1051,9 @@ void checkForElement()
 
 	if (map[charLocation.Y][charLocation.X] == 15)//treasure
 	{
-		//clear treasure
-		treasure = 0;
+		map[charLocation.Y][charLocation.X] = 32; //clear treasure
 		MoneyCount = MoneyCount + 10;
-	}
-}
-
-void updateSigns()
-{
-	if (map[charLocation.Y][charLocation.X] == 209)//sign
-	{
-		isonSign = 1;
-		for(int i = 0; i < NUMBEROFSIGNS + 1; i++)
-		{
-			signtoload = "sign";
-
-			if (signNumber == i)
-			{
-				std::string s = std::to_string(static_cast<unsigned long long>(i));
-				signtoload += s;
-			}
-			signtoload += ".txt";
-			loadSign(signtoload);
-		}
-
-	}
-}
-
-void renderSigns()
-{
-	if ( isonSign == 1 )
-	{
-		for( int i = 0; i < SIGNHEIGHT; i++ )
-		{
-			for( int j = 0; j < SIGNWIDTH; j++ )
-			{
-				gotoXY(j+80, i+26);
-				if ( Signprint[i][j] == '`')
-				{
-					Signprint[i][j] = ' ';// replace \ with space
-				}
-					std::cout << Signprint[i][j];
-			}
-		}
-		isonSign = 2;
-	}
-	else if ( isonSign == 2 )
-	{
-		for( int i = 0; i < SIGNHEIGHT; i++ )
-		{
-			for( int j = 0; j < SIGNWIDTH; j++ )
-			{
-				gotoXY(j+80, i+26);
-				std::cout << ' ';
-			}
-		}
-		isonSign = 0;
+		renderMoney();
 	}
 }
 
@@ -1381,6 +1388,7 @@ void render()
 		renderLevel();
 		renderUIborders();
 		renderHP();
+		renderMoney();
 		hasLevelRendered = 1;
 	}
 
