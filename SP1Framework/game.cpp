@@ -1,4 +1,4 @@
-// This is the main file for the game logic and function
+// This is the main file for the game logic and functions
 //
 //
 #include "game.h"

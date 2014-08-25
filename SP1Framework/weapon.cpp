@@ -1,5 +1,5 @@
 // This is file for the weapon stuff
-//
+// 
 //
 #include "game.h"
 #include "Framework\console.h"

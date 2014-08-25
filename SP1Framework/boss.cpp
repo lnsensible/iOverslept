@@ -8,7 +8,7 @@
 #include <vector>
 
 int bossStatus = 0; // Check what the boss is currently doing. 0 = Standing, 1 = Using skill1, 2 = using skill2. 
-int Randomzxc = 0; // determine where hitbox will spawn.
+int Randomzxc = 0; // determine where hitbox will spawn
 int RemovePianusHitbox = 0; // 0 = no need to remove, 1 = remove
 double skillDelay = 0; // delay between using skills
 double bossFrameDelay = 0; // delay between boss animations
