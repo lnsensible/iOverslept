@@ -48,35 +48,32 @@ void Attack()
 
 void checkCollisionWithMonster()
 {
-	for ( unsigned int i = 0; i < Bullets.size(); i++)
+	for ( unsigned int i = 0; i < MonsterSnail.size(); i++)
 	{
-		for ( unsigned int j = 0; j < MonsterSnail.size(); j ++)
+		for ( unsigned int j = 0; j < Bullets.size(); j++)
 		{
-			if (Bullets[i].x == MonsterSnail[j].x && Bullets[i].y == MonsterSnail[j].y)
+			if (Bullets[j].x == MonsterSnail[i].x && Bullets[j].y == MonsterSnail[i].y)
 			{
-				MonsterSnail[j].health -= Bullets[i].Damage;
-				Bullets.erase(Bullets.begin() + i); // remove bullets
+				MonsterSnail[i].health -= Bullets[j].Damage;
+				Bullets.erase(Bullets.begin() + j); // remove bullets
 				checkMonsterDead();
-				if (MonsterSnail[j].health <= 0)
-				{
-					MonsterSnail.erase(MonsterSnail.begin() + j);
-				}
-
+				i = 0;
+				j = 0;
 			}
 		}
-
+	}
+		/*//there is a way to make the cursor invisible when rendering. go google pls.
 		for ( unsigned int j = 0; j<Floater.size(); j ++)
 		{
 			if (Bullets[i].x == Floater[j].x && Bullets[i].y == Floater[j].y)
 			{
 				Floater[j].health -= Bullets[i].Damage;
 				Bullets.erase(Bullets.begin() + i);
-				checkMonsterDead();
+				//checkMonsterDead();
 				if (Floater[j].health <= 0)
 				{
 					Floater.erase(Floater.begin() + j);
 				}
-
 			}
 		}
 
@@ -91,7 +88,6 @@ void checkCollisionWithMonster()
 				{
 					InnerFear.erase(InnerFear.begin() + j);
 				}
-
 			}
 		}
 
@@ -106,7 +102,6 @@ void checkCollisionWithMonster()
 				{
 					Wengyew.erase(Wengyew.begin() + j);
 				}
-
 			}
 		}
 
@@ -121,7 +116,6 @@ void checkCollisionWithMonster()
 				{
 					Rat.erase(Rat.begin() + j);
 				}
-
 			}
 		}
 
@@ -136,10 +130,8 @@ void checkCollisionWithMonster()
 				{
 					CatFish.erase(CatFish.begin() + j);
 				}
-
 			}
-		}
-	}
+		}*/
 }
 
 void checkCollisionWithWall()
