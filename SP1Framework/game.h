@@ -4,7 +4,7 @@
 #define MAPHEIGHT 24
 #define SIGNHEIGHT 12
 #define SIGNWIDTH 38
-#define NUMBEROFLEVELS 20
+#define NUMBEROFLEVELS 30
 
 #include "Framework\timer.h"
 

@@ -53,7 +53,7 @@ int hasLevelRendered = 0; // Check if level has been rendered. 0 = Not loaded, 1
 int signNumber = 0;
 int isBossLevel = 0; //Check if it is a boss level. 0 = No, 1 = Boss, 2= Fishy
 int isonSign = 0;//rerender sign
-int NUMBEROFSIGNS = 20;
+int NUMBEROFSIGNS = 30;
 int hasStoryRendered = 0; // check if story has been render. 0 = nope, 1 = yep.
 int hasMoved = 0; // check if player moved.
 int playerFacing = 0; // 0 = left, 1 = right
