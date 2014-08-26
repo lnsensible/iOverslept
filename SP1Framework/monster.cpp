@@ -443,7 +443,7 @@ void updateLiveFish() // LiveFish movement update
 			if ( charLocation.X <= LiveFish[i].x ) // if character on LiveFish's left
 			{
 				if ( map[LiveFish[i].y][LiveFish[i].x+6] != '#' && map[LiveFish[i].y+1][LiveFish[i].x+6] == '#' ) // If move right is possible
-					LiveFish[i].x++;
+					LiveFish[i].x++; 
 			}
 			else // if character on LiveFish's right
 			{
