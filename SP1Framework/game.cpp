@@ -547,7 +547,7 @@ void updateendmenu(double dt)
 	{
 		if(charLocation.X == 63)
 		{
-			if(checkLevel != 20)
+			if(checkLevel != NUMBEROFLEVELS)
 			{
 				checkLevel++;
 			}
@@ -895,6 +895,11 @@ void prepareLevel() // Prepares level map for cout.
 				map[i][j] = 234;
 			}
 
+			if ( map[i][j] == 's' ) // Portal to 18
+			{
+				map[i][j] = 21;
+			}
+
 			if ( map[i][j] == '~' ) // Sign
 			{
 				map[i][j] = 209;
@@ -925,6 +930,13 @@ void renderLevel() // Renders map into console
 			{
 				colour(0x0A);
 				std::cout << (char)234; // Portal back
+				colour(0x0F);
+			}
+
+			if ( map[i][j] == 21)
+			{
+				colour(0x0A);
+				std::cout << (char)21; // Portal to 18
 				colour(0x0F);
 			}
 
@@ -1030,12 +1042,11 @@ void checkForElement()
 {
 	if (map[charLocation.Y][charLocation.X] == 239)//Portal to next
 	{
-		if(checkLevel != 20)
+		if(checkLevel != NUMBEROFLEVELS)
 		{
 			checkLevel++;
 		}
 		init();
-		gamestate = GAME;
 	}
 
 	if (map[charLocation.Y][charLocation.X] == 234)//Portal back
@@ -1045,7 +1056,21 @@ void checkForElement()
 			checkLevel--;
 		}
 		init();
-		gamestate = GAME;
+	}
+
+	if (map[charLocation.Y][charLocation.X] == 21)//Portal to 18
+	{
+		if(checkLevel == 10)
+		{
+			checkLevel = 18;
+		}
+
+		else if(checkLevel == 18)
+		{
+			checkLevel = 10;
+		}
+
+		init();
 	}
 
 	if (map[charLocation.Y][charLocation.X] == 15)//treasure

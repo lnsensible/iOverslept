@@ -71,7 +71,9 @@ void mainLoop()
 			g_timer.waitUntil(frameTime);
 
 			if ( g_quitGame == true )
+			{
 				break;
+			}
 		}
 		initialisedornot = 0;
 

@@ -24,3 +24,5 @@ X - spike facing down v
 T - Treasure
 . - empty space
 ~ - Sign
+s - Portal to 18
+f - spawnpoint if coming from 18
