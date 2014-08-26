@@ -75,6 +75,7 @@ int hasStoryRendered = 0; // check if story has been render. 0 = nope, 1 = yep.
 int hasMoved = 0; // check if player moved.
 int playerFacing = 0; // 0 = left, 1 = right
 int MoneyCount; //The amount of money you have
+int MoneyInv; //The money you collected in current level
 int NewGame = 1; //If first time play
 
 int Snailcounter = 0; // count number of snails
@@ -1087,6 +1088,7 @@ void checkForElement()
 	{
 		map[charLocation.Y][charLocation.X] = 32; //clear treasure
 		MoneyCount = MoneyCount + 10;
+		MoneyInv = MoneyInv + 10;
 		renderMoney();
 	}
 }
@@ -1181,6 +1183,7 @@ void init()
 	bossStatus = 0;
 	isBossLevel = 0;
 	hasStoryRendered = 0;
+	MoneyInv = 0;
 
 	for(int i = 0; i < NUMBEROFLEVELS + 1; i++)
 	{
@@ -1473,6 +1476,11 @@ void update(double dt)
     if (keyPressed[K_ESCAPE])
         gamestate = LEVELMENU;
 
+	if ( PlayerHealth <= 0 )
+	{
+		MoneyCount = MoneyCount - MoneyInv;
+		MoneyInv = 0;
+	}
 	checkforDeath();
 }
 void render()
