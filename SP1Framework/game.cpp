@@ -57,11 +57,12 @@ int gamestate = 0;
 COORD charLocation;
 COORD consoleSize;
 
-int NUMBEROFSIGNS = 30;
+int NUMBEROFSIGNS = 43;
 
 unsigned char map[MAPHEIGHT][MAPWIDTH]; // stores the level map
 unsigned char Signprint[SIGNHEIGHT][SIGNWIDTH]; // stores the sign
 unsigned int Savedata[DATAHEIGHT][DATAWIDTH]; //stores values of savedata
+unsigned int outputData[DATAHEIGHT][DATAWIDTH]; //stores values to save to the save file
 int checkLevel = 0; // Check current level
 int checkPrevLevel = 0; // Check previous level
 int hasLevelRendered = 0; // Check if level has been rendered. 0 = Not loaded, 1 = Loaded
@@ -240,6 +241,7 @@ void rendermainmenu()
 	std::cout << (char)16;
 	colour(0x0F);
 }
+
 void initlevelmenu()
 {
 	// Set precision for floating point output
@@ -381,6 +383,7 @@ void renderlevelmenu()
 	std::cout << (char)94;
 	colour(0x0F);
 }
+
 void initdeathmenu()
 {
 	// Set precision for floating point output
@@ -478,6 +481,7 @@ void renderdeathmenu()
 	std::cout << (char)16;
 	colour(0x0F);
 }
+
 void initendmenu()
 {
 	// Set precision for floating point output
@@ -573,6 +577,7 @@ void renderendmenu()
 	std::cout << (char)16;
 	colour(0x0F);
 }
+
 bool fileExists(std::string fileName)
 {
     std::ifstream infile(fileName);
@@ -608,6 +613,47 @@ void loadGameUpdate()
 	MoneyCount = Savedata[0][0];
 	PlayerHealth = Savedata[0][1];
 	checkLevel = Savedata[0][2];
+}
+void createSave()
+{
+
+}
+void saveGame()
+{
+	std::fstream Savefile;
+	Savefile.open("playersave.txt");
+
+	int tf = fileExists("playersave.txt");
+
+	if(tf == true)
+	{
+		outputData[0][0] = MoneyCount;
+		if(PlayerHealth != 0)
+		{
+			outputData[0][1] = PlayerHealth;
+		}
+		else
+		{
+			outputData[0][1] = 3;
+		}
+		outputData[0][2] = checkLevel;
+
+		for (int i = 0; i < DATAHEIGHT; i++)
+		{
+			for (int j = 0; j < DATAWIDTH; j++)
+			{
+				Savefile << outputData[i][j];
+				Savefile << " ";
+			}
+		}
+	}
+	else
+	{
+		createSave();
+		saveGame();
+	}
+
+	Savefile.close();
 }
 
 void loadLevel(std::string filename) // loads level map from file.
@@ -693,6 +739,7 @@ void renderSigns()
 		isonSign = 0;
 	}
 }
+
 void prepareLevel() // Prepares level map for cout.
 {
 	resetElements();
@@ -890,6 +937,7 @@ void renderLevel() // Renders map into console
 		}
 	}
 }
+
 void renderUIborders()
 {
 	gotoXY(0, 24);
@@ -972,6 +1020,7 @@ void renderMoney()
 	gotoXY(50, 26);
 	std::cout << MoneyCount;
 }
+
 void checkForElement()
 {
 	if (map[charLocation.Y][charLocation.X] == 239)//Portal to next
@@ -1097,13 +1146,13 @@ void init()
 	{
 		leveltoload = "level";
 		
-		if (checkLevel == 17)
+		if (checkLevel == 43)
 		{
 			isBossLevel = 1;
 			bosscurrentHP = bossHP;
 		}
 
-		if (checkLevel == 20)
+		if (checkLevel == 17)
 		{
 			isBossLevel = 2;
 			pianuscurrentHP = pianusHP;
@@ -1142,6 +1191,7 @@ void init()
 }
 void shutdown()
 {
+	saveGame();
 	// Reset to white text on black background
 	colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 }

@@ -97,6 +97,8 @@ void shutdown();            // do clean up
 //Loading save file :3
 void loadGame();
 void loadGameUpdate();
+void createSave();
+void saveGame();
 
 //menu :D
 void initmainmenu();
