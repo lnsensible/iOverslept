@@ -97,7 +97,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		{
 			if (Skill[j].x == MonsterSnail[i].x && Skill[j].y == MonsterSnail[i].y)
 			{
-				MonsterSnail[i].health -= Skill[j].Damage;
+				MonsterSnail[i].health -= AddCKey.Damage;
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
