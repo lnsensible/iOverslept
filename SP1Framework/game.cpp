@@ -1277,7 +1277,21 @@ void update(double dt)
 	canJump += dt;
 	PlayerSkillDelay += dt;
     deltaTime = dt;
+	// bulletDelay +=dt;
 
+	
+	/*
+	double thisisyourBulletSpeed = 0.4
+	if (bulletDelay >= thisisyourBulletSpeed)
+	{
+	if (keyPressed[K_SPACE])
+	{
+	shoot();
+	}
+	}
+	
+	
+	*/
 	gravity();
 	checkforSpike();
 	checkForElement();

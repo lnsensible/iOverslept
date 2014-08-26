@@ -56,8 +56,12 @@ struct Skill_Properties{
 	double Speed;//Cooldown Time 
 	int bulletTravelDistance;
 	int index; //Identification for CKey to recognize what Skill it is
+	int dmgUpgrade;
+	int rangeUpgrade;
 	Skill_Properties()
 	{
+		dmgUpgrade = 0;
+		rangeUpgrade = 0;
 		bulletTravelDistance = 0;
 		isRENDERED = false;
 		faceWhere = true;

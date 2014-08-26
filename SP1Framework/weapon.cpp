@@ -36,23 +36,23 @@ void initSkill()
 	//Then just AddFire.Damage = 2 + shopUpgrade; Add the shopUpgrade variable or whatever in.
 
 	//Initialize FireOrb Skill
-	AddFire.Damage = 2;
-	AddFire.Range = 10;
+	AddFire.Damage = 2 + AddFire.dmgUpgrade;
+	AddFire.Range = 10 + AddFire.rangeUpgrade;
 	AddFire.Speed = 1.0;
 	AddFire.index = 1;
 	FireOrb.push_back(AddFire);
 
 	//Initialize LightningOrb Skill
-	AddSpark.Damage = 5;
-	AddSpark.Range = 3;
-	AddSpark.Speed = 0.6;
+	AddSpark.Damage = 5 + AddSpark.dmgUpgrade;
+	AddSpark.Range = 3 + AddSpark.rangeUpgrade;
+	AddSpark.Speed = 0.5;
 	AddSpark.index = 2;
 	LightningOrb.push_back(AddSpark);
 
 	//Initialize WaterOrb Skill
-	AddWater.Damage = 1;
-	AddWater.Range = 100;
-	AddWater.Speed = 0.3;
+	AddWater.Damage = 100 + AddWater.dmgUpgrade;
+	AddWater.Range = 100 + AddWater.rangeUpgrade;
+	AddWater.Speed = 1.0;
 	AddWater.index = 3;
 	WaterOrb.push_back(AddWater);
 
@@ -112,7 +112,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		{
 			if (Skill[j].x == Floater[i].x && Skill[j].y == Floater[i].y)
 			{
-				Floater[i].health -= Skill[j].Damage;
+				Floater[i].health -= AddCKey.Damage;
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -127,7 +127,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		{
 			if (Skill[j].x == Rat[i].x && Skill[j].y == Rat[i].y)
 			{
-				Rat[i].health -= Skill[j].Damage;
+				Rat[i].health -= AddCKey.Damage;
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -160,7 +160,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		{
 			if (Skill[j].x == InnerFear[i].x && Skill[j].y == InnerFear[i].y)
 			{
-				InnerFear[i].health -= Skill[j].Damage;
+				InnerFear[i].health -= AddCKey.Damage;
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -175,7 +175,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		{
 			if (Skill[j].x == Wengyew[i].x && Skill[j].y == Wengyew[i].y)
 			{
-				Wengyew[i].health -= Skill[j].Damage;
+				Wengyew[i].health -= AddCKey.Damage;
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -190,7 +190,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		{
 			if (Skill[j].x == CatFish[i].x && Skill[j].y == CatFish[i].y)
 			{
-				CatFish[i].health -= Skill[j].Damage;
+				CatFish[i].health -= AddCKey.Damage;
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -205,7 +205,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		{
 			if (Skill[j].x == DeadFish[i].x && Skill[j].y == DeadFish[i].y)
 			{
-				DeadFish[i].health -= Skill[j].Damage;
+				DeadFish[i].health -= AddCKey.Damage;
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -220,7 +220,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		{
 			if (Skill[j].x == LiveFish[i].x && Skill[j].y == LiveFish[i].y)
 			{
-				LiveFish[i].health -= Skill[j].Damage;
+				LiveFish[i].health -= AddCKey.Damage;
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -228,8 +228,6 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 			}
 		}
 	}
-
-
 }
 
 void checkCollisionWithWall(std::vector<Skill_Properties>& Skill)
@@ -282,8 +280,8 @@ void updateSkill(std::vector<Skill_Properties>& Skill)
 		{
 			Skill.erase(Skill.begin() + h);
 		}
-		checkCollisionWithMonster(Skill);
-		checkCollisionWithWall(Skill);
+		checkCollisionWithMonster(CKey);
+		checkCollisionWithWall(CKey);
 	}
 }
 
