@@ -313,6 +313,7 @@ void updatelevelmenu(double dt)
 		if(NewGame == 0)
 		{
 			loadGameUpdate();
+
 		}
 
 		else
@@ -604,6 +605,7 @@ void loadGame() // loads game from file.
 	else
 	{
 		NewGame = 1;
+		createSave();
 	}
 
 	Savefile.close();
