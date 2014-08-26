@@ -1,5 +1,7 @@
 // File containing stuff related to boss
 
+
+// 26/8 Boss can be kiled from hitboxes, pinkbeandifficulty increases as its hp decreases.
 #include "game.h"
 #include "Framework\console.h"
 #include <iostream>
