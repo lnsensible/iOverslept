@@ -313,7 +313,6 @@ void updatelevelmenu(double dt)
 		if(NewGame == 0)
 		{
 			loadGameUpdate();
-
 		}
 
 		else

@@ -351,7 +351,7 @@ void updateRat() // Rat movement update
 		}
 		else
 		{
-			if ( map[Rat[i].y][Rat[i].x+3] != '#' && map[Rat[i].y+1][Rat[i].x+7] == '#' ) // If move right is possible
+			if ( map[Rat[i].y][Rat[i].x+8] != '#' && map[Rat[i].y+1][Rat[i].x+7] == '#' ) // If move right is possible
 				Rat[i].x++;
 		}
 	}
