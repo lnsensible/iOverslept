@@ -29,7 +29,7 @@ extern double bossFrameDelay;
 
 extern const int bossHP;
 extern const int pianusHP;
- 
+
 extern bool rangeORmelee;             
 extern bool rightORleft;          
 extern COORD WEAPON;
@@ -49,25 +49,33 @@ struct Monster
 struct Skill_Properties{
 	int x, y;
 	bool faceWhere; // left = false, right = true
-	int Damage;
+	int Damage;      //Damage
 	bool isRENDERED; // if 1, render. if 0, clear and remove
-	int Range;
-	
+	int Range;    //Range 
+	double Speed;//Cooldown Time 
+	int bulletTravelDistance;
+	int index; //Identification for CKey to recognize what Skill it is
+	Skill_Properties()
+	{
+		bulletTravelDistance = 0;
+		isRENDERED = false;
+		faceWhere = true;
+	}
 };
 
 enum Keys
 {
-    K_UP,
-    K_DOWN,
-    K_LEFT,
+	K_UP,
+	K_DOWN,
+	K_LEFT,
 	K_C,
 	K_E,
 	K_Q,
-    K_RIGHT,
-    K_ESCAPE,
+	K_RIGHT,
+	K_ESCAPE,
 	K_SPACE,
 	K_ENTER,
-    K_COUNT
+	K_COUNT
 };
 
 enum Sequence

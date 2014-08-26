@@ -21,21 +21,73 @@ extern std::vector<Monster> DeadFish;
 extern std::vector<Monster> LiveFish;
 extern std::vector<Monster> PianusHitbox;
 extern void checkMonsterDead();
-
-
-
-std::vector<Skill_Properties> FireOrb,LightningOrb,WaterOrb;
-std::vector<Skill_Properties> CKey = FireOrb;
+Skill_Properties AddSpark;
+Skill_Properties AddFire;
+Skill_Properties AddWater;
+Skill_Properties AddCKey;
+std::vector<Skill_Properties> FireOrb;
+std::vector<Skill_Properties> LightningOrb;
+std::vector<Skill_Properties> WaterOrb;
+std::vector<Skill_Properties> CKey;
 
 void initSkill()
 {
-	for (unsigned int x =0; x<FireOrb.size(); ++x)
-	{
-		FireOrb[x].Damage = 100;
-		FireOrb[x].Range = 50;
-	}
+	//If you want to make a shop where you can upgrade the Skills. 
+	//Then just AddFire.Damage = 2 + shopUpgrade; Add the shopUpgrade variable or whatever in.
+
+	//Initialize FireOrb Skill
+	AddFire.Damage = 2;
+	AddFire.Range = 10;
+	AddFire.Speed = 1.0;
+	AddFire.index = 1;
+	FireOrb.push_back(AddFire);
+
+	//Initialize LightningOrb Skill
+	AddSpark.Damage = 5;
+	AddSpark.Range = 3;
+	AddSpark.Speed = 0.6;
+	AddSpark.index = 2;
+	LightningOrb.push_back(AddSpark);
+
+	//Initialize WaterOrb Skill
+	AddWater.Damage = 1;
+	AddWater.Range = 100;
+	AddWater.Speed = 0.3;
+	AddWater.index = 3;
+	WaterOrb.push_back(AddWater);
+
+	//Initializes Player Equipped Skill to Fire
+	AddCKey = AddFire;
+	CKey.push_back(AddCKey);
 }
 
+void nextSkill()
+{
+		if (AddCKey.index == 1)
+		{
+			AddCKey = AddSpark;
+			CKey.push_back(AddCKey);
+		}
+		else if (AddCKey.index == 2)
+		{
+			AddCKey = AddWater;
+			CKey.push_back(AddCKey);
+		}
+}
+
+void previousSkill()
+{
+	if (AddCKey.index == 3)
+	{
+			AddCKey = AddSpark;
+			CKey.push_back(AddCKey);
+	}
+	else if (AddCKey.index == 2)
+	{
+			AddCKey = AddFire;
+			CKey.push_back(AddCKey);
+	}
+}
 
 void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 {
@@ -87,17 +139,17 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 	/*
 	for ( unsigned int i = 0; i < PianusHitbox.size(); i++)//PIanus thingy
 	{
-		for ( unsigned int j = 0; j < Skill.size(); j++)
-		{
-			if (Skill[j].x == PianusHitbox[i].x && Skill[j].y == PianusHitbox[i].y)
-			{
-				PianusHitbox[i].health -= Skill[j].Damage;
-				Skill.erase(FireOrb.begin() + j); // remove Skill
-				checkMonsterDead();
-				i = 0;
-				j = 0;
-			}
-		}
+	for ( unsigned int j = 0; j < Skill.size(); j++)
+	{
+	if (Skill[j].x == PianusHitbox[i].x && Skill[j].y == PianusHitbox[i].y)
+	{
+	PianusHitbox[i].health -= Skill[j].Damage;
+	Skill.erase(FireOrb.begin() + j); // remove Skill
+	checkMonsterDead();
+	i = 0;
+	j = 0;
+	}
+	}
 	}
 	*/
 
@@ -195,22 +247,21 @@ void Attack(std::vector<Skill_Properties>& Skill)
 {
 	if ( playerFacing == 0 ) // if facing left,
 	{
-		Skill_Properties addBullet;
-		addBullet.x = charLocation.X-1;
-		addBullet.y = charLocation.Y;
-		addBullet.faceWhere = false;
-		addBullet.isRENDERED = true;
-
-		Skill.push_back(addBullet);
+		Skill_Properties addSkill;
+		addSkill.x = charLocation.X-1;
+		addSkill.y = charLocation.Y;
+		addSkill.faceWhere = false;
+		addSkill.isRENDERED = true;
+		Skill.push_back(addSkill);
 	}
 	else if ( playerFacing == 1 ) // if facing right
 	{
-		Skill_Properties addBullet;
-		addBullet.x = charLocation.X+1;
-		addBullet.y = charLocation.Y;
-		addBullet.faceWhere = true;
-		addBullet.isRENDERED = true;
-		Skill.push_back(addBullet);
+		Skill_Properties addSkill;
+		addSkill.x = charLocation.X+1;
+		addSkill.y = charLocation.Y;
+		addSkill.faceWhere = true;
+		addSkill.isRENDERED = true;
+		Skill.push_back(addSkill);
 	}
 }
 
@@ -226,9 +277,13 @@ void updateSkill(std::vector<Skill_Properties>& Skill)
 		{
 			Skill[h].x += 1;
 		}
+		Skill[h].bulletTravelDistance +=1;
+		if (Skill[h].bulletTravelDistance == AddCKey.Range)
+		{
+			Skill.erase(Skill.begin() + h);
+		}
 		checkCollisionWithMonster(Skill);
 		checkCollisionWithWall(Skill);
-
 	}
 }
 
@@ -316,11 +371,6 @@ void spawnSkill(std::vector<Skill_Properties>& Skill){
 				colour(0x04);
 				std::cout<<(char)15;
 				colour(0x0F);
-				/*if (Skill[x].Range <= 5) //Melee Attack
-		    {
-		       Skill[]
-		
-		    }*/
 			}
 			else if ( Skill[x].faceWhere == true )
 			{
@@ -330,7 +380,6 @@ void spawnSkill(std::vector<Skill_Properties>& Skill){
 				colour(0x04);
 				std::cout<<(char)15;
 				colour(0x0F);
-
 			}
 		}
 	}

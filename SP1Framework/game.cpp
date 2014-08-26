@@ -91,16 +91,18 @@ double WengyewMoveDelay = 0; // delay between each wy movement
 double CatFishMoveDelay = 0; // delay between each CatFish movement
 double DeadFishMoveDelay = 0; // delay between each DeadFish movement
 double LiveFishMoveDelay = 0; // delay between each LiveFish movement
+double PlayerSkillDelay = 0; //delay between skills
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
 
 //Weapons
 extern void Attack(std::vector<Skill_Properties>& Skill);
-extern void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill);
-extern void checkCollisionWithWall(std::vector<Skill_Properties>& Skill);
 extern void updateSkill(std::vector<Skill_Properties>& Skill);
 extern void spawnSkill(std::vector<Skill_Properties>& Skill);
-int playerEquip = 0;
+extern void initSkill();
+extern void nextSkill();
+extern void previousSkill();
+extern Skill_Properties AddCKey;
 
 std::string StoryPage1[7] = {"Quen has been addicted to the game Maplestory since recently when his friend introduced it to him.",
 							 "Trying to surpass his friend, he would sacrifice his sleep and play throughout the night, sleeping",
@@ -238,7 +240,6 @@ void rendermainmenu()
 	std::cout << (char)16;
 	colour(0x0F);
 }
-
 void initlevelmenu()
 {
 	// Set precision for floating point output
@@ -380,7 +381,6 @@ void renderlevelmenu()
 	std::cout << (char)94;
 	colour(0x0F);
 }
-
 void initdeathmenu()
 {
 	// Set precision for floating point output
@@ -478,7 +478,6 @@ void renderdeathmenu()
 	std::cout << (char)16;
 	colour(0x0F);
 }
-
 void initendmenu()
 {
 	// Set precision for floating point output
@@ -574,13 +573,11 @@ void renderendmenu()
 	std::cout << (char)16;
 	colour(0x0F);
 }
-
 bool fileExists(std::string fileName)
 {
     std::ifstream infile(fileName);
     return infile.good();
 }
-
 void loadGame() // loads game from file.
 {
 	std::fstream Savefile;
@@ -696,7 +693,6 @@ void renderSigns()
 		isonSign = 0;
 	}
 }
-
 void prepareLevel() // Prepares level map for cout.
 {
 	resetElements();
@@ -854,7 +850,6 @@ void prepareLevel() // Prepares level map for cout.
 		}
 	}
 }
-
 void renderLevel() // Renders map into console
 {
 	for (int i = 0; i < MAPHEIGHT; i++)
@@ -895,7 +890,6 @@ void renderLevel() // Renders map into console
 		}
 	}
 }
-
 void renderUIborders()
 {
 	gotoXY(0, 24);
@@ -978,7 +972,6 @@ void renderMoney()
 	gotoXY(50, 26);
 	std::cout << MoneyCount;
 }
-
 void checkForElement()
 {
 	if (map[charLocation.Y][charLocation.X] == 239)//Portal to next
@@ -1008,7 +1001,6 @@ void checkForElement()
 		renderMoney();
 	}
 }
-
 void renderStory()
 {
 		if ( checkLevel == 1 ) // render story
@@ -1050,7 +1042,6 @@ void renderStory()
 		}
 	}
 }
-
 void resetElements() // removes monsters and effects on the map
 {
 	MonsterSnail.clear();
@@ -1068,7 +1059,6 @@ void resetElements() // removes monsters and effects on the map
 	BossHitbox.clear();
 	PianusHitbox.clear();
 }
-
 void init()
 {
     // Set precision for floating point output
@@ -1143,14 +1133,18 @@ void init()
 
 	// prepares map for rendering
 	prepareLevel();
+	
+	//Prepare Skills
+	initSkill();
+	//Add Shop Function here. Shop Function should Modify the Values inside initskill
+	//Create an int Variable called damageUpgrade = 0; This variable is added to the Damage(Even if no Value yet).
+	//Once it has a value. you know what happens.
 }
-
 void shutdown()
 {
 	// Reset to white text on black background
 	colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 }
-
 void getInput()
 {    
     keyPressed[K_UP] = isKeyPressed(VK_UP);
@@ -1164,7 +1158,6 @@ void getInput()
     keyPressed[K_E] = isKeyPressed(0x45);
     keyPressed[K_C] = isKeyPressed(0x43);
 }
-
 void update(double dt)
 {
     // get the delta time
@@ -1183,6 +1176,7 @@ void update(double dt)
 	LiveFishMoveDelay += dt;
 	hitboxDelay += dt;
 	canJump += dt;
+	PlayerSkillDelay += dt;
     deltaTime = dt;
 
 	gravity();
@@ -1354,22 +1348,23 @@ void update(double dt)
 		}
     }
 
+	if (keyPressed[K_Q])
+	{
+	previousSkill();
+	}
+
+	if (keyPressed[K_E])
+	{
+	nextSkill();
+	}
+
 	if (keyPressed[K_C])
 	{
+		if(PlayerSkillDelay >= AddCKey.Speed)
+		{
 		Attack(CKey);
-			/*)
-		if ( playerEquipp == 0 )
-		{
-			Attack(FireOrb);
+		PlayerSkillDelay = 0;
 		}
-		else if ( playerEquip == 1 )
-		{
-			Attack(LightningOrb);
-		}
-		else if ()
-		{
-			Atack(*URWF
-		}*/
 	}
 
 	if (keyPressed[K_SPACE])
@@ -1383,7 +1378,6 @@ void update(double dt)
 
 	checkforDeath();
 }
-
 void render()
 {
     // clear previous screen if need to re render
