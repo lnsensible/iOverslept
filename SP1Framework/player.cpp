@@ -124,6 +124,7 @@ void spawnWhere()
 					charLocation.X = j;
 					charLocation.Y = i;
 					map[i][j] = ' '; //replace f with space.
+					fromSPortal = false;
 				}
 
 				if ( map[i][j] == 'c' )
