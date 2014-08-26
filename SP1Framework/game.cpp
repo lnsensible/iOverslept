@@ -616,7 +616,10 @@ void loadGameUpdate()
 }
 void createSave()
 {
-
+	std::fstream filecreate;
+	filecreate.open("playersave.txt",std::fstream::out);
+	filecreate.close();
+	saveGame();
 }
 void saveGame()
 {
@@ -650,7 +653,6 @@ void saveGame()
 	else
 	{
 		createSave();
-		saveGame();
 	}
 
 	Savefile.close();
