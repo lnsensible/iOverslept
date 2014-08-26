@@ -38,19 +38,19 @@ void initSkill()
 	//Initialize FireOrb Skill
 	AddFire.Damage = 2 + AddFire.dmgUpgrade;
 	AddFire.Range = 10 + AddFire.rangeUpgrade;
-	AddFire.Speed = 1.0;
+	AddFire.Speed = 0.7;
 	AddFire.index = 1;
 	FireOrb.push_back(AddFire);
 
 	//Initialize LightningOrb Skill
 	AddSpark.Damage = 5 + AddSpark.dmgUpgrade;
 	AddSpark.Range = 3 + AddSpark.rangeUpgrade;
-	AddSpark.Speed = 0.5;
+	AddSpark.Speed = 0.6;
 	AddSpark.index = 2;
 	LightningOrb.push_back(AddSpark);
 
 	//Initialize WaterOrb Skill
-	AddWater.Damage = 100 + AddWater.dmgUpgrade;
+	AddWater.Damage = 1 + AddWater.dmgUpgrade;
 	AddWater.Range = 100 + AddWater.rangeUpgrade;
 	AddWater.Speed = 1.0;
 	AddWater.index = 3;
