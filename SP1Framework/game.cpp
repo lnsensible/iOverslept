@@ -895,7 +895,7 @@ void prepareLevel() // Prepares level map for cout.
 				map[i][j] = 234;
 			}
 
-			if ( map[i][j] == 's' ) // Portal to 18
+			if ( map[i][j] == 's' ) // Portal special
 			{
 				map[i][j] = 21;
 			}
@@ -936,7 +936,7 @@ void renderLevel() // Renders map into console
 			if ( map[i][j] == 21)
 			{
 				colour(0x0A);
-				std::cout << (char)21; // Portal to 18
+				std::cout << (char)21; // Portal special
 				colour(0x0F);
 			}
 
@@ -1058,7 +1058,7 @@ void checkForElement()
 		init();
 	}
 
-	if (map[charLocation.Y][charLocation.X] == 21)//Portal to 18
+	if (map[charLocation.Y][charLocation.X] == 21)//Portal special
 	{
 		if(checkLevel == 10)
 		{
@@ -1070,6 +1070,16 @@ void checkForElement()
 			checkLevel = 10;
 		}
 
+		else if(checkLevel == 9)
+		{
+			checkLevel = 27;
+		}
+
+		else if(checkLevel == 27)
+		{
+			checkLevel = 9;
+		}
+		fromSPortal = true;
 		init();
 	}
 
@@ -1198,14 +1208,20 @@ void init()
 		loadLevel(leveltoload);
 	}
 
+	if (fromSPortal == true)
+	{
+		fromSPortal = true;
+	}
 	//check if character came from next or prev map
-	if ( checkPrevLevel > checkLevel ) //came from next map
+	else if ( checkPrevLevel > checkLevel ) //came from next map
 	{
 		spawnwhere = true; // spawn at c
+		fromSPortal = false;
 	}
 	else
 	{
 		spawnwhere = false; // spawn at C
+		fromSPortal = false;
 	}
 
 	checkPrevLevel = checkLevel;

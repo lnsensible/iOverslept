@@ -16,6 +16,7 @@ double jumpDelay = 0; // delay between y coordinate change while jumping
 double fallDelay = 0; // delay between falling (no delay for initial fall)
 
 bool spawnwhere = false; // false = spawn at C, true = spawn at c
+bool fromSPortal = false;
 
 extern COORD charLocation;
 extern COORD consoleSize;
@@ -112,7 +113,32 @@ void checkforSpike() // checks if character is standing on a trap.
 
 void spawnWhere()
 {
-	if ( spawnwhere == true ) // came from next map
+	if(fromSPortal == true)//if travel through special portal
+	{
+		for ( int i = 0; i < MAPHEIGHT; i++ )
+		{
+			for ( int j = 0; j < MAPWIDTH; j++ )
+			{
+				if ( map[i][j] == 'f' )
+				{
+					charLocation.X = j;
+					charLocation.Y = i;
+					map[i][j] = ' '; //replace f with space.
+				}
+
+				if ( map[i][j] == 'c' )
+				{
+					map[i][j] = ' '; //replace c with space.
+				}
+				if ( map[i][j] == 'C' )
+				{
+					map[i][j] = ' '; //remove C.
+				}
+			}
+		}
+	}
+
+	else if (spawnwhere == true && fromSPortal == false) // came from next map
 	{
 		for ( int i = 0; i < MAPHEIGHT; i++ )
 		{
@@ -128,10 +154,14 @@ void spawnWhere()
 				{
 					map[i][j] = ' '; //remove C.
 				}
+				if ( map[i][j] == 'f' )
+				{
+					map[i][j] = ' '; //replace f with space.
+				}
 			}
 		}
 	}
-	else if ( spawnwhere == false ) //came from previous map
+	else if (spawnwhere == false && fromSPortal == false) //came from previous map
 	{
 		for ( int i = 0; i < MAPHEIGHT; i++ )
 		{
@@ -146,6 +176,10 @@ void spawnWhere()
 					charLocation.X = j;
 					charLocation.Y = i;
 					map[i][j] = ' '; //replace C with space.
+				}
+				if ( map[i][j] == 'f' )
+				{
+					map[i][j] = ' '; //replace f with space.
 				}
 			}
 		}

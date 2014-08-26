@@ -14,6 +14,7 @@ extern unsigned char map[MAPHEIGHT][MAPWIDTH];
 extern StopWatch g_timer;
 extern bool g_quitGame;
 extern bool spawnwhere;
+extern bool fromSPortal;
 extern int gamestate;
 extern int checkLevel;
 extern int checkPrevLevel;
