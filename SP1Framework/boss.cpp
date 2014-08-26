@@ -13,6 +13,7 @@ int RemovePianusHitbox = 0; // 0 = no need to remove, 1 = remove
 double skillDelay = 0; // delay between using skills
 double bossFrameDelay = 0; // delay between boss animations
 double hitboxDelay = 0; // delay between hitbox movement
+double bossDifficulty = 0; // decreases delay as boss' hp goes down
 
 const int bossHP = 20; // max hp= 20
 const int pianusHP = 20; // max hp= 20
@@ -451,13 +452,13 @@ void bossMeteor1()
 	gotoXY(60, 12);	std::cout << "    I=.=IIIIIII?..III?++=~              ";
 	gotoXY(60, 13);	std::cout << "    ++III~I:IIII7I++I?++=~         ??~~:";
 	gotoXY(60, 14);	std::cout << "   ?IIIIIIIIIIIIIIIII?++=~       = ,'   ";
-	gotoXY(60, 15);	std::cout << "   +II          +I??7?++=~     =        ";
-	gotoXY(60, 16);	std::cout << "   ?77              7I++=~    I         ";
-	gotoXY(60, 17);	std::cout << "  I777              7I?=~~   I          ";
-	gotoXY(60, 18);	std::cout << "  +777            77II?===   =          ";
-	gotoXY(60, 19);	std::cout << "  +I            77IIII======            ";
-	gotoXY(60, 20);	std::cout << "   +III7777777IIIIII?=~=";
-	gotoXY(60, 21);	std::cout << ",~~~.+IIIIIIIIIII??+.~:,,";
+	gotoXY(50, 15);	std::cout << "             +II          +I??7?++=~     =        ";
+	gotoXY(50, 16);	std::cout << "             ?77              7I++=~    I         ";
+	gotoXY(50, 17);	std::cout << "            I777              7I?=~~   I          ";
+	gotoXY(50, 18);	std::cout << "            +777            77II?===   =          ";
+	gotoXY(50, 19);	std::cout << "            +I            77IIII======            ";
+	gotoXY(50, 20);	std::cout << "             +III7777777IIIIII?=~=";
+	gotoXY(50, 21);	std::cout << "          ,~~~.+IIIIIIIIIII??+.~:,,";
 
 }
 
@@ -474,13 +475,13 @@ void bossMeteor2()
 	gotoXY(60, 12);	std::cout << "    I=.=IIIIIII?..III?++=~          ?  ";
 	gotoXY(60, 13);	std::cout << "    ++III~I:IIII7I++I?++=~         ?    ";
 	gotoXY(60, 14);	std::cout << "   ?IIIIIIIIIIIIIIIII?++=~       =     ";
-	gotoXY(60, 15);	std::cout << "   +II          +I??7?++=~     =";
-	gotoXY(60, 16);	std::cout << "   ?77              7I++=~    I";
-	gotoXY(60, 17);	std::cout << "  I777              7I?=~~   I";
-	gotoXY(60, 18);	std::cout << "  +777            77II?===   =";
-	gotoXY(60, 19);	std::cout << "  +I            77IIII======";
-	gotoXY(60, 20);	std::cout << "   +III7777777IIIIII?=~=";
-	gotoXY(60, 21);	std::cout << ",~~~.+IIIIIIIIIII??+.~:,,";
+	gotoXY(50, 15);	std::cout << "             +II          +I??7?++=~     =";
+	gotoXY(50, 16);	std::cout << "             ?77              7I++=~    I";
+	gotoXY(50, 17);	std::cout << "            I777              7I?=~~   I";
+	gotoXY(50, 18);	std::cout << "            +777            77II?===   =";
+	gotoXY(50, 19);	std::cout << "            +I            77IIII======";
+	gotoXY(50, 20);	std::cout << "             +III7777777IIIIII?=~=";
+	gotoXY(50, 21);	std::cout << "          ,~~~.+IIIIIIIIIII??+.~:,,";
 
 }
 
@@ -497,13 +498,13 @@ void bossMeteor3()
 	gotoXY(60, 12);	std::cout << "    I=.=IIIIIII?..III?++=~          ???";
 	gotoXY(60, 13);	std::cout << "    ++III~I:IIII7I++I?++=~         ?    ";
 	gotoXY(60, 14);	std::cout << "   ?IIIIIIIIIIIIIIIII?++=~       =     ";
-	gotoXY(60, 15);	std::cout << "   +II          +I??7?++=~     =";
-	gotoXY(60, 16);	std::cout << "   ?77              7I++=~    I";
-	gotoXY(60, 17);	std::cout << "  I777              7I?=~~   I";
-	gotoXY(60, 18);	std::cout << "  +777            77II?===   =";
-	gotoXY(60, 19);	std::cout << "  +I            77IIII======";
-	gotoXY(60, 20);	std::cout << "   +III7777777IIIIII?=~=";
-	gotoXY(60, 21);	std::cout << ",~~~.+IIIIIIIIIII??+.~:,,";
+	gotoXY(50, 15);	std::cout << "             +II          +I??7?++=~     =";
+	gotoXY(50, 16);	std::cout << "             ?77              7I++=~    I";
+	gotoXY(50, 17);	std::cout << "            I777              7I?=~~   I";
+	gotoXY(50, 18);	std::cout << "            +777            77II?===   =";
+	gotoXY(50, 19);	std::cout << "            +I            77IIII======";
+	gotoXY(50, 20);	std::cout << "             +III7777777IIIIII?=~=";
+	gotoXY(50, 21);	std::cout << "          ,~~~.+IIIIIIIIIII??+.~:,,";
 }
 
 void bossMeteorEffect() // spawns meteors !
@@ -959,7 +960,7 @@ void checkBossStatus()
 	}
 	else
 	{
-		if ( skillDelay > 5.0 )
+		if ( skillDelay > ( 5.0 - bossDifficulty ) )
 		{
 			bossStatus = ( rand() % 2 + 1 ); // Changes boss status to either 1 or 2 ( use either skill1 or skill2 ).
 			skillDelay -= 5.0; // reset skillDelay;

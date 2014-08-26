@@ -17,11 +17,13 @@ extern std::vector<bossAttack> BossHitbox;
 extern std::vector<Monster> PianusHitbox;
 extern char bossHPbar;
 extern char pianusHPbar;
+extern const int bossHP;
 extern int bosscurrentHP;
 extern int pianuscurrentHP;
 extern int RemovePianusHitbox;
 
 extern double hitboxDelay;
+extern double bossDifficulty;
 
 extern std::vector<Monster> MonsterSnail;
 extern std::vector<Monster> Floater;
@@ -1253,6 +1255,7 @@ void update(double dt)
 		{
 			updateBossHitbox();
 			checkCollisionHitbox();
+			bossDifficulty = (bossHP - bosscurrentHP) * 0.3;
 			if ( meteor.size() != 0 ) // If there are meteors
 			{
 				updateMeteor();
