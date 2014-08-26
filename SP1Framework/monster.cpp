@@ -558,12 +558,12 @@ void checkMonsterDead()
 			std::cout << "     ";
 			map[LiveFish[i].y][LiveFish[i].x] = ' ';
 
-			Monster fkuirespawn;
-			fkuirespawn.x = LiveFish[i].x;
-			fkuirespawn.y = LiveFish[i].y;
-			fkuirespawn.health = 4;
+			Monster respawn;
+			respawn.x = LiveFish[i].x;
+			respawn.y = LiveFish[i].y;
+			respawn.health = 4;
 
-			DeadFish.push_back(fkuirespawn);
+			DeadFish.push_back(respawn);
 
 			LiveFish.erase(LiveFish.begin() + i);// remove livefish from map
 
