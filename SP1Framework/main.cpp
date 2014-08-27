@@ -113,6 +113,24 @@ void mainLoop()
 		}
 		initialisedornot = 0;
 
+		while ( gamestate == SHOP )//MAIN MENU :3
+		{
+			if ( initialisedornot != 1 )
+			{
+				initSHOP();
+				initialisedornot = 1;
+			}
+
+			getInput();
+			updateSHOP(g_timer.getElapsedTime());
+			renderSHOP();
+			g_timer.waitUntil(frameTime);
+
+			if ( g_quitGame == true )
+				break;
+		}
+		initialisedornot = 0;
+
 		while ( gamestate == DEATH )//DEATH MENU :C
 		{
 			if ( initialisedornot != 1 )

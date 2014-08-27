@@ -122,6 +122,10 @@ void initendmenu();
 void updateendmenu(double dt);
 void renderendmenu();
 
+void initSHOP();
+void updateSHOP(double dt);
+void renderSHOP();
+
 //player environment intewractions.
 void checkForElement();
 void resetElements();

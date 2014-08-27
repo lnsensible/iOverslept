@@ -261,36 +261,16 @@ void initlevelmenu()
 	consoleSize.Y = csbi.srWindow.Bottom + 1;
 
 	charLocation.X = 46; //default cursor position
-	charLocation.Y = 23;
+	charLocation.Y = 15;
 }
 void updatelevelmenu(double dt)
 {
 	elapsedTime += dt;
 	deltaTime = dt;
 
-	if(keyPressed[K_LEFT])
-	{
-		if (charLocation.X != 46 )
-		{
-			gotoXY(charLocation);
-			std::cout << " ";
-			charLocation.X -= 3;
-		}
-	}
-
-	if(keyPressed[K_RIGHT])
-	{
-		if (charLocation.X != 73 )
-		{
-			gotoXY(charLocation);
-			std::cout << " ";
-			charLocation.X += 3;
-		}
-	}
-
 	if(keyPressed[K_DOWN])
 	{
-		if(charLocation.Y != 25)
+		if(charLocation.Y != 17)
 		{
 			gotoXY(charLocation);
 			std::cout << " ";
@@ -300,7 +280,7 @@ void updatelevelmenu(double dt)
 
 	if(keyPressed[K_UP])
 	{
-		if(charLocation.Y != 23)
+		if(charLocation.Y != 15)
 		{
 			gotoXY(charLocation);
 			std::cout << " ";
@@ -310,21 +290,27 @@ void updatelevelmenu(double dt)
 
 	if(keyPressed[K_ENTER])
 	{
-		hasLevelRendered = 0;
-
-		loadGame();
-		if(NewGame == 0)
+		if(charLocation.Y == 15)
 		{
-			loadGameUpdate();
+			hasLevelRendered = 0;
+			loadGame();
+			if(NewGame == 0)
+			{
+				loadGameUpdate();
+			}
+
+			else
+			{
+				checkLevel = 1;
+			}
+
+			gamestate = GAME;
 		}
 
-		else
+		else if(charLocation.Y == 17)
 		{
-			checkLevel = 1;
+			saveGame();
 		}
-
-		gamestate = GAME;
-
 	}//keypress enter
 
 	if(keyPressed[K_ESCAPE])
@@ -337,49 +323,10 @@ void renderlevelmenu()
 	cls();
 	colour(0x0F);
 
-	gotoXY(57, 20);
-	std::cout << "Levels";
-	gotoXY(46, 22);
-	std::cout << "1";
-	gotoXY(49, 22);
-	std::cout << "2";
-	gotoXY(52, 22);
-	std::cout << "3";
-	gotoXY(55, 22);
-	std::cout << "4";
-	gotoXY(58, 22);
-	std::cout << "5";
-	gotoXY(61, 22);
-	std::cout << "6";
-	gotoXY(64, 22);
-	std::cout << "7";
-	gotoXY(67, 22);
-	std::cout << "8";
-	gotoXY(70, 22);
-	std::cout << "9";
-	gotoXY(73, 22);
-	std::cout << "10";
-
-	gotoXY(46, 24);
-	std::cout << "11";
-	gotoXY(49, 24);
-	std::cout << "12";
-	gotoXY(52, 24);
-	std::cout << "13";
-	gotoXY(55, 24);
-	std::cout << "14";
-	gotoXY(58, 24);
-	std::cout << "15";
-	gotoXY(61, 24);
-	std::cout << "16";
-	gotoXY(64, 24);
-	std::cout << "17";
-	gotoXY(67, 24);
-	std::cout << "18";
-	gotoXY(70, 24);
-	std::cout << "19";
-	gotoXY(73, 24);
-	std::cout << "20";
+	gotoXY(48, 15);
+	std::cout << "Continue / New game";
+	gotoXY(53, 17);
+	std::cout << "Save game";
 
 	gotoXY(charLocation);
 	colour(0x0C);
@@ -574,6 +521,98 @@ void renderendmenu()
 	std::cout << "Return menu";
 	gotoXY(65, 22);
 	std::cout << "Next level";
+
+	colour(0x0C);
+	gotoXY(charLocation);
+	std::cout << (char)16;
+	colour(0x0F);
+}
+
+void initSHOP()
+{
+	// Set precision for floating point output
+	std::cout << std::fixed << std::setprecision(3);
+
+	SetConsoleTitle(L"SHOP");
+
+	// Get console width and height
+	CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
+
+	/* get the number of character cells in the current buffer */ 
+	GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &csbi );
+	consoleSize.X = csbi.srWindow.Right + 1;
+	consoleSize.Y = csbi.srWindow.Bottom + 1;
+
+	
+
+	charLocation.X = 47;
+	charLocation.Y = 22;
+}
+void updateSHOP(double dt)
+{
+	elapsedTime += dt;
+	deltaTime = dt;
+
+	if(keyPressed[K_LEFT])
+	{
+		if (charLocation.X == 63 )
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.X = 47;
+		}
+
+		else if(charLocation.X == 47)
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.X = 47;
+		}
+	}
+
+	if(keyPressed[K_RIGHT])
+	{
+		if (charLocation.X == 63 )
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.X = 63;
+		}
+
+		else if(charLocation.X == 47)
+		{
+			gotoXY(charLocation);
+			std::cout << " ";
+			charLocation.X = 63;
+		}
+	}
+
+	if(keyPressed[K_ENTER])
+	{
+		if(charLocation.X == 63)
+		{
+			gamestate = GAME;
+		}
+
+		if(charLocation.X == 47)
+		{
+			gamestate = LEVELMENU;
+		}
+	}
+}
+void renderSHOP()
+{
+	cls();
+	colour(0x0F);
+
+	gotoXY(54, 20);
+	colour(0x0A);
+	std::cout << "SHOP";
+	gotoXY(49, 22);
+	colour(0x0F);
+	std::cout << "Shit";
+	gotoXY(65, 22);
+	std::cout << "Exit";
 
 	colour(0x0C);
 	gotoXY(charLocation);
@@ -905,6 +944,11 @@ void prepareLevel() // Prepares level map for cout.
 			{
 				map[i][j] = 209;
 			}
+
+			if ( map[i][j] == '+' ) // Shop
+			{
+				map[i][j] = 227;
+			}
 		}
 	}
 }
@@ -938,6 +982,13 @@ void renderLevel() // Renders map into console
 			{
 				colour(0x0A);
 				std::cout << (char)21; // Portal special
+				colour(0x0F);
+			}
+
+			if ( map[i][j] == 227)
+			{
+				colour(0x0B);
+				std::cout << (char)227; // Shop
 				colour(0x0F);
 			}
 
@@ -1090,6 +1141,12 @@ void checkForElement()
 		MoneyCount = MoneyCount + 10;
 		MoneyInv = MoneyInv + 10;
 		renderMoney();
+	}
+
+	if (map[charLocation.Y][charLocation.X] == 227)//Shop
+	{
+		saveGame();
+		gamestate = SHOP;
 	}
 }
 void renderStory()
