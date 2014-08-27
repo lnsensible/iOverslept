@@ -682,7 +682,15 @@ void saveGame()
 		{
 			outputData[0][1] = 3;
 		}
-		outputData[0][2] = checkLevel;
+		if(checkLevel!=0)
+		{
+			outputData[0][2] = checkLevel;
+		}
+
+		else
+		{
+			outputData[0][2] = 1;
+		}
 
 		for (int i = 0; i < DATAHEIGHT; i++)
 		{
