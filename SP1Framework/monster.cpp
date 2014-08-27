@@ -366,12 +366,12 @@ void updateWengyew() // Wengyew movement update
 			if ( charLocation.X <= Wengyew[i].x ) // if character on wengyew's left
 			{
 				if ( map[Wengyew[i].y][Wengyew[i].x-1] != '#' && map[Wengyew[i].y+1][Wengyew[i].x-1] == '#' ) // If move left is possible
-					Wengyew[i].x--;
+					Wengyew[i].x--; // chase player
 			}
 			else // if character on wengyews' right
 			{
 				if ( map[Wengyew[i].y][Wengyew[i].x+3] != '#' && map[Wengyew[i].y+1][Wengyew[i].x+7] == '#' ) // If move right is possible
-					Wengyew[i].x++;
+					Wengyew[i].x++; // chase player
 			}
 		}
 		if ( rand() % 2 == 0 )
@@ -413,12 +413,12 @@ void updateDeadFish() // DeadFish movement update
 			if ( charLocation.X <= DeadFish[i].x ) // if character on DeadFish's left
 			{
 				if ( map[DeadFish[i].y][DeadFish[i].x-1] != '#' && map[DeadFish[i].y+1][DeadFish[i].x-1] == '#' ) // If move left is possible
-					DeadFish[i].x--;
+					DeadFish[i].x--; // chase player
 			}
 			else // if character on DeadFish's right
 			{
 				if ( map[DeadFish[i].y][DeadFish[i].x+3] != '#' && map[DeadFish[i].y+1][DeadFish[i].x+7] == '#' ) // If move right is possible
-					DeadFish[i].x++;
+					DeadFish[i].x++; // chase player
 			}
 		}
 		if ( rand() % 2 == 0 )
@@ -443,12 +443,12 @@ void updateLiveFish() // LiveFish movement update
 			if ( charLocation.X <= LiveFish[i].x ) // if character on LiveFish's left
 			{
 				if ( map[LiveFish[i].y][LiveFish[i].x+6] != '#' && map[LiveFish[i].y+1][LiveFish[i].x+6] == '#' ) // If move right is possible
-					LiveFish[i].x++; 
+					LiveFish[i].x++;  // run away
 			}
 			else // if character on LiveFish's right
 			{
 				if ( map[LiveFish[i].y][LiveFish[i].x-1] != '#' && map[LiveFish[i].y+1][LiveFish[i].x-1] == '#' ) // If move left is possible
-					LiveFish[i].x--;
+					LiveFish[i].x--; // run away
 			}
 		}
 		if ( rand() % 2 == 0 )
@@ -558,12 +558,12 @@ void checkMonsterDead()
 			std::cout << "     ";
 			map[LiveFish[i].y][LiveFish[i].x] = ' ';
 
-			Monster respawn;
-			respawn.x = LiveFish[i].x;
-			respawn.y = LiveFish[i].y;
-			respawn.health = 4;
+			Monster respawn; // function for respawning
+			respawn.x = LiveFish[i].x; // respawns at last x-coordinate of LiveFish 
+			respawn.y = LiveFish[i].y; // respawns at last y-coordinate of LiveFish
+			respawn.health = 4; // respawn with specified health
 
-			DeadFish.push_back(respawn);
+			DeadFish.push_back(respawn); // pushes into DeadFish vector
 
 			LiveFish.erase(LiveFish.begin() + i);// remove livefish from map
 
