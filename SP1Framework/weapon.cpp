@@ -38,15 +38,17 @@ void initSkill()
 	//Initialize FireOrb Skill
 	AddFire.Damage = 2 + AddFire.dmgUpgrade;
 	AddFire.Range = 10 + AddFire.rangeUpgrade;
-	AddFire.Speed = 0.7;
+	AddFire.Speed = 1.0;
 	AddFire.index = 1;
+	AddFire.orbASCII = (char)15;
 	FireOrb.push_back(AddFire);
 
 	//Initialize LightningOrb Skill
 	AddSpark.Damage = 5 + AddSpark.dmgUpgrade;
 	AddSpark.Range = 3 + AddSpark.rangeUpgrade;
-	AddSpark.Speed = 0.6;
+	AddSpark.Speed = 0.5;
 	AddSpark.index = 2;
+	AddSpark.orbASCII = (char)177;
 	LightningOrb.push_back(AddSpark);
 
 	//Initialize WaterOrb Skill
@@ -54,6 +56,7 @@ void initSkill()
 	AddWater.Range = 100 + AddWater.rangeUpgrade;
 	AddWater.Speed = 1.0;
 	AddWater.index = 3;
+	AddWater.orbASCII = (char)247;
 	WaterOrb.push_back(AddWater);
 
 	//Initializes Player Equipped Skill to Fire
@@ -366,19 +369,40 @@ void spawnSkill(std::vector<Skill_Properties>& Skill){
 				gotoXY(Skill[x].x+1, Skill[x].y);
 				std::cout<< map[Skill[x].y][Skill[x].x+1];
 				gotoXY(Skill[x].x, Skill[x].y);
+				if (AddCKey.index == 1)
+				{
 				colour(0x04);
-				std::cout<<(char)15;
-				colour(0x0F);
+				}
+				else if (AddCKey.index == 2)
+				{
+				colour(0x8);
+				}
+				else if (AddCKey.index == 3)
+				{
+				colour(0x03);
+				}
+				std::cout<<AddCKey.orbASCII;
 			}
 			else if ( Skill[x].faceWhere == true )
 			{
 				gotoXY(Skill[x].x-1, Skill[x].y);
 				std::cout<< map[Skill[x].y][Skill[x].x-1];
 				gotoXY(Skill[x].x, Skill[x].y);
+				if (AddCKey.index == 1)
+				{
 				colour(0x04);
-				std::cout<<(char)15;
-				colour(0x0F);
+				}
+				else if (AddCKey.index == 2)
+				{
+				colour(0x8);
+				}
+				else if (AddCKey.index == 3)
+				{
+				colour(0x03);
+				}
+				std::cout<<AddCKey.orbASCII;
 			}
+			colour(0x0F);
 		}
 	}
 }
