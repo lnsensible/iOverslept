@@ -1,5 +1,5 @@
 // This is the main file for the game logic and functions
-// YAY
+// YAY :D
 //
 #include "game.h"
 #include "Framework\console.h"

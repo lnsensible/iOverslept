@@ -50,7 +50,7 @@ struct Monster
 struct Skill_Properties{
 	int x, y;
 	bool faceWhere; // left = false, right = true
-	int Damage;      //Damage
+	int Damage;      // Damage
 	bool isRENDERED; // if 1, render. if 0, clear and remove
 	int Range;    //Range 
 	double Speed;//Cooldown Time 

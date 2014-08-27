@@ -113,7 +113,7 @@ void mainLoop()
 		}
 		initialisedornot = 0;
 
-		while ( gamestate == SHOP )//MAIN MENU :3
+		while ( gamestate == SHOP )//SHOP MENU
 		{
 			if ( initialisedornot != 1 )
 			{
