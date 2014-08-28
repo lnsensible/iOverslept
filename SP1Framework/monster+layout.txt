@@ -4,27 +4,14 @@
 A snail that represents laziness and procrastination. 
 
 	
-ascii 239 Floater
+char(239) Floater
 
 Floater is the appearance of mild thoughts that appear in Quen's mind.
 
 
-$  	Money-issues
+emo face: char 244 char 240 char 239 char 240 char 245 =^=
 
-
-P 	some thoughts...
-
- 
--^-	Sprung Anger
-
-
-*o*	Drowsiness
-
-
-+	Lethargy 
-
-
-emo face: char 244 char 240 char 239 char 240 char 245 = ^=
+Represented as Quen's feelings when he is down.
 
 
 ~~(_^.> mouse
@@ -35,9 +22,11 @@ Mouse represents the anxiety of Quen.
 >++*> dead fish
 A fish that died due to Quen not feeding it. Represents guilt.
 
+
 >((( char(248) > living fish
 A living fish that fears Quen due to him having a reputation of not 
 feeding fishes. Represents Quen's lifelong scar.
+
 
 >(((^ char(249) >	cat-fish
 A cat that has been crossed with a fish. A physical form of Quen imagining

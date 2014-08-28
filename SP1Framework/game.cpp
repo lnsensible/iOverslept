@@ -81,13 +81,13 @@ int NewGame = 1; //If first time play
 
 int Snailcounter = 0; // count number of snails
 int Floatercounter = 0; // count number of floaters
-int InnerFearcounter = 0; // count number of InnerFear
+int InnerFearcounter = 0; // count number of InnerFears
 int Ratcounter = 0; // count number of rats
 int Wengyewcounter = 0; // count number of wengyews
-int CatFishcounter = 0; // count number of CatFish
-int DeadFishcounter = 0; // count number of DeadFish
-int LiveFishcounter = 0; // count number of LiveFish
-int Villagercounter = 0; // count number of Villager
+int CatFishcounter = 0; // count number of CatFishes
+int DeadFishcounter = 0; // count number of DeadFishes
+int LiveFishcounter = 0; // count number of LiveFishes
+int Villagercounter = 0; // count number of Villagers
 
 double snailMoveDelay = 0; // delay between each snail movement :D
 double floaterMoveDelay = 0; // delay between each floater movement
