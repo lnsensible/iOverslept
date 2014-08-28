@@ -26,3 +26,4 @@ T - Treasure
 ~ - Sign
 s - Portal to 18
 f - spawnpoint if coming from 18
++ - Shop

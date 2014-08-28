@@ -417,12 +417,12 @@ void renderdeathmenu()
 	cls();
 	colour(0x0F);
 
-	gotoXY(50, 20);
+	gotoXY(55, 20);
 	colour(0x0C);
-	std::cout << "YOU DIED :C TRY AGAIN?";
+	std::cout << "YOU DIED :C";
 	gotoXY(52, 22);
 	colour(0x0F);
-	std::cout << "Yes :D";
+	std::cout << "Respawn";
 	gotoXY(62, 22);
 	std::cout << "SCREW IT I'M OUTTA HERE";
 
@@ -1554,6 +1554,12 @@ void update(double dt)
 	{
 		MoneyCount = MoneyCount - MoneyInv;
 		MoneyInv = 0;
+		if(MoneyCount > 4)
+		{
+			MoneyCount = MoneyCount - 5;
+		}
+
+		saveGame();
 	}
 	checkforDeath();
 }
