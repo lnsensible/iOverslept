@@ -1528,7 +1528,7 @@ void init()
 	WengyewMoveDelay = 0.0;
 	CatFishMoveDelay = 0.0;
 	DeadFishMoveDelay = 0.0;
-	VillagerMoveDelay - 0.0;
+	VillagerMoveDelay = 0.0;
 
 	hasbeenStabbed = 0;
 	hasbeenDamaged = 0;
