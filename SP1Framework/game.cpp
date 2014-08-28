@@ -605,11 +605,20 @@ void renderSHOP()
 	cls();
 	colour(0x0F);
 
-	gotoXY(54, 20);
+	gotoXY(56, 2);
 	colour(0x0A);
 	std::cout << "SHOP";
-	gotoXY(49, 22);
+
+	gotoXY(1, 3);
+	std::cout << (char)201;
+	for(int i = 0; i < 116; i++)
+	{
+		std::cout << (char)205;
+	}
+	std::cout << (char)187;
+
 	colour(0x0F);
+	gotoXY(49, 22);
 	std::cout << "Shit";
 	gotoXY(65, 22);
 	std::cout << "Exit";
@@ -1536,7 +1545,10 @@ void update(double dt)
 
     // quits the game if player hits the escape key
     if (keyPressed[K_ESCAPE])
+	{
+		saveGame();
         gamestate = LEVELMENU;
+	}
 
 	if ( PlayerHealth <= 0 )
 	{
