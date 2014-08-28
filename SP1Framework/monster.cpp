@@ -15,6 +15,7 @@ std::vector<Monster> Wengyew;
 std::vector<Monster> CatFish;
 std::vector<Monster> DeadFish;
 std::vector<Monster> LiveFish;
+std::vector<Monster> Villager;
 
 extern COORD charLocation;
 extern COORD consoleSize;
@@ -28,6 +29,7 @@ extern int Wengyewcounter;
 extern int CatFishcounter;
 extern int DeadFishcounter;
 extern int LiveFishcounter;
+extern int Villagercounter;
 
 void renderMonster() // render mobs
 {                    
@@ -182,6 +184,24 @@ void renderMonster() // render mobs
 
 		gotoXY(LiveFish[i].x, LiveFish[i].y); // go to coordinates of LiveFish in the vector
 		std::cout << ">((" << (char)248 << ">"; // print LiveFish
+	}
+
+	for (unsigned int i = 0; i < Villager.size(); i++ ) // for all the Villagers
+	{
+		for ( int j = Villager[i].x-1; j < Villager[i].x+2; j++) //loop for checking left and right of Villager when it moves
+		{
+			gotoXY(j, Villager[i].y); // go to coordinate selected
+			if ( map[Villager[i].y][j] == '#' ) // and reprint
+			{
+				std::cout << (char)219; // the wall
+			}
+			else
+			{
+				 std::cout << map[Villager[i].y][j]; // print whatever is on the map
+			}
+		}
+		gotoXY(Villager[i].x, Villager[i].y); // go to coordinates of Villager in the vector
+		std::cout << (char)1; // print Villager
 	}
 }
 
@@ -434,6 +454,7 @@ void updateDeadFish() // DeadFish movement update
 	}
 }
 
+
 void updateLiveFish() // LiveFish movement update
 {
 	for (unsigned int i = 0; i < LiveFish.size(); i++ ) // for all LiveFishes
@@ -460,6 +481,23 @@ void updateLiveFish() // LiveFish movement update
 		{
 			if ( map[LiveFish[i].y][LiveFish[i].x+6] != '#' && map[LiveFish[i].y+1][LiveFish[i].x+6] == '#' ) // If move right is possible
 				LiveFish[i].x++;
+		}
+	}
+}
+
+void updateVillager() // Villager movement update
+{
+	for (unsigned int i = 0; i < Villager.size(); i++ ) // for all Villagers
+	{
+		if ( rand() % 2 == 0 )
+		{
+			if ( map[Villager[i].y][Villager[i].x-1] != '#' && map[Villager[i].y+1][Villager[i].x-1] == '#' ) // If move left is possible
+				Villager[i].x--;
+		}
+		else
+		{
+			if ( map[Villager[i].y][Villager[i].x+1] != '#' && map[Villager[i].y+1][Villager[i].x+1] == '#' ) // If move right is possible
+				Villager[i].x++;
 		}
 	}
 }

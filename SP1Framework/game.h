@@ -208,6 +208,7 @@ void updateWengyew();
 void updateCatFish();
 void updateDeadFish();
 void updateLiveFish();
+void updateVillager();
 void checkMonsterDead();
 void renderMonster();
 

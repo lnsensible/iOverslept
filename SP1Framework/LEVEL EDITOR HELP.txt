@@ -11,6 +11,7 @@ W - Wengyew
 Y - CatFish
 D - DeadFish
 L - LiveFish
+V - Villager
 
 Environment / Level elements
 C - Character spawn point

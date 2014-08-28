@@ -33,6 +33,7 @@ extern std::vector<Monster> Wengyew;
 extern std::vector<Monster> CatFish;
 extern std::vector<Monster> DeadFish;
 extern std::vector<Monster> LiveFish;
+extern std::vector<Monster> Villager;
 
 extern std::vector<Skill_Properties> CKey;
 extern std::vector<Skill_Properties> EKey;
@@ -69,7 +70,7 @@ int checkLevel = 0; // Check current level
 int checkPrevLevel = 0; // Check previous level
 int hasLevelRendered = 0; // Check if level has been rendered. 0 = Not loaded, 1 = Loaded
 int signNumber = 0;
-int isBossLevel = 0; //Check if it is a boss level. 0 = No, 1 = Boss, 2= Fishy
+int isBossLevel = 0; //Check if it is a boss level. 0 = No, 1 = Boss, 2 = Fishy
 int isonSign = 0;//rerender sign
 int hasStoryRendered = 0; // check if story has been render. 0 = nope, 1 = yep.
 int hasMoved = 0; // check if player moved.
@@ -86,6 +87,7 @@ int Wengyewcounter = 0; // count number of wengyews
 int CatFishcounter = 0; // count number of CatFish
 int DeadFishcounter = 0; // count number of DeadFish
 int LiveFishcounter = 0; // count number of LiveFish
+int Villagercounter = 0; // count number of Villager
 
 double snailMoveDelay = 0; // delay between each snail movement :D
 double floaterMoveDelay = 0; // delay between each floater movement
@@ -95,6 +97,7 @@ double WengyewMoveDelay = 0; // delay between each wy movement
 double CatFishMoveDelay = 0; // delay between each CatFish movement
 double DeadFishMoveDelay = 0; // delay between each DeadFish movement
 double LiveFishMoveDelay = 0; // delay between each LiveFish movement
+double VillagerMoveDelay = 0; // delay between each Villager movement
 double PlayerSkillDelay = 0; //delay between skills
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
@@ -964,7 +967,7 @@ void prepareLevel() // Prepares level map for cout.
 				map[i][j] = ' '; // replace with a space
 			}
 
-			if( map[i][j] == 'L' ) // DeadFish Monster placeholder
+			if( map[i][j] == 'L' ) // LiveFish Monster placeholder
 			{
 				Monster liveFish;
 
@@ -973,6 +976,18 @@ void prepareLevel() // Prepares level map for cout.
 				liveFish.health = 2; // health of LiveFish
 
 				LiveFish.push_back(liveFish); // stores coordinates in a vector
+
+				map[i][j] = ' '; // replace with a space
+			}
+
+			if( map[i][j] == 'V' ) // DeadFish Monster placeholder
+			{
+				Monster villager;
+
+				villager.x = j; // location of X-coordinates of LiveFish
+				villager.y = i; // location of Y-coordinates of LiveFish
+
+				Villager.push_back(villager); // stores coordinates in a vector
 
 				map[i][j] = ' '; // replace with a space
 			}
@@ -1258,6 +1273,7 @@ void resetElements() // removes monsters and effects on the map
 	CatFish.clear();
 	DeadFish.clear();
 	LiveFish.clear();
+	Villager.clear();
 	meteor.clear();
 	splint.clear();
 	laser.clear();
@@ -1292,6 +1308,7 @@ void init()
 	WengyewMoveDelay = 0.0;
 	CatFishMoveDelay = 0.0;
 	DeadFishMoveDelay = 0.0;
+	VillagerMoveDelay - 0.0;
 
 	hasbeenStabbed = 0;
 	hasbeenDamaged = 0;
@@ -1388,6 +1405,7 @@ void update(double dt)
 	CatFishMoveDelay += dt;
 	DeadFishMoveDelay += dt;
 	LiveFishMoveDelay += dt;
+	VillagerMoveDelay += dt;
 	hitboxDelay += dt;
 	canJump += dt;
 	PlayerSkillDelay += dt;
@@ -1528,6 +1546,15 @@ void update(double dt)
 			LiveFishMoveDelay = 0; // reset movement timer
 		}
 		checkCollisionLiveFish();
+	}
+
+		if ( Villager.size() != 0 ) // When there are Villagers
+	{
+		if ( VillagerMoveDelay > 0.800 ) // Villagers move every 800ms
+		{
+			updateVillager();
+			VillagerMoveDelay = 0; // reset movement timer
+		}
 	}
 
 	if ( CKey.size() != 0 )
