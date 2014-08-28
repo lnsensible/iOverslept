@@ -684,7 +684,7 @@ void updateSHOP(double dt)
 			{
 				if(MoneyCount >= 100)
 				{
-					MoneyCount = MoneyCount = 100;
+					MoneyCount = MoneyCount - 100;
 					AddSpark.dmgUpgrade = AddSpark.dmgUpgrade + 1;
 					gotoXY(54, 5);
 					std::cout << "Upgrade successful!";
@@ -724,7 +724,7 @@ void updateSHOP(double dt)
 			{
 				if(MoneyCount >= 50)
 				{
-					MoneyCount = MoneyCount = 50;
+					MoneyCount = MoneyCount - 50;
 					AddFire.rangeUpgrade = AddFire.rangeUpgrade + 1;
 					gotoXY(54, 5);
 					std::cout << "Upgrade successful!";
