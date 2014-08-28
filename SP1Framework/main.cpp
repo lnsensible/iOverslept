@@ -75,6 +75,7 @@ void mainLoop()
 				break;
 			}
 		}
+		system("cls");
 		initialisedornot = 0;
 
 		while ( gamestate == MENU )//MAIN MENU :3
@@ -93,6 +94,7 @@ void mainLoop()
 			if ( g_quitGame == true )
 				break;
 		}
+		system("cls");
 		initialisedornot = 0;
 
 		while ( gamestate == LEVELMENU )//LEVEL MENU :DDDD
@@ -111,6 +113,7 @@ void mainLoop()
 			if ( g_quitGame == true )
 				break;
 		}
+		system("cls");
 		initialisedornot = 0;
 
 		while ( gamestate == SHOP )//SHOP MENU
@@ -129,6 +132,7 @@ void mainLoop()
 			if ( g_quitGame == true )
 				break;
 		}
+		system("cls");
 		initialisedornot = 0;
 
 		while ( gamestate == DEATH )//DEATH MENU :C
@@ -147,6 +151,7 @@ void mainLoop()
 			if ( g_quitGame == true )
 				break;
 		}
+		system("cls");
 		initialisedornot = 0;
 
 		while ( gamestate == ENDGAME )//YOU WIN :DDD
@@ -165,6 +170,7 @@ void mainLoop()
 			if ( g_quitGame == true )
 				break;
 		}
+		system("cls");
 		initialisedornot = 0;
 
 
