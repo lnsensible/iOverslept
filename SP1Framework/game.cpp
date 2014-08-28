@@ -107,6 +107,10 @@ extern void initSkill();
 extern void nextSkill();
 extern void previousSkill();
 extern Skill_Properties AddCKey;
+extern Skill_Properties AddFire;
+extern Skill_Properties AddSpark;
+extern Skill_Properties AddWater;
+
 
 std::string StoryPage1[7] = {"Quen has been addicted to the game Maplestory since recently when his friend introduced it to him.",
 							 "Trying to surpass his friend, he would sacrifice his sleep and play throughout the night, sleeping",
@@ -301,7 +305,11 @@ void updatelevelmenu(double dt)
 
 			else
 			{
+				AddSpark.skillUnlocked = false;
+				AddWater.skillUnlocked = false;
+				AddFire.skillUnlocked = true;
 				checkLevel = 1;
+
 			}
 
 			gamestate = GAME;
@@ -664,7 +672,10 @@ void loadGameUpdate()
 {
 	MoneyCount = Savedata[0][0];
 	PlayerHealth = Savedata[0][1];
-	checkLevel = Savedata[0][2];
+	checkLevel = Savedata[0][2];	
+	AddSpark.skillUnlocked = Savedata[0][3];
+	AddWater.skillUnlocked = Savedata[0][4];
+	AddFire.skillUnlocked = Savedata[0][5];
 }
 void createSave()
 {
@@ -699,6 +710,36 @@ void saveGame()
 		else
 		{
 			outputData[0][2] = 1;
+		}
+
+		if(AddSpark.skillUnlocked == true)
+		{
+			outputData[0][3] = 1;
+		}
+
+		else
+		{
+			outputData[0][3] = 0;
+		}
+
+		if(AddWater.skillUnlocked == true)
+		{
+			outputData[0][4] = 1;
+		}
+
+		else
+		{
+			outputData[0][4] = 0;
+		}
+
+		if(AddFire.skillUnlocked == true)
+		{
+			outputData[0][5] = 1;
+		}
+
+		else
+		{
+			outputData[0][5] = 0;
 		}
 
 		for (int i = 0; i < DATAHEIGHT; i++)

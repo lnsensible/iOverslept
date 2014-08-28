@@ -55,7 +55,7 @@ void initSkill()
 	AddWater.Damage = 1 + AddWater.dmgUpgrade;
 	AddWater.Range = 100 + AddWater.rangeUpgrade;
 	AddWater.Speed = 1.0;
-	AddWater.index = 3;
+	AddSpark.index = 3;
 	AddWater.orbASCII = (char)247;
 	WaterOrb.push_back(AddWater);
 
@@ -66,12 +66,12 @@ void initSkill()
 
 void nextSkill()
 {
-		if (AddCKey.index == 1)
+		if (AddCKey.index == 1 && AddSpark.skillUnlocked)
 		{
 			AddCKey = AddSpark;
 			CKey.push_back(AddCKey);
 		}
-		else if (AddCKey.index == 2)
+		else if (AddCKey.index == 2 && AddWater.skillUnlocked)
 		{
 			AddCKey = AddWater;
 			CKey.push_back(AddCKey);
@@ -80,12 +80,12 @@ void nextSkill()
 
 void previousSkill()
 {
-	if (AddCKey.index == 3)
+	if (AddCKey.index == 3 && AddSpark.skillUnlocked)
 	{
 			AddCKey = AddSpark;
 			CKey.push_back(AddCKey);
 	}
-	else if (AddCKey.index == 2)
+	else if (AddCKey.index == 2 && AddFire.skillUnlocked)
 	{
 			AddCKey = AddFire;
 			CKey.push_back(AddCKey);

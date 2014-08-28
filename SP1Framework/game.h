@@ -58,6 +58,7 @@ struct Skill_Properties{
 	int index; //Identification for CKey to recognize what Skill it is
 	int dmgUpgrade;
 	int rangeUpgrade;
+	bool skillUnlocked;
 	char orbASCII;
 	Skill_Properties()
 	{
