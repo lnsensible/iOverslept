@@ -29,11 +29,12 @@ extern int hasMoved;
 void LevelUp()
 {
 	exptolevelup = playerLevel * 500;
-	if ( playerExperience > exptolevelup )
+	if ( playerExperience >= exptolevelup )
 	{
 		playerExperience -= exptolevelup;
 		playerLevel++;
-		PlayerHealth++;
+		if ( PlayerHealth < 5 )
+			PlayerHealth++;
 		renderHP();
 	}
 }
