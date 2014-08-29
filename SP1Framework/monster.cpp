@@ -518,6 +518,7 @@ void checkMonsterDead()
 
 			MonsterSnail.erase(MonsterSnail.begin() + i);// remove snail from map
 			MoneyCount = MoneyCount + 1; // adds Quennies
+			renderMoney(); // updates Quennies in U.I.
 		}
 	}
 
@@ -531,6 +532,7 @@ void checkMonsterDead()
 
 			Floater.erase(Floater.begin() + i);// remove floater from map
 			MoneyCount = MoneyCount + 1; // adds Quennies
+			renderMoney(); // updates Quennies in U.I.
 		}
 	}
 
@@ -544,6 +546,7 @@ void checkMonsterDead()
 
 			InnerFear.erase(InnerFear.begin() + i);// remove innerfear from map
 			MoneyCount = MoneyCount + 2; // adds Quennies
+			renderMoney(); // updates Quennies in U.I.
 		}
 	}
 
@@ -557,6 +560,7 @@ void checkMonsterDead()
 
 			Rat.erase(Rat.begin() + i);// remove rat from map
 			MoneyCount = MoneyCount + 4; // adds Quennies
+			renderMoney(); // updates Quennies in U.I.
 		}
 	}
 
@@ -569,7 +573,8 @@ void checkMonsterDead()
 			map[Wengyew[i].y][Wengyew[i].x] = ' ';
 
 			Wengyew.erase(Wengyew.begin() + i);// remove wengyew from map
-			MoneyCount = MoneyCount + 10; // adds Quennies
+			MoneyCount = MoneyCount + 15; // adds Quennies
+			renderMoney(); // updates Quennies in U.I.
 		}
 	}
 
@@ -583,6 +588,7 @@ void checkMonsterDead()
 
 			CatFish.erase(CatFish.begin() + i);// remove catfish from map
 			MoneyCount = MoneyCount + 3; // adds Quennies
+			renderMoney(); // updates Quennies in U.I.
 		}
 	}
 
@@ -596,6 +602,7 @@ void checkMonsterDead()
 
 			DeadFish.erase(DeadFish.begin() + i);// remove deadfish from map
 			MoneyCount = MoneyCount + 6; // adds Quennies
+			renderMoney(); // updates Quennies in U.I.
 		}
 	}
 
