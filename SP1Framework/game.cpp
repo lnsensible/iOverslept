@@ -552,7 +552,7 @@ void initSHOP()
 
 	
 
-	charLocation.X = 59;
+	charLocation.X = 61;
 	charLocation.Y = 10;
 }
 void updateSHOP(double dt)
@@ -562,7 +562,7 @@ void updateSHOP(double dt)
 
 	if(keyPressed[K_LEFT])
 	{
-		if (charLocation.X == 59 )
+		if (charLocation.X == 61 )
 		{
 			gotoXY(charLocation);
 			std::cout << " ";
@@ -579,18 +579,18 @@ void updateSHOP(double dt)
 
 	if(keyPressed[K_RIGHT])
 	{
-		if (charLocation.X == 59 )
+		if (charLocation.X == 61 )
 		{
 			gotoXY(charLocation);
 			std::cout << " ";
-			charLocation.X = 59;
+			charLocation.X = 61;
 		}
 
 		else if(charLocation.X == 39)
 		{
 			gotoXY(charLocation);
 			std::cout << " ";
-			charLocation.X = 59;
+			charLocation.X = 61;
 		}
 	}
 
@@ -616,14 +616,16 @@ void updateSHOP(double dt)
 
 	if(keyPressed[K_ENTER])
 	{
+		renderMoney();
 		if(charLocation.Y == 10)
 		{
 			if(charLocation.X == 39)
 			{
-				if(MoneyCount >= 50)
+				if(MoneyCount >= 100)
 				{
-					MoneyCount = MoneyCount = 50;
+					MoneyCount = MoneyCount - 100;
 					AddFire.dmgUpgrade = AddFire.dmgUpgrade + 1;
+					initSkill();
 					gotoXY(54, 5);
 					std::cout << "Upgrade successful!";
 					gotoXY(20, 10);
@@ -652,6 +654,11 @@ void updateSHOP(double dt)
 						AddFire.skillUnlocked = true;
 						std::cout << "Purchase succesful";
 					}
+					else
+					{
+						gotoXY(54, 5);
+						std::cout << "Not enough Money!      ";
+					}
 				}
 			}
 		}
@@ -662,8 +669,9 @@ void updateSHOP(double dt)
 			{
 				if(MoneyCount >= 50)
 				{
-					MoneyCount = MoneyCount = 50;
+					MoneyCount = MoneyCount - 50;
 					AddFire.rangeUpgrade = AddFire.rangeUpgrade + 1;
+					initSkill();
 					gotoXY(54, 5);
 					std::cout << "Upgrade successful!";
 					gotoXY(20, 12);
@@ -686,6 +694,7 @@ void updateSHOP(double dt)
 				{
 					MoneyCount = MoneyCount - 100;
 					AddSpark.dmgUpgrade = AddSpark.dmgUpgrade + 1;
+					initSkill();
 					gotoXY(54, 5);
 					std::cout << "Upgrade successful!";
 					gotoXY(20, 14);
@@ -714,6 +723,11 @@ void updateSHOP(double dt)
 						AddSpark.skillUnlocked = true;
 						std::cout << "Purchase succesful";
 					}
+					else
+					{
+						gotoXY(54, 5);
+						std::cout << "Not enough Money!      ";
+					}
 				}
 			}
 		}
@@ -722,15 +736,86 @@ void updateSHOP(double dt)
 		{
 			if(charLocation.X == 39)
 			{
-				if(MoneyCount >= 50)
+				if(MoneyCount >= 100)
 				{
-					MoneyCount = MoneyCount - 50;
-					AddFire.rangeUpgrade = AddFire.rangeUpgrade + 1;
+					MoneyCount = MoneyCount - 100;
+					AddSpark.rangeUpgrade = AddSpark.rangeUpgrade + 1;
+					initSkill();
 					gotoXY(54, 5);
 					std::cout << "Upgrade successful!";
 					gotoXY(20, 16);
 					std::cout << "Range: ";
 					std::cout << AddSpark.Range;
+				}
+				else
+				{
+					gotoXY(54, 5);
+					std::cout << "Not enough Money!      ";
+				}
+			}
+		}
+
+
+		if(charLocation.Y == 18)
+		{
+			if(charLocation.X == 39)
+			{
+				if(MoneyCount >= 170)
+				{
+					MoneyCount = MoneyCount - 170;
+					AddWater.dmgUpgrade = AddWater.dmgUpgrade + 1;
+					initSkill();
+					gotoXY(54, 5);
+					std::cout << "Upgrade successful!";
+					gotoXY(20, 18);
+					std::cout << "Damage: ";
+					std::cout << AddWater.Damage;
+				}
+				else
+				{
+					gotoXY(54, 5);
+					std::cout << "Not enough Money!      ";
+				}
+			}
+			else
+			{
+				if(AddWater.skillUnlocked == true)
+				{
+					gotoXY(54, 5);
+					std::cout << "Already owned!         ";
+				}
+				else
+				{
+					if(MoneyCount >= 222)
+					{
+						gotoXY(54, 5);
+						MoneyCount = MoneyCount - 222;
+						AddWater.skillUnlocked = true;
+						std::cout << "Purchase succesful";
+					}
+					else
+					{
+						gotoXY(54, 5);
+						std::cout << "Not enough Money!      ";
+					}
+				}
+			}
+		}
+
+		if(charLocation.Y == 20)
+		{
+			if(charLocation.X == 39)
+			{
+				if(MoneyCount >= 50)
+				{
+					MoneyCount = MoneyCount - 50;
+					AddWater.rangeUpgrade = AddWater.rangeUpgrade + 1;
+					initSkill();
+					gotoXY(54, 5);
+					std::cout << "Upgrade successful!";
+					gotoXY(20, 20);
+					std::cout << "Range: ";
+					std::cout << AddWater.Range;
 				}
 				else
 				{
@@ -764,13 +849,13 @@ void renderSHOP()
 	colour(0x0F);
 	if(AddFire.skillUnlocked == true)
 	{
-		gotoXY(60, 10);
+		gotoXY(62, 10);
 		std::cout << "Owned!";
 	}
 
 	else
 	{
-		gotoXY(60, 10);
+		gotoXY(62, 10);
 		std::cout << "Buy $20";
 	}
 	gotoXY(10, 10);
@@ -782,20 +867,20 @@ void renderSHOP()
 	std::cout << "Range: ";
 	std::cout << AddFire.Range;
 	gotoXY(40, 10);
-	std::cout << "Upgrade Damage";
+	std::cout << "Upgrade Damage $100";
 	gotoXY(40, 12);
-	std::cout << "Upgrade Range";
+	std::cout << "Upgrade Range $50";
 
 	colour(0x0F);
 	if(AddSpark.skillUnlocked == true)
 	{
-		gotoXY(60, 14);
+		gotoXY(62, 14);
 		std::cout << "Owned!";
 	}
 
 	else
 	{
-		gotoXY(60, 14);
+		gotoXY(62, 14);
 		std::cout << "Buy $300";
 	}
 	gotoXY(10, 14);
@@ -807,20 +892,20 @@ void renderSHOP()
 	std::cout << "Range: ";
 	std::cout << AddSpark.Range;
 	gotoXY(40, 14);
-	std::cout << "Upgrade Damage";
+	std::cout << "Upgrade Damage $100";
 	gotoXY(40, 16);
-	std::cout << "Upgrade Range";
+	std::cout << "Upgrade Range $150";
 
 	colour(0x0F);
 	if(AddWater.skillUnlocked == true)
 	{
-		gotoXY(60, 18);
+		gotoXY(62, 18);
 		std::cout << "Owned!";
 	}
 
 	else
 	{
-		gotoXY(60, 18);
+		gotoXY(62, 18);
 		std::cout << "Buy $222";
 	}
 	gotoXY(10, 18);
@@ -832,13 +917,15 @@ void renderSHOP()
 	std::cout << "Range: ";
 	std::cout << AddWater.Range;
 	gotoXY(40, 18);
-	std::cout << "Upgrade Damage";
+	std::cout << "Upgrade Damage $170";
 	gotoXY(40, 20);
-	std::cout << "Upgrade Range";
+	std::cout << "Upgrade Range $100";
+
+	renderMoney();
 
 	colour(0x0F);
-	gotoXY(110, 34);
-	std::cout << "Exit";
+	gotoXY(100, 34);
+	std::cout << "Press Escape to Exit";
 
 	colour(0x0C);
 	gotoXY(charLocation);
