@@ -31,6 +31,8 @@ extern int DeadFishcounter;
 extern int LiveFishcounter;
 extern int Villagercounter;
 
+extern int MoneyCount;
+
 void renderMonster() // render mobs
 {                    
 	for (unsigned int i = 0; i < MonsterSnail.size(); i++ ) // for all the snails
@@ -502,6 +504,8 @@ void updateVillager() // Villager movement update
 	}
 }
 
+
+
 void checkMonsterDead()
 {
 	for (unsigned int i = 0; i < MonsterSnail.size(); i++)
@@ -513,6 +517,7 @@ void checkMonsterDead()
 			map[MonsterSnail[i].y][MonsterSnail[i].x] = ' ';
 
 			MonsterSnail.erase(MonsterSnail.begin() + i);// remove snail from map
+			MoneyCount = MoneyCount + 1; // adds Quennies
 		}
 	}
 
@@ -525,6 +530,7 @@ void checkMonsterDead()
 			map[Floater[i].y][Floater[i].x] = ' ';
 
 			Floater.erase(Floater.begin() + i);// remove floater from map
+			MoneyCount = MoneyCount + 1; // adds Quennies
 		}
 	}
 
@@ -537,6 +543,7 @@ void checkMonsterDead()
 			map[InnerFear[i].y][InnerFear[i].x] = ' ';
 
 			InnerFear.erase(InnerFear.begin() + i);// remove innerfear from map
+			MoneyCount = MoneyCount + 2; // adds Quennies
 		}
 	}
 
@@ -549,6 +556,7 @@ void checkMonsterDead()
 			map[Rat[i].y][Rat[i].x] = ' ';
 
 			Rat.erase(Rat.begin() + i);// remove rat from map
+			MoneyCount = MoneyCount + 4; // adds Quennies
 		}
 	}
 
@@ -561,6 +569,7 @@ void checkMonsterDead()
 			map[Wengyew[i].y][Wengyew[i].x] = ' ';
 
 			Wengyew.erase(Wengyew.begin() + i);// remove wengyew from map
+			MoneyCount = MoneyCount + 10; // adds Quennies
 		}
 	}
 
@@ -573,6 +582,7 @@ void checkMonsterDead()
 			map[CatFish[i].y][CatFish[i].x] = ' ';
 
 			CatFish.erase(CatFish.begin() + i);// remove catfish from map
+			MoneyCount = MoneyCount + 3; // adds Quennies
 		}
 	}
 
@@ -585,6 +595,7 @@ void checkMonsterDead()
 			map[DeadFish[i].y][DeadFish[i].x] = ' ';
 
 			DeadFish.erase(DeadFish.begin() + i);// remove deadfish from map
+			MoneyCount = MoneyCount + 6; // adds Quennies
 		}
 	}
 
@@ -604,7 +615,7 @@ void checkMonsterDead()
 			DeadFish.push_back(respawn); // pushes into DeadFish vector
 
 			LiveFish.erase(LiveFish.begin() + i);// remove livefish from map
-
+			// no Quennies for you for killing a fish!
 		}
 	}
 }
