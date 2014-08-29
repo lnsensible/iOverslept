@@ -113,7 +113,7 @@ void renderMonster() // render mobs
 
 	for (unsigned int i = 0; i < Wengyew.size(); i++ ) // for all the wengyews
 	{
-		for ( int j = Wengyew[i].x-1; j < Wengyew[i].x+7; j++) // loop for checking left and right of wengyews when it moves
+		for ( int j = Wengyew[i].x-1; j < Wengyew[i].x+8; j++) // loop for checking left and right of wengyews when it moves
 		{
 			gotoXY(j, Wengyew[i].y); // go to coordinate selected
 			if ( map[Wengyew[i].y][j] == '#' ) // and reprint
@@ -152,7 +152,7 @@ void renderMonster() // render mobs
 
 	for (unsigned int i = 0; i < DeadFish.size(); i++ ) // for all the DeadFishes
 	{
-		for ( int j = DeadFish[i].x-1; j < DeadFish[i].x+7; j++) // loop for checking left and right of DeadFish when it moves
+		for ( int j = DeadFish[i].x-1; j < DeadFish[i].x+8; j++) // loop for checking left and right of DeadFish when it moves
 		{
 			gotoXY(j, DeadFish[i].y); // go to coordinate selected
 			if ( map[DeadFish[i].y][j] == '#' ) // and reprint
@@ -171,7 +171,7 @@ void renderMonster() // render mobs
 
 	for (unsigned int i = 0; i < LiveFish.size(); i++ ) // for all the LiveFishes
 	{
-		for ( int j = LiveFish[i].x-2; j < LiveFish[i].x+6; j++) // loop for checking left and right of LiveFish when it moves
+		for ( int j = LiveFish[i].x-3; j < LiveFish[i].x+6; j++) // loop for checking left and right of LiveFish when it moves
 		{
 			gotoXY(j, LiveFish[i].y); // go to coordinate selected
 			if ( map[LiveFish[i].y][j] == '#' ) // and reprint
