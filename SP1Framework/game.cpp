@@ -1476,6 +1476,7 @@ void renderMoney()
 	std::cout << "Quennies: ";
 	gotoXY(50, 26);
 	std::cout << MoneyCount;
+	std::cout << "\\" << checkLevel; // TO BE REMOVED
 }
 
 void checkForElement()
