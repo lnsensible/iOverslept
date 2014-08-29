@@ -1461,6 +1461,7 @@ void renderUIborders()
 	gotoXY(MAPWIDTH-2, 37);
 	std::cout << (char)217;
 }
+
 void renderHP() // displays amount of HP player still has.
 {
 	gotoXY(14, 26); // Clear HP section for render again

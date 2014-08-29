@@ -82,10 +82,12 @@ void nextSkill()
 	if (AddCKey.index == 1 )
 	{
 		AddCKey = AddSpark;
+		AddCKey.index = 2;
 	}
 	else if (AddCKey.index == 2 )
 	{
 		AddCKey = AddWater;
+		AddCKey.index = 3;
 	}
 }
 
@@ -94,10 +96,12 @@ void previousSkill()
 	if (AddCKey.index == 3 )
 	{
 		AddCKey = AddSpark;
+		AddCKey.index = 2;
 	}
 	else if (AddCKey.index == 2 )
 	{
 		AddCKey = AddFire;
+		AddCKey.index = 1;
 	}
 }
 
@@ -271,85 +275,13 @@ void updateSkill(std::vector<Skill_Properties>& Skill)
 	}
 }
 
-void clearSkills()
-{
-	for(unsigned int x = 0; x < CKey.size(); ++x)
-	{
-		gotoXY(CKey[x].x-1, CKey[x].y);
-			if ( map[CKey[x].y][CKey[x].x-1] == '#' ) // if wall
-			{
-				std::cout << (char)219;
-			}
-			else if ( map[CKey[x].y][CKey[x].x-1] == 234 )
-			{
-				colour(0x0A);
-				std::cout << (char)234;
-				colour(0x0F);
-			}
-			else if ( map[CKey[x].y][CKey[x].x-1] == 239 )
-			{
-				colour(0x0A);
-				std::cout << (char)239;
-				colour(0x0F);
-			}
-			else
-			{
-				std::cout<< map[CKey[x].y][CKey[x].x-1];
-			}
-
-			gotoXY(CKey[x].x, CKey[x].y);
-			if ( map[CKey[x].y][CKey[x].x] == '#' ) // if wall
-			{
-				std::cout << (char)219;
-			}
-			else if ( map[CKey[x].y][CKey[x].x] == 234 )
-			{
-				colour(0x0A);
-				std::cout << (char)234;
-				colour(0x0F);
-			}
-			else if ( map[CKey[x].y][CKey[x].x] == 239 )
-			{
-				colour(0x0A);
-				std::cout << (char)239;
-				colour(0x0F);
-			}
-			else
-			{
-				std::cout<< map[CKey[x].y][CKey[x].x];
-			}
-
-			gotoXY(CKey[x].x+1, CKey[x].y);
-			if ( map[CKey[x].y][CKey[x].x+1] == '#' ) // if wall
-			{
-				std::cout << (char)219;
-			}
-			else if ( map[CKey[x].y][CKey[x].x+1] == 234 )
-			{
-				colour(0x0A);
-				std::cout << (char)234;
-				colour(0x0F);
-			}
-			else if ( map[CKey[x].y][CKey[x].x+1] == 239 )
-			{
-				colour(0x0A);
-				std::cout << (char)239;
-				colour(0x0F);
-			}
-			else
-			{
-				std::cout<< map[CKey[x].y][CKey[x].x+1];
-			}
-	}
-}
-
 void spawnSkill(){
 	for(unsigned int x = 0; x < CKey.size(); ++x)
 	{
-		if (CKey[x].isRENDERED == false)
+		if (CKey[x].isRENDERED == false)//If hit something other than monster, then rendered = false and this happens.
 		{
 		gotoXY(CKey[x].x-1, CKey[x].y);
-			if ( map[CKey[x].y][CKey[x].x-1] == '#' ) // if wall
+			if ( map[CKey[x].y][CKey[x].x-1] == '#' ) 
 			{
 				std::cout << (char)219;
 			}
@@ -418,7 +350,11 @@ void spawnSkill(){
 		else
 		if ( CKey[x].faceWhere == false )
 		{
-			clearSkills();
+			for ( unsigned int y = 0; y< CKey.size(); ++y)
+			{
+			gotoXY(CKey[y].x+1, CKey[y].y);
+			std::cout<<" ";
+			}
 			gotoXY(CKey[x].x, CKey[x].y);
 			if (CKey[x].index == 1)
 			{
@@ -444,7 +380,11 @@ void spawnSkill(){
 		}
 		else if ( CKey[x].faceWhere == true )
 		{
-			clearSkills();
+			for ( unsigned int y = 0; y< CKey.size(); ++y)
+			{
+			gotoXY(CKey[y].x-1, CKey[y].y);
+			std::cout<<" ";
+			}
 			gotoXY(CKey[x].x, CKey[x].y);
 			if (CKey[x].index == 1)
 			{
@@ -469,4 +409,5 @@ void spawnSkill(){
 			colour(0x0F);
 		}
 	}
+	AddCKey.isRENDERED = false;
 }
