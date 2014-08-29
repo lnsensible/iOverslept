@@ -1511,6 +1511,12 @@ void checkForElement()
 		{
 			checkLevel = 9;
 		}
+
+		else if(checkLevel == 31)
+		{
+			checkLevel = 9;
+		}
+
 		fromSPortal = true;
 		init();
 	}
