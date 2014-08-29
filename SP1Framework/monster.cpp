@@ -518,6 +518,7 @@ void checkMonsterDead()
 
 			MonsterSnail.erase(MonsterSnail.begin() + i);// remove snail from map
 			MoneyCount = MoneyCount + 1; // adds Quennies
+			playerExperience += 50; //EXP gain. wengyew
 			renderMoney(); // updates Quennies in U.I.
 		}
 	}
@@ -532,6 +533,7 @@ void checkMonsterDead()
 
 			Floater.erase(Floater.begin() + i);// remove floater from map
 			MoneyCount = MoneyCount + 1; // adds Quennies
+			playerExperience += 25; //EXP gain. wengyew
 			renderMoney(); // updates Quennies in U.I.
 		}
 	}
@@ -546,6 +548,7 @@ void checkMonsterDead()
 
 			InnerFear.erase(InnerFear.begin() + i);// remove innerfear from map
 			MoneyCount = MoneyCount + 2; // adds Quennies
+			playerExperience += 100; //EXP gain. wengyew
 			renderMoney(); // updates Quennies in U.I.
 		}
 	}
@@ -560,6 +563,7 @@ void checkMonsterDead()
 
 			Rat.erase(Rat.begin() + i);// remove rat from map
 			MoneyCount = MoneyCount + 4; // adds Quennies
+			playerExperience += 150; //EXP gain. wengyew
 			renderMoney(); // updates Quennies in U.I.
 		}
 	}
@@ -574,6 +578,7 @@ void checkMonsterDead()
 
 			Wengyew.erase(Wengyew.begin() + i);// remove wengyew from map
 			MoneyCount = MoneyCount + 15; // adds Quennies
+			playerExperience += 300; //EXP gain. wengyew
 			renderMoney(); // updates Quennies in U.I.
 		}
 	}
@@ -588,6 +593,7 @@ void checkMonsterDead()
 
 			CatFish.erase(CatFish.begin() + i);// remove catfish from map
 			MoneyCount = MoneyCount + 3; // adds Quennies
+			playerExperience += 150; //EXP gain. wengyew
 			renderMoney(); // updates Quennies in U.I.
 		}
 	}
@@ -602,6 +608,7 @@ void checkMonsterDead()
 
 			DeadFish.erase(DeadFish.begin() + i);// remove deadfish from map
 			MoneyCount = MoneyCount + 6; // adds Quennies
+			playerExperience += 200; //EXP gain. wengyew
 			renderMoney(); // updates Quennies in U.I.
 		}
 	}
@@ -618,7 +625,7 @@ void checkMonsterDead()
 			respawn.x = LiveFish[i].x; // respawns at last x-coordinate of LiveFish 
 			respawn.y = LiveFish[i].y; // respawns at last y-coordinate of LiveFish
 			respawn.health = 4; // respawn with specified health
-
+			playerExperience += 25; //EXP gain. wengyew
 			DeadFish.push_back(respawn); // pushes into DeadFish vector
 
 			LiveFish.erase(LiveFish.begin() + i);// remove livefish from map

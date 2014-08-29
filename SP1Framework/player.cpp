@@ -34,6 +34,7 @@ void LevelUp()
 		playerExperience -= exptolevelup;
 		playerLevel++;
 		PlayerHealth++;
+		renderHP();
 	}
 }
 

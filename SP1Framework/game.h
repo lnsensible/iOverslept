@@ -18,6 +18,7 @@ extern bool fromSPortal;
 extern int gamestate;
 extern int checkLevel;
 extern int playerLevel;
+extern int playerExperience;
 extern int checkPrevLevel;
 extern int hasbeenDamaged;
 extern int bossStatus;
