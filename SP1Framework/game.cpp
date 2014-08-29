@@ -101,7 +101,6 @@ double VillagerMoveDelay = 0; // delay between each Villager movement
 double PlayerSkillDelay = 0; //delay between skills
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
-
 //Weapons
 extern void Attack(std::vector<Skill_Properties>& Skill);
 extern void updateSkill(std::vector<Skill_Properties>& Skill);
@@ -976,6 +975,9 @@ void loadGameUpdate()
 	AddWater.skillUnlocked = Savedata[0][4];
 	AddFire.skillUnlocked = Savedata[0][5];
 
+	playerLevel = Savedata[0][6];
+	playerExperience = Savedata[0][7];
+
 	AddSpark.dmgUpgrade = Savedata[1][3];
 	AddSpark.rangeUpgrade = Savedata[2][3];
 	AddWater.dmgUpgrade = Savedata[1][4];
@@ -1054,6 +1056,9 @@ void saveGame()
 		{
 			outputData[0][5] = 0;
 		}
+
+		outputData[0][6] = playerLevel;
+		outputData[0][7] = playerExperience;
 
 		for (int i = 0; i < DATAHEIGHT; i++)
 		{
