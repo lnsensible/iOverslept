@@ -36,7 +36,7 @@ std::vector<bossAttack> meteor;
 std::vector<bossAttack> splint;
 std::vector<bossAttack> laser;
 std::vector<bossAttack> lava;
-std::vector<bossAttack> BossHitbox;
+std::vector<Monster> BossHitbox;
 std::vector<Monster> PianusHitbox;
 
 int PewPew = 0; // 0 = no shoot laser, 1 = pewpew, 2 = delete laser
@@ -1152,77 +1152,78 @@ void updateBossHitbox()
 	{
 		hitboxDelay -= 5.0; // reset
 
-		bossAttack spawnHitbox;
+		Monster spawnHitbox;
+		spawnHitbox.health = 30;
 
 		Randomzxc = ( rand() % 9 ); // randomly spawn the hitbox on a platform
 
 		if ( Randomzxc == 0 )
 		{
-			spawnHitbox.X = 14;
-			spawnHitbox.Y = 5;
+			spawnHitbox.x = 14;
+			spawnHitbox.y = 5;
 
 			BossHitbox.push_back(spawnHitbox);
 		}
 		else if ( Randomzxc == 1 )
 		{
-			spawnHitbox.X = 14;
-			spawnHitbox.Y = 5;
+			spawnHitbox.x = 14;
+			spawnHitbox.y = 5;
 
 			BossHitbox.push_back(spawnHitbox);
 		}
 		else if ( Randomzxc == 2 )
 		{
-			spawnHitbox.X = 28;
-			spawnHitbox.Y = 5;
+			spawnHitbox.x = 28;
+			spawnHitbox.y = 5;
 
 			BossHitbox.push_back(spawnHitbox);
 		}
 		else if ( Randomzxc == 3 )
 		{
-			spawnHitbox.X = 21;
-			spawnHitbox.Y = 7;
+			spawnHitbox.x = 21;
+			spawnHitbox.y = 7;
 
 			BossHitbox.push_back(spawnHitbox);
 		}
 		else if ( Randomzxc == 4 )
 		{
-			spawnHitbox.X = 14;
-			spawnHitbox.Y = 9;
+			spawnHitbox.x = 14;
+			spawnHitbox.y = 9;
 
 			BossHitbox.push_back(spawnHitbox);
 		}
 		else if ( Randomzxc == 5 )
 		{
-			spawnHitbox.X = 28;
-			spawnHitbox.Y = 9;
+			spawnHitbox.x = 28;
+			spawnHitbox.y = 9;
 
 			BossHitbox.push_back(spawnHitbox);
 		}
 		else if ( Randomzxc == 6 )
 		{
-			spawnHitbox.X = 21;
-			spawnHitbox.Y = 11;
+			spawnHitbox.x = 21;
+			spawnHitbox.y = 11;
 
 			BossHitbox.push_back(spawnHitbox);
 		}
 		else if ( Randomzxc == 7 )
 		{
-			spawnHitbox.X = 14;
-			spawnHitbox.Y = 13;
+			spawnHitbox.x = 14;
+			spawnHitbox.y = 13;
 
 			BossHitbox.push_back(spawnHitbox);
 		}
 		else if ( Randomzxc == 8 )
 		{
-			spawnHitbox.X = 28;
-			spawnHitbox.Y = 13;
+			spawnHitbox.x = 28;
+			spawnHitbox.y = 13;
 
 			BossHitbox.push_back(spawnHitbox);
 		}
 		else if ( Randomzxc == 9 )
 		{
-			spawnHitbox.X = 21;
-			spawnHitbox.Y = 15;
+			spawnHitbox.x = 21;
+			spawnHitbox.y = 15;
 
 			BossHitbox.push_back(spawnHitbox);
 		}
@@ -1318,15 +1319,15 @@ void renderBossHitbox()
 	{
 		if ( BossHitbox.size() == 1 )
 		{
-			gotoXY(BossHitbox[0].X, BossHitbox[0].Y );
+			gotoXY(BossHitbox[0].x, BossHitbox[0].x );
 			std::cout << (char)3;
 		}
 		if ( BossHitbox.size() > 1 )
 		{
-			gotoXY(BossHitbox[0].X, BossHitbox[0].Y );
+			gotoXY(BossHitbox[0].x, BossHitbox[0].x );
 			std::cout << " ";
 			BossHitbox.erase(BossHitbox.begin()); // remove first hitbox
-			gotoXY(BossHitbox[0].X, BossHitbox[0].Y );
+			gotoXY(BossHitbox[0].x, BossHitbox[0].x );
 			std::cout << (char)3;
 		}
 	}
@@ -1432,22 +1433,31 @@ void checkCollisionHitbox()
 	{
 		for ( unsigned int i = 0; i < CKey.size(); i++ ) // if bullet hit hitbox
 		{
-			if ( CKey[i].x == BossHitbox[0].X && CKey[i].y == BossHitbox[0].Y ) // if hit
+			if ( CKey[i].x == BossHitbox[0].x && CKey[i].y == BossHitbox[0].y ) // if hit
 			{
-				if ( bosscurrentHP - 1 != 0 )
+				if ( BossHitbox[0].health - CKey[i].Damage <= 0 )
 				{
-					bosscurrentHP--;
 					CKey[i].isRENDERED = false;
-					BossHitbox.erase(BossHitbox.begin()); // remove both
-					break; // no need to continue checking
+					BossHitbox[0].health -= CKey[i].Damage;
 				}
 				else
 				{
-					bossFrameDelay = 0.0;
-					bosscurrentHP--;
 					CKey[i].isRENDERED = false;
-					BossHitbox.erase(BossHitbox.begin()); // remove both
-					break; // no need to continue checking
+					if ( bosscurrentHP - 1 != 0 )
+					{
+						bosscurrentHP--;
+						CKey[i].isRENDERED = false;
+						BossHitbox.erase(BossHitbox.begin()); // remove both
+						break; // no need to continue checking
+					}
+					else
+					{
+						bossFrameDelay = 0.0;
+						bosscurrentHP--;
+						CKey[i].isRENDERED = false;
+						BossHitbox.erase(BossHitbox.begin()); // remove both
+						break; // no need to continue checking
+					}
 				}
 			}
 		}

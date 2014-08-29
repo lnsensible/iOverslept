@@ -13,7 +13,7 @@ extern std::vector<bossAttack> meteor;
 extern std::vector<bossAttack> splint;
 extern std::vector<bossAttack> laser;
 extern std::vector<bossAttack> lava;
-extern std::vector<bossAttack> BossHitbox;
+extern std::vector<Monster> BossHitbox;
 extern std::vector<Monster> PianusHitbox;
 extern char bossHPbar;
 extern char pianusHPbar;
