@@ -25,9 +25,6 @@ Skill_Properties AddSpark;
 Skill_Properties AddFire;
 Skill_Properties AddWater;
 Skill_Properties AddCKey;
-std::vector<Skill_Properties> FireOrb;
-std::vector<Skill_Properties> LightningOrb;
-std::vector<Skill_Properties> WaterOrb;
 std::vector<Skill_Properties> CKey;
 
 void initSkill()
@@ -40,8 +37,8 @@ void initSkill()
 	AddFire.Range = 10 + AddFire.rangeUpgrade;
 	AddFire.Speed = 1.0;
 	AddFire.index = 1;
+	AddFire.skillUnlocked = true;
 	AddFire.orbASCII = (char)15;
-	FireOrb.push_back(AddFire);
 
 	//Initialize LightningOrb Skill
 	AddSpark.Damage = 5 + AddSpark.dmgUpgrade;
@@ -49,7 +46,6 @@ void initSkill()
 	AddSpark.Speed = 0.5;
 	AddSpark.index = 2;
 	AddSpark.orbASCII = (char)177;
-	LightningOrb.push_back(AddSpark);
 
 	//Initialize WaterOrb Skill
 	AddWater.Damage = 1 + AddWater.dmgUpgrade;
@@ -57,38 +53,51 @@ void initSkill()
 	AddWater.Speed = 1.0;
 	AddSpark.index = 3;
 	AddWater.orbASCII = (char)247;
-	WaterOrb.push_back(AddWater);
 
 	//Initializes Player Equipped Skill to Fire
 	AddCKey = AddFire;
-	CKey.push_back(AddCKey);
+}
+
+void Attack(std::vector<Skill_Properties>& Skill)
+{
+	if ( playerFacing == 0 ) // if facing left
+	{
+		AddCKey.x = charLocation.X-1;
+		AddCKey.y = charLocation.Y;
+		AddCKey.faceWhere = false;
+		AddCKey.isRENDERED = true;
+	}
+	else if ( playerFacing == 1 ) // if facing right
+	{
+		AddCKey.x = charLocation.X+1;
+		AddCKey.y = charLocation.Y;
+		AddCKey.faceWhere = true;
+		AddCKey.isRENDERED = true;
+	}
+	Skill.push_back(AddCKey);
 }
 
 void nextSkill()
 {
-		if (AddCKey.index == 1 && AddSpark.skillUnlocked)
-		{
-			AddCKey = AddSpark;
-			CKey.push_back(AddCKey);
-		}
-		else if (AddCKey.index == 2 && AddWater.skillUnlocked)
-		{
-			AddCKey = AddWater;
-			CKey.push_back(AddCKey);
-		}
+	if (AddCKey.index == 1 )
+	{
+		AddCKey = AddSpark;
+	}
+	else if (AddCKey.index == 2 )
+	{
+		AddCKey = AddWater;
+	}
 }
 
 void previousSkill()
 {
-	if (AddCKey.index == 3 && AddSpark.skillUnlocked)
+	if (AddCKey.index == 3 )
 	{
-			AddCKey = AddSpark;
-			CKey.push_back(AddCKey);
+		AddCKey = AddSpark;
 	}
-	else if (AddCKey.index == 2 && AddFire.skillUnlocked)
+	else if (AddCKey.index == 2 )
 	{
-			AddCKey = AddFire;
-			CKey.push_back(AddCKey);
+		AddCKey = AddFire;
 	}
 }
 
@@ -100,7 +109,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		{
 			if (Skill[j].x == MonsterSnail[i].x && Skill[j].y == MonsterSnail[i].y)
 			{
-				MonsterSnail[i].health -= AddCKey.Damage;
+				MonsterSnail[i].health -= Skill[j].Damage;
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -244,28 +253,6 @@ void checkCollisionWithWall(std::vector<Skill_Properties>& Skill)
 	}
 }
 
-void Attack(std::vector<Skill_Properties>& Skill)
-{
-	if ( playerFacing == 0 ) // if facing left,
-	{
-		Skill_Properties addSkill;
-		addSkill.x = charLocation.X-1;
-		addSkill.y = charLocation.Y;
-		addSkill.faceWhere = false;
-		addSkill.isRENDERED = true;
-		Skill.push_back(addSkill);
-	}
-	else if ( playerFacing == 1 ) // if facing right
-	{
-		Skill_Properties addSkill;
-		addSkill.x = charLocation.X+1;
-		addSkill.y = charLocation.Y;
-		addSkill.faceWhere = true;
-		addSkill.isRENDERED = true;
-		Skill.push_back(addSkill);
-	}
-}
-
 void updateSkill(std::vector<Skill_Properties>& Skill)
 {
 	for (unsigned int h = 0; h < Skill.size(); ++h)
@@ -279,22 +266,16 @@ void updateSkill(std::vector<Skill_Properties>& Skill)
 			Skill[h].x += 1;
 		}
 		Skill[h].bulletTravelDistance +=1;
-		if (Skill[h].bulletTravelDistance == AddCKey.Range)
-		{
-			Skill.erase(Skill.begin() + h);
-		}
-		checkCollisionWithMonster(CKey);
-		checkCollisionWithWall(CKey);
+		checkCollisionWithMonster(Skill);
+		checkCollisionWithWall(Skill);
 	}
 }
 
-void spawnSkill(std::vector<Skill_Properties>& Skill){
+void clearSkills(std::vector<Skill_Properties>& Skill)
+{
 	for(unsigned int x = 0; x < Skill.size(); ++x)
 	{
-		if ( Skill[x].isRENDERED == false ) // need to remove bullet
-		{
-
-			gotoXY(Skill[x].x-1, Skill[x].y);
+		gotoXY(Skill[x].x-1, Skill[x].y);
 			if ( map[Skill[x].y][Skill[x].x-1] == '#' ) // if wall
 			{
 				std::cout << (char)219;
@@ -359,47 +340,60 @@ void spawnSkill(std::vector<Skill_Properties>& Skill){
 			{
 				std::cout<< map[Skill[x].y][Skill[x].x+1];
 			}
+	}
+}
 
-			Skill.erase(Skill.begin() + x);
-		}
-		else
+void spawnSkill(std::vector<Skill_Properties>& Skill){
+	for(unsigned int x = 0; x < Skill.size(); ++x)
+	{
+		if ( Skill[x].faceWhere == false )
 		{
-			if ( Skill[x].faceWhere == false )
+			clearSkills(Skill);
+			gotoXY(Skill[x].x, Skill[x].y);
+			if (Skill[x].index == 1)
 			{
-				gotoXY(Skill[x].x+1, Skill[x].y);
-				std::cout<< map[Skill[x].y][Skill[x].x+1];
-				gotoXY(Skill[x].x, Skill[x].y);
-				if (AddCKey.index == 1)
-				{
 				colour(0x04);
-				}
-				else if (AddCKey.index == 2)
-				{
+			}
+			else if (Skill[x].index == 2)
+			{
 				colour(0x8);
-				}
-				else if (AddCKey.index == 3)
-				{
+			}
+			else if (Skill[x].index == 3)
+			{
 				colour(0x03);
-				}
+			}
+			if (Skill[x].bulletTravelDistance == AddCKey.Range)
+			{
+				Skill.erase(Skill.begin() + x);
+			}
+			else if (Skill[x].isRENDERED == true)
+			{
 				std::cout<<AddCKey.orbASCII;
 			}
-			else if ( Skill[x].faceWhere == true )
+			colour(0x0F);
+		}
+		else if ( Skill[x].faceWhere == true )
+		{
+			clearSkills(Skill);
+			gotoXY(Skill[x].x, Skill[x].y);
+			if (Skill[x].index == 1)
 			{
-				gotoXY(Skill[x].x-1, Skill[x].y);
-				std::cout<< map[Skill[x].y][Skill[x].x-1];
-				gotoXY(Skill[x].x, Skill[x].y);
-				if (AddCKey.index == 1)
-				{
 				colour(0x04);
-				}
-				else if (AddCKey.index == 2)
-				{
+			}
+			else if (Skill[x].index == 2)
+			{
 				colour(0x8);
-				}
-				else if (AddCKey.index == 3)
-				{
+			}
+			else if (Skill[x].index == 3)
+			{
 				colour(0x03);
-				}
+			}
+			if (Skill[x].bulletTravelDistance == AddCKey.Range)
+			{
+				Skill.erase(Skill.begin() + x);
+			}
+			else if (Skill[x].isRENDERED == true)
+			{
 				std::cout<<AddCKey.orbASCII;
 			}
 			colour(0x0F);

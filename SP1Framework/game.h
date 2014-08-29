@@ -64,6 +64,7 @@ struct Skill_Properties{
 	char orbASCII;
 	Skill_Properties()
 	{
+		skillUnlocked = false;
 		dmgUpgrade = 0;
 		rangeUpgrade = 0;
 		bulletTravelDistance = 0;

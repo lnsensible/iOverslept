@@ -99,6 +99,7 @@ double DeadFishMoveDelay = 0; // delay between each DeadFish movement
 double LiveFishMoveDelay = 0; // delay between each LiveFish movement
 double VillagerMoveDelay = 0; // delay between each Villager movement
 double PlayerSkillDelay = 0; //delay between skills
+double ProjectileSpeed = 0;
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
 //Weapons
@@ -1734,6 +1735,7 @@ void update(double dt)
 	canJump += dt;
 	PlayerSkillDelay += dt;
     deltaTime = dt;
+	ProjectileSpeed += dt;
 	gravity();
 	checkforSpike();
 	checkForElement();
@@ -1883,9 +1885,10 @@ void update(double dt)
 		}
 	}
 
-	if ( CKey.size() != 0 )
+	if ( CKey.size() != 0  && ProjectileSpeed >= 0.01)
 	{
 		updateSkill(CKey);
+		ProjectileSpeed = 0;
 	}
 
     // Updating the location of the character based on the key press
