@@ -35,7 +35,7 @@ void initSkill()
 	//Initialize FireOrb Skill
 	AddFire.Damage = 2 + AddFire.dmgUpgrade;
 	AddFire.Range = 10 + AddFire.rangeUpgrade;
-	AddFire.Speed = 0.5;
+	AddFire.Speed = 1.0;
 	AddFire.index = 1;
 	AddFire.skillUnlocked = true;
 	AddFire.orbASCII = (char)15;
