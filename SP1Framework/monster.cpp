@@ -16,6 +16,7 @@ std::vector<Monster> CatFish;
 std::vector<Monster> DeadFish;
 std::vector<Monster> LiveFish;
 std::vector<Monster> Villager;
+std::vector<Monster> Shielded;
 
 extern COORD charLocation;
 extern COORD consoleSize;
@@ -30,6 +31,7 @@ extern int CatFishcounter;
 extern int DeadFishcounter;
 extern int LiveFishcounter;
 extern int Villagercounter;
+extern int Shieldedcounter;
 
 extern int MoneyCount;
 
@@ -113,7 +115,7 @@ void renderMonster() // render mobs
 
 	for (unsigned int i = 0; i < Wengyew.size(); i++ ) // for all the wengyews
 	{
-		for ( int j = Wengyew[i].x-1; j < Wengyew[i].x+8; j++) // loop for checking left and right of wengyews when it moves
+		for ( int j = Wengyew[i].x-2; j < Wengyew[i].x+7; j++) // loop for checking left and right of wengyews when it moves
 		{
 			gotoXY(j, Wengyew[i].y); // go to coordinate selected
 			if ( map[Wengyew[i].y][j] == '#' ) // and reprint
@@ -152,7 +154,7 @@ void renderMonster() // render mobs
 
 	for (unsigned int i = 0; i < DeadFish.size(); i++ ) // for all the DeadFishes
 	{
-		for ( int j = DeadFish[i].x-1; j < DeadFish[i].x+8; j++) // loop for checking left and right of DeadFish when it moves
+		for ( int j = DeadFish[i].x-1; j < DeadFish[i].x+7; j++) // loop for checking left and right of DeadFish when it moves
 		{
 			gotoXY(j, DeadFish[i].y); // go to coordinate selected
 			if ( map[DeadFish[i].y][j] == '#' ) // and reprint
@@ -171,7 +173,7 @@ void renderMonster() // render mobs
 
 	for (unsigned int i = 0; i < LiveFish.size(); i++ ) // for all the LiveFishes
 	{
-		for ( int j = LiveFish[i].x-3; j < LiveFish[i].x+6; j++) // loop for checking left and right of LiveFish when it moves
+		for ( int j = LiveFish[i].x-3; j < LiveFish[i].x+7; j++) // loop for checking left and right of LiveFish when it moves
 		{
 			gotoXY(j, LiveFish[i].y); // go to coordinate selected
 			if ( map[LiveFish[i].y][j] == '#' ) // and reprint
@@ -205,8 +207,24 @@ void renderMonster() // render mobs
 		gotoXY(Villager[i].x, Villager[i].y); // go to coordinates of Villager in the vector
 		std::cout << (char)1; // print Villager
 	}
-}
 
+	for (unsigned int i = 0; i < Shielded.size(); i++ ) // for all the Shieldeds
+	{
+		for ( int j = Shielded[i].x-1; j < Shielded[i].x+2; j++) //loop for checking left and right of Shielded when it moves
+		{
+			gotoXY(j, Shielded[i].y); // go to coordinate selected
+			if ( map[Shielded[i].y][j] == '#' ) // and reprint
+			{
+				std::cout << (char)219; // the wall
+			}
+			else
+			{
+				 std::cout << map[Shielded[i].y][j]; // print whatever is on the map
+				 std::cout << (char)206; // print Shielded
+			}
+		}
+	}
+}
 void checkCollisionSnail()
 {
 	for ( unsigned int i = 0; i < MonsterSnail.size(); i++) // for all the Snails
@@ -303,6 +321,19 @@ void checkCollisionLiveFish()
 	for ( unsigned int i = 0; i < LiveFish.size(); i++) // for all the LiveFishes
 	{
 		if ( charLocation.X >= LiveFish[i].x && charLocation.X <= LiveFish[i].x+4 && charLocation.Y == LiveFish[i].y) // if player is touching the LiveFish
+		{
+			hasbeenDamaged = 1; // damage player by 1
+			if ( PlayerHealth > 0 ) // if player health is more than zero
+				PlayerHealth--; // damage player
+		}
+	}
+}
+
+void checkCollisionShielded()
+{
+	for ( unsigned int i = 0; i < Shielded.size(); i++) // for all the Shieldeds
+	{
+		if ( charLocation.X >= Shielded[i].x && charLocation.X <= Shielded[i].x+2 && charLocation.Y == Shielded[i].y) // if player is touching the Shielded
 		{
 			hasbeenDamaged = 1; // damage player by 1
 			if ( PlayerHealth > 0 ) // if player health is more than zero
@@ -504,6 +535,23 @@ void updateVillager() // Villager movement update
 	}
 }
 
+void updateShielded() // Shielded movement update
+{
+	for (unsigned int i = 0; i < Shielded.size(); i++ ) // for all Shieldeds
+	{
+		if ( rand() % 2 == 0 )
+		{
+			if ( map[Shielded[i].y][Shielded[i].x-1] != '#' && map[Shielded[i].y+1][Shielded[i].x-1] == '#' ) // If move left is possible
+				Shielded[i].x--;
+		}
+		else
+		{
+			if ( map[Shielded[i].y][Shielded[i].x+1] != '#' && map[Shielded[i].y+1][Shielded[i].x+1] == '#' ) // If move right is possible
+				Shielded[i].x++;
+		}
+	}
+}
+
 
 
 void checkMonsterDead()
@@ -518,7 +566,7 @@ void checkMonsterDead()
 
 			MonsterSnail.erase(MonsterSnail.begin() + i);// remove snail from map
 			MoneyCount = MoneyCount + 1; // adds Quennies
-			playerExperience += 50; //EXP gain. wengyew
+			playerExperience += 50; //EXP gain
 			renderMoney(); // updates Quennies in U.I.
 		}
 	}
@@ -533,7 +581,7 @@ void checkMonsterDead()
 
 			Floater.erase(Floater.begin() + i);// remove floater from map
 			MoneyCount = MoneyCount + 1; // adds Quennies
-			playerExperience += 25; //EXP gain. wengyew
+			playerExperience += 25; //EXP gain
 			renderMoney(); // updates Quennies in U.I.
 		}
 	}
@@ -548,7 +596,7 @@ void checkMonsterDead()
 
 			InnerFear.erase(InnerFear.begin() + i);// remove innerfear from map
 			MoneyCount = MoneyCount + 2; // adds Quennies
-			playerExperience += 100; //EXP gain. wengyew
+			playerExperience += 100; //EXP gain
 			renderMoney(); // updates Quennies in U.I.
 		}
 	}
@@ -563,7 +611,7 @@ void checkMonsterDead()
 
 			Rat.erase(Rat.begin() + i);// remove rat from map
 			MoneyCount = MoneyCount + 4; // adds Quennies
-			playerExperience += 150; //EXP gain. wengyew
+			playerExperience += 150; //EXP gain
 			renderMoney(); // updates Quennies in U.I.
 		}
 	}
@@ -578,7 +626,7 @@ void checkMonsterDead()
 
 			Wengyew.erase(Wengyew.begin() + i);// remove wengyew from map
 			MoneyCount = MoneyCount + 15; // adds Quennies
-			playerExperience += 300; //EXP gain. wengyew
+			playerExperience += 300; //EXP gain
 			renderMoney(); // updates Quennies in U.I.
 		}
 	}
@@ -593,7 +641,7 @@ void checkMonsterDead()
 
 			CatFish.erase(CatFish.begin() + i);// remove catfish from map
 			MoneyCount = MoneyCount + 3; // adds Quennies
-			playerExperience += 150; //EXP gain. wengyew
+			playerExperience += 150; //EXP gain
 			renderMoney(); // updates Quennies in U.I.
 		}
 	}
@@ -608,7 +656,7 @@ void checkMonsterDead()
 
 			DeadFish.erase(DeadFish.begin() + i);// remove deadfish from map
 			MoneyCount = MoneyCount + 6; // adds Quennies
-			playerExperience += 200; //EXP gain. wengyew
+			playerExperience += 200; //EXP gain
 			renderMoney(); // updates Quennies in U.I.
 		}
 	}
@@ -625,11 +673,26 @@ void checkMonsterDead()
 			respawn.x = LiveFish[i].x; // respawns at last x-coordinate of LiveFish 
 			respawn.y = LiveFish[i].y; // respawns at last y-coordinate of LiveFish
 			respawn.health = 4; // respawn with specified health
-			playerExperience += 25; //EXP gain. wengyew
+			playerExperience += 25; //EXP gain
 			DeadFish.push_back(respawn); // pushes into DeadFish vector
 
 			LiveFish.erase(LiveFish.begin() + i);// remove livefish from map
 			// no Quennies for you for killing a fish!
+		}
+	}
+
+	for (unsigned int i = 0; i < Shielded.size(); i++)
+	{
+		if ( Shielded[i].health <= 0 )
+		{
+			gotoXY(Shielded[i].x, Shielded[i].y);
+			std::cout << " ";
+			map[Shielded[i].y][Shielded[i].x] = ' ';
+
+			Shielded.erase(Shielded.begin() + i);// remove Shielded from map
+			MoneyCount = MoneyCount + 1; // adds Quennies
+			playerExperience += 50; //EXP gain
+			renderMoney(); // updates Quennies in U.I.
 		}
 	}
 }

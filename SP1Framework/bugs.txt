@@ -1,0 +1,4 @@
+when bullet dissappears exactly at background, background 
+will be erased(portal colours are overridden)
+mobs need to be able to flip
+background needs to be 'nicer'

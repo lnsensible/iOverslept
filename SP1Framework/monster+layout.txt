@@ -32,6 +32,9 @@ feeding fishes. Represents Quen's lifelong scar.
 A cat that has been crossed with a fish. A physical form of Quen imagining
 his fish ate a cat.
 
+char 206	shielded
+A moving shield. Represents Quen's shielded or hidden feelings and thoughts.
+
 
 
 

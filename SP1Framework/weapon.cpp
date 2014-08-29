@@ -19,7 +19,12 @@ extern std::vector<Monster> Wengyew;
 extern std::vector<Monster> CatFish;
 extern std::vector<Monster> DeadFish;
 extern std::vector<Monster> LiveFish;
+<<<<<<< b902f142b4abfa35c3840e2d8b81af32b7f16158
 extern std::vector<Monster> Villager;
+=======
+extern std::vector<Monster> Shielded;
+extern std::vector<Monster> PianusHitbox;
+>>>>>>> cf3d4221aa0744640efa4a3753dca785f21ae1d3
 extern void checkMonsterDead();
 Skill_Properties AddSpark;
 Skill_Properties AddFire;
@@ -107,13 +112,13 @@ void previousSkill()
 
 void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 {
-	for ( unsigned int i = 0; i < MonsterSnail.size(); i++)
+	for ( unsigned int i = 0; i < MonsterSnail.size(); i++) // for all snails
 	{
 		for ( unsigned int j = 0; j < Skill.size(); j++)
 		{
-			if (Skill[j].x == MonsterSnail[i].x && Skill[j].y == MonsterSnail[i].y)
+			if (Skill[j].x == MonsterSnail[i].x && Skill[j].y == MonsterSnail[i].y) // if skill touches mob
 			{
-				MonsterSnail[i].health -= Skill[j].Damage;
+				MonsterSnail[i].health -= Skill[j].Damage; // health from mob is deducted by skill damage
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -122,6 +127,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		}
 	}
 
+<<<<<<< b902f142b4abfa35c3840e2d8b81af32b7f16158
 	for ( unsigned int i = 0; i < Villager.size(); i++)
 	{
 		for ( unsigned int j = 0; j < Skill.size(); j++)
@@ -137,12 +143,15 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 	}
 
 	for ( unsigned int i = 0; i < Floater.size(); i++)
+=======
+	for ( unsigned int i = 0; i < Floater.size(); i++) // for all floaters
+>>>>>>> cf3d4221aa0744640efa4a3753dca785f21ae1d3
 	{
 		for ( unsigned int j = 0; j < Skill.size(); j++)
 		{
-			if (Skill[j].x == Floater[i].x && Skill[j].y == Floater[i].y)
+			if (Skill[j].x == Floater[i].x && Skill[j].y == Floater[i].y) // if skill touches mob
 			{
-				Floater[i].health -= AddCKey.Damage;
+				Floater[i].health -= AddCKey.Damage; // health from mob is deducted by skill damage
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -151,13 +160,13 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		}
 	}
 
-	for ( unsigned int i = 0; i < Rat.size(); i++)
+	for ( unsigned int i = 0; i < Rat.size(); i++) // for all rats
 	{
 		for ( unsigned int j = 0; j < Skill.size(); j++)
 		{
-			if (Skill[j].x == Rat[i].x && Skill[j].y == Rat[i].y)
+			if (Skill[j].x == Rat[i].x && Skill[j].y == Rat[i].y) // if skill touches mob
 			{
-				Rat[i].health -= AddCKey.Damage;
+				Rat[i].health -= AddCKey.Damage; // health from mob is deducted by skill damage
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -184,13 +193,13 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 	*/
 
 
-	for ( unsigned int i = 0; i < InnerFear.size(); i++)
+	for ( unsigned int i = 0; i < InnerFear.size(); i++) // for all innerfears
 	{
 		for ( unsigned int j = 0; j < Skill.size(); j++)
 		{
-			if (Skill[j].x == InnerFear[i].x && Skill[j].y == InnerFear[i].y)
+			if (Skill[j].x == InnerFear[i].x && Skill[j].y == InnerFear[i].y) // if skill touches mob
 			{
-				InnerFear[i].health -= AddCKey.Damage;
+				InnerFear[i].health -= AddCKey.Damage; // health from mob is deducted by skill damage
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -199,13 +208,13 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		}
 	}
 
-	for ( unsigned int i = 0; i < Wengyew.size(); i++)
+	for ( unsigned int i = 0; i < Wengyew.size(); i++) // for all wengyews
 	{
 		for ( unsigned int j = 0; j < Skill.size(); j++)
 		{
-			if (Skill[j].x == Wengyew[i].x && Skill[j].y == Wengyew[i].y)
+			if (Skill[j].x == Wengyew[i].x && Skill[j].y == Wengyew[i].y) // if skill touches mob
 			{
-				Wengyew[i].health -= AddCKey.Damage;
+				Wengyew[i].health -= AddCKey.Damage; // health from mob is deducted by skill damage
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -214,13 +223,13 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		}
 	}
 
-	for ( unsigned int i = 0; i < CatFish.size(); i++)
+	for ( unsigned int i = 0; i < CatFish.size(); i++) // for all catfishes
 	{
 		for ( unsigned int j = 0; j < Skill.size(); j++)
 		{
-			if (Skill[j].x == CatFish[i].x && Skill[j].y == CatFish[i].y)
+			if (Skill[j].x == CatFish[i].x && Skill[j].y == CatFish[i].y) // if skill touches mob
 			{
-				CatFish[i].health -= AddCKey.Damage;
+				CatFish[i].health -= AddCKey.Damage; // health from mob is deducted by skill damage
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -229,13 +238,13 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		}
 	}
 
-	for ( unsigned int i = 0; i < DeadFish.size(); i++)
+	for ( unsigned int i = 0; i < DeadFish.size(); i++) // for all deadfishes
 	{
 		for ( unsigned int j = 0; j < Skill.size(); j++)
 		{
-			if (Skill[j].x == DeadFish[i].x && Skill[j].y == DeadFish[i].y)
+			if (Skill[j].x == DeadFish[i].x && Skill[j].y == DeadFish[i].y) // if skill touches mob
 			{
-				DeadFish[i].health -= AddCKey.Damage;
+				DeadFish[i].health -= AddCKey.Damage; // health from mob is deducted by skill damage
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -244,15 +253,30 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		}
 	}
 
-	for ( unsigned int i = 0; i < LiveFish.size(); i++)
+	for ( unsigned int i = 0; i < LiveFish.size(); i++) // for all livefishes
 	{
 		for ( unsigned int j = 0; j < Skill.size(); j++)
 		{
-			if (Skill[j].x == LiveFish[i].x && Skill[j].y == LiveFish[i].y)
+			if (Skill[j].x == LiveFish[i].x && Skill[j].y == LiveFish[i].y) // if skill touches mob
 			{
-				LiveFish[i].health -= AddCKey.Damage;
+				LiveFish[i].health -= AddCKey.Damage; // health from mob is deducted by skill damage
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
+				i = 0;
+				j = 0;
+			}
+		}
+	}
+
+	for ( unsigned int i = 0; i < Shielded.size(); i++) // for all Shieldeds
+	{
+		for ( unsigned int j = 0; j < Skill.size(); j++)
+		{
+			if (Skill[j].x == Shielded[i].x && Skill[j].y == Shielded[i].y) // if skill touches mob
+			{
+				Shielded[i].health -= AddCKey.Damage; // health from mob is deducted by skill damage
+				Skill.erase(Skill.begin() + j); // remove Skill
+				checkMonsterDead(); 
 				i = 0;
 				j = 0;
 			}

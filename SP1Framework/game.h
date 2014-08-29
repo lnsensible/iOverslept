@@ -203,6 +203,7 @@ void checkCollisionWengyew();
 void checkCollisionCatFish();
 void checkCollisionDeadFish();
 void checkCollisionLiveFish();
+void checkCollisionShielded();
 void updateSnails();
 void updateFloater();
 void updateInnerFear();
@@ -212,6 +213,7 @@ void updateCatFish();
 void updateDeadFish();
 void updateLiveFish();
 void updateVillager();
+void updateShielded();
 void checkMonsterDead();
 void renderMonster();
 

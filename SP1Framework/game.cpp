@@ -34,6 +34,7 @@ extern std::vector<Monster> CatFish;
 extern std::vector<Monster> DeadFish;
 extern std::vector<Monster> LiveFish;
 extern std::vector<Monster> Villager;
+extern std::vector<Monster> Shielded;
 
 extern std::vector<Skill_Properties> CKey;
 extern std::vector<Skill_Properties> EKey;
@@ -88,6 +89,7 @@ int CatFishcounter = 0; // count number of CatFishes
 int DeadFishcounter = 0; // count number of DeadFishes
 int LiveFishcounter = 0; // count number of LiveFishes
 int Villagercounter = 0; // count number of Villagers
+int Shieldedcounter = 0; // count number of Shieldeds
 
 double snailMoveDelay = 0; // delay between each snail movement :D
 double floaterMoveDelay = 0; // delay between each floater movement
@@ -98,6 +100,7 @@ double CatFishMoveDelay = 0; // delay between each CatFish movement
 double DeadFishMoveDelay = 0; // delay between each DeadFish movement
 double LiveFishMoveDelay = 0; // delay between each LiveFish movement
 double VillagerMoveDelay = 0; // delay between each Villager movement
+double ShieldedMoveDelay = 0; // delay between each Shielded movement 
 double PlayerSkillDelay = 0; //delay between skills
 double ProjectileSpeed = 0;
 
@@ -1309,14 +1312,27 @@ void prepareLevel() // Prepares level map for cout.
 				map[i][j] = ' '; // replace with a space
 			}
 
-			if( map[i][j] == 'V' ) // DeadFish Monster placeholder
+			if( map[i][j] == 'V' ) // Villager Monster placeholder
 			{
 				Monster villager;
 
-				villager.x = j; // location of X-coordinates of LiveFish
-				villager.y = i; // location of Y-coordinates of LiveFish
+				villager.x = j; // location of X-coordinates of Villager
+				villager.y = i; // location of Y-coordinates of Villager
 
 				Villager.push_back(villager); // stores coordinates in a vector
+
+				map[i][j] = ' '; // replace with a space
+			}
+
+			if( map[i][j] == 'A' ) // Shielded Monster placeholder
+			{
+				Monster shielded;
+
+				shielded.x = j; // location of X-coordinates of Shielded
+				shielded.y = i; // location of Y-coordinates of Shielded
+				shielded.health = 20; // health of shielded
+
+				Shielded.push_back(shielded); // stores coordinates in a vector
 
 				map[i][j] = ' '; // replace with a space
 			}
@@ -1611,6 +1627,7 @@ void resetElements() // removes monsters and effects on the map
 	DeadFish.clear();
 	LiveFish.clear();
 	Villager.clear();
+	Shielded.clear();
 	meteor.clear();
 	splint.clear();
 	laser.clear();
@@ -1646,6 +1663,7 @@ void init()
 	CatFishMoveDelay = 0.0;
 	DeadFishMoveDelay = 0.0;
 	VillagerMoveDelay = 0.0;
+	ShieldedMoveDelay = 0.0;
 
 	hasbeenStabbed = 0;
 	hasbeenDamaged = 0;
@@ -1745,6 +1763,7 @@ void update(double dt)
 	DeadFishMoveDelay += dt;
 	LiveFishMoveDelay += dt;
 	VillagerMoveDelay += dt;
+	ShieldedMoveDelay += dt;
 	hitboxDelay += dt;
 	canJump += dt;
 	PlayerSkillDelay += dt;
@@ -1897,6 +1916,16 @@ void update(double dt)
 			updateVillager();
 			VillagerMoveDelay = 0; // reset movement timer
 		}
+	}
+
+		if ( Shielded.size() != 0 ) // When there are Shieldeds
+	{
+		if ( ShieldedMoveDelay > 1.000 ) // Shielded move every 1000ms
+		{
+			updateShielded();
+			ShieldedMoveDelay = 0; // reset movement timer
+		}
+		checkCollisionShielded();
 	}
 
 	if ( CKey.size() != 0  && ProjectileSpeed >= 0.01)
