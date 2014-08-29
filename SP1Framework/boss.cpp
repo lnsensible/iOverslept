@@ -1049,14 +1049,20 @@ void checkPianusStatus()
 			else if ( bossFrameDelay > 3.0 ) // third frame
 			{
 				pianusDead3();
-				map[15][8] = (char)239;
-				map[15][21] = (char)209;
+				map[15][8] = (char)239;//spawn portal
+				map[15][21] = (char)209;//spawn sign
+				map[15][19] = (char)15;//spawn treasures
+				map[15][23] = (char)15;
+				map[15][25] = (char)15;
+				map[15][32] = (char)15;
+				map[15][34] = (char)15;
+				map[15][36] = (char)15;
+				map[15][38] = (char)15;
 				renderLevel();
 				bossFrameDelay -= 3.0;
 				isBossLevel = 0;
 				bossStatus = 0;
 				skillDelay = 0;
-				// reset to standing animation ~
 			}
 			else
 			{

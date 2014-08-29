@@ -1633,6 +1633,8 @@ void init()
 	hasStoryRendered = 0;
 	MoneyInv = 0;
 
+	playerLevel = 1;
+
 	for(int i = 0; i < NUMBEROFLEVELS + 1; i++)
 	{
 		leveltoload = "level";
@@ -1730,6 +1732,8 @@ void update(double dt)
 	checkforSpike();
 	checkForElement();
 	updateSigns();
+
+	LevelUp();
 
 	if ( hasbeenStabbed == 1 ) 
 	{
@@ -1960,6 +1964,8 @@ void render()
 		renderMoney();
 		hasLevelRendered = 1;
 	}
+
+	renderXPLevel();
 
 	//clear only area around character. prevent flickering~
 	if ( hasMoved == 1 )

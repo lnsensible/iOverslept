@@ -10,6 +10,9 @@
 int isJumping = 0; // Check if character is jumping. 0 = Not jumping, 1 = Jumping
 int hasbeenStabbed = 0; // Check if character has been stabbed by a needle/spike to determine if spikes need to be re rendered
 int hasbeenDamaged = 0; // Check if character was damaged. If yes, need to re-render HP. All to prevent flickering ); 0 = No change, 1 = Changed
+int playerLevel = 0; // Level of player
+int playerExperience = 0; // EXP of player
+int exptolevelup = 0;
 
 double canJump = 0; // Check if you have jumped in the past 0.8 ms
 double jumpDelay = 0; // delay between y coordinate change while jumping
@@ -22,6 +25,25 @@ extern COORD charLocation;
 extern COORD consoleSize;
 extern int gamestate;
 extern int hasMoved;
+
+void LevelUp()
+{
+	exptolevelup = playerLevel * 500;
+	if ( playerExperience > exptolevelup )
+	{
+		playerExperience -= exptolevelup;
+		playerLevel++;
+		PlayerHealth++;
+	}
+}
+
+void renderXPLevel()
+{
+	gotoXY(6, 28);
+	std::cout << "Level: " << playerLevel;
+	gotoXY(6, 30);
+	std::cout << "EXP: " << playerExperience << " / " << exptolevelup; 
+}
 
 void jump()
 {

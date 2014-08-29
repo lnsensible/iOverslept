@@ -17,6 +17,7 @@ extern bool spawnwhere;
 extern bool fromSPortal;
 extern int gamestate;
 extern int checkLevel;
+extern int playerLevel;
 extern int checkPrevLevel;
 extern int hasbeenDamaged;
 extern int bossStatus;
@@ -218,6 +219,8 @@ void gravity();
 void checkforDeath();
 void checkforSpike();
 void spawnWhere();
+void LevelUp();
+void renderXPLevel();
 
 //weapon
 void Attack();
