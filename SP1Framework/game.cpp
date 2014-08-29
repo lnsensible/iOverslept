@@ -2026,13 +2026,6 @@ void render()
 		spawnSkill();
 	}
 
-
-	// render character
-    gotoXY(charLocation);
-    colour(0x0C);
-    std::cout << (char)1;
-	colour(0x0F);
-
 	renderSigns();  
 	renderStory();
 
@@ -2098,4 +2091,9 @@ void render()
     //colour(0x59);
     //std::cout << elapsedTime << "secs" << std::endl;
 	
+	// render character
+    gotoXY(charLocation);
+    colour(0x0C);
+    std::cout << (char)1;
+	colour(0x0F);
 }
