@@ -19,7 +19,7 @@ extern std::vector<Monster> Wengyew;
 extern std::vector<Monster> CatFish;
 extern std::vector<Monster> DeadFish;
 extern std::vector<Monster> LiveFish;
-extern std::vector<Monster> PianusHitbox;
+extern std::vector<Monster> Villager;
 extern void checkMonsterDead();
 Skill_Properties AddSpark;
 Skill_Properties AddFire;
@@ -116,6 +116,20 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 				MonsterSnail[i].health -= Skill[j].Damage;
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
+				i = 0;
+				j = 0;
+			}
+		}
+	}
+
+	for ( unsigned int i = 0; i < Villager.size(); i++)
+	{
+		for ( unsigned int j = 0; j < Skill.size(); j++)
+		{
+			if (Skill[j].x == Villager[i].x && Skill[j].y == Villager[i].y)
+			{
+				Villager[i].health -= Skill[j].Damage;
+				Skill.erase(Skill.begin() + j); // remove Skill
 				i = 0;
 				j = 0;
 			}
@@ -280,7 +294,7 @@ void spawnSkill(){
 	{
 		if (CKey[x].isRENDERED == false)//If hit something other than monster, then rendered = false and this happens.
 		{
-		gotoXY(CKey[x].x-1, CKey[x].y);
+			gotoXY(CKey[x].x-1, CKey[x].y);
 			if ( map[CKey[x].y][CKey[x].x-1] == '#' ) 
 			{
 				std::cout << (char)219;
@@ -345,69 +359,85 @@ void spawnSkill(){
 			{
 				std::cout<< map[CKey[x].y][CKey[x].x+1];
 			}
-		CKey.erase(CKey.begin() + x);
+			CKey.erase(CKey.begin() + x);
 		}
 		else
-		if ( CKey[x].faceWhere == false )
-		{
-			for ( unsigned int y = 0; y< CKey.size(); ++y)
+			if ( CKey[x].faceWhere == false )
 			{
-			gotoXY(CKey[y].x+1, CKey[y].y);
-			std::cout<<" ";
+				for ( unsigned int y = 0; y< CKey.size(); ++y)
+				{
+					gotoXY(CKey[y].x+1, CKey[y].y);
+					std::cout<<" ";
+				}
+				gotoXY(CKey[x].x, CKey[x].y);
+				if (CKey[x].index == 1)
+				{
+					colour(0x04);
+				}
+				else if (CKey[x].index == 2)
+				{
+					colour(0x8);
+				}
+				else if (CKey[x].index == 3)
+				{
+					colour(0x03);
+				}
+				if (CKey[x].bulletTravelDistance == AddCKey.Range)
+				{
+					CKey.erase(CKey.begin() + x);
+				}
+				else if (CKey[x].isRENDERED == true)
+				{
+					std::cout<<CKey[x].orbASCII;
+				}
+				colour(0x0F);
+				for ( unsigned int y = 0; y< CKey.size(); ++y)
+				{
+					if (map[CKey[y].y][CKey[y].x+1] != '#' || map[CKey[y].y][CKey[y].x-1] != '.')
+					{
+						gotoXY(CKey[y].x+1, CKey[y].y);
+						std::cout<<map[CKey[y].y][CKey[y].x+1];
+					}
+				}
 			}
-			gotoXY(CKey[x].x, CKey[x].y);
-			if (CKey[x].index == 1)
+			else if ( CKey[x].faceWhere == true )
 			{
-				colour(0x04);
+				for ( unsigned int y = 0; y< CKey.size(); ++y)
+				{
+					gotoXY(CKey[y].x-1, CKey[y].y);
+					std::cout<<" ";
+				}
+				gotoXY(CKey[x].x, CKey[x].y);
+				if (CKey[x].index == 1)
+				{
+					colour(0x04);
+				}
+				else if (CKey[x].index == 2)
+				{
+					colour(0x8);
+				}
+				else if (CKey[x].index == 3)
+				{
+					colour(0x03);
+				}
+				if (CKey[x].bulletTravelDistance == AddCKey.Range)
+				{
+					CKey.erase(CKey.begin() + x);
+				}
+				else if (CKey[x].isRENDERED == true)
+				{
+					std::cout<<CKey[x].orbASCII;
+				}
+				colour(0x0F);
+				for ( unsigned int y = 0; y< CKey.size(); ++y)
+				{
+					if (map[CKey[y].y][CKey[y].x-1] != '#' || map[CKey[y].y][CKey[y].x-1] != '.')
+					{
+						gotoXY(CKey[y].x-1, CKey[y].y);
+						std::cout<<map[CKey[y].y][CKey[y].x-1];
+					}
+				}
 			}
-			else if (CKey[x].index == 2)
-			{
-				colour(0x8);
-			}
-			else if (CKey[x].index == 3)
-			{
-				colour(0x03);
-			}
-			if (CKey[x].bulletTravelDistance == AddCKey.Range)
-			{
-				CKey.erase(CKey.begin() + x);
-			}
-			else if (CKey[x].isRENDERED == true)
-			{
-				std::cout<<CKey[x].orbASCII;
-			}
-			colour(0x0F);
-		}
-		else if ( CKey[x].faceWhere == true )
-		{
-			for ( unsigned int y = 0; y< CKey.size(); ++y)
-			{
-			gotoXY(CKey[y].x-1, CKey[y].y);
-			std::cout<<" ";
-			}
-			gotoXY(CKey[x].x, CKey[x].y);
-			if (CKey[x].index == 1)
-			{
-				colour(0x04);
-			}
-			else if (CKey[x].index == 2)
-			{
-				colour(0x8);
-			}
-			else if (CKey[x].index == 3)
-			{
-				colour(0x03);
-			}
-			if (CKey[x].bulletTravelDistance == AddCKey.Range)
-			{
-				CKey.erase(CKey.begin() + x);
-			}
-			else if (CKey[x].isRENDERED == true)
-			{
-				std::cout<<CKey[x].orbASCII;
-			}
-			colour(0x0F);
-		}
 	}
 	AddCKey.isRENDERED = false;
 }
