@@ -103,9 +103,9 @@ double ProjectileSpeed = 0;
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
 //Weapons
-extern void Attack(std::vector<Skill_Properties>& Skill);
+extern void Attack();
 extern void updateSkill(std::vector<Skill_Properties>& Skill);
-extern void spawnSkill(std::vector<Skill_Properties>& Skill);
+extern void spawnSkill();
 extern void initSkill();
 extern void nextSkill();
 extern void previousSkill();
@@ -1943,7 +1943,7 @@ void update(double dt)
 	{
 		if(PlayerSkillDelay >= AddCKey.Speed)
 		{
-		Attack(CKey);
+		Attack();
 		PlayerSkillDelay = 0;
 		}
 	}
@@ -2023,7 +2023,7 @@ void render()
 	//render Skill
 	if ( CKey.size() != 0 )
 	{
-		spawnSkill(CKey);
+		spawnSkill();
 	}
 
 

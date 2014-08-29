@@ -35,7 +35,7 @@ void initSkill()
 	//Initialize FireOrb Skill
 	AddFire.Damage = 2 + AddFire.dmgUpgrade;
 	AddFire.Range = 10 + AddFire.rangeUpgrade;
-	AddFire.Speed = 1.0;
+	AddFire.Speed = 0.5;
 	AddFire.index = 1;
 	AddFire.skillUnlocked = true;
 	AddFire.orbASCII = (char)15;
@@ -58,7 +58,7 @@ void initSkill()
 	AddCKey = AddFire;
 }
 
-void Attack(std::vector<Skill_Properties>& Skill)
+void Attack()
 {
 	if ( playerFacing == 0 ) // if facing left
 	{
@@ -74,7 +74,7 @@ void Attack(std::vector<Skill_Properties>& Skill)
 		AddCKey.faceWhere = true;
 		AddCKey.isRENDERED = true;
 	}
-	Skill.push_back(AddCKey);
+	CKey.push_back(AddCKey);
 }
 
 void nextSkill()
@@ -271,22 +271,22 @@ void updateSkill(std::vector<Skill_Properties>& Skill)
 	}
 }
 
-void clearSkills(std::vector<Skill_Properties>& Skill)
+void clearSkills()
 {
-	for(unsigned int x = 0; x < Skill.size(); ++x)
+	for(unsigned int x = 0; x < CKey.size(); ++x)
 	{
-		gotoXY(Skill[x].x-1, Skill[x].y);
-			if ( map[Skill[x].y][Skill[x].x-1] == '#' ) // if wall
+		gotoXY(CKey[x].x-1, CKey[x].y);
+			if ( map[CKey[x].y][CKey[x].x-1] == '#' ) // if wall
 			{
 				std::cout << (char)219;
 			}
-			else if ( map[Skill[x].y][Skill[x].x-1] == 234 )
+			else if ( map[CKey[x].y][CKey[x].x-1] == 234 )
 			{
 				colour(0x0A);
 				std::cout << (char)234;
 				colour(0x0F);
 			}
-			else if ( map[Skill[x].y][Skill[x].x-1] == 239 )
+			else if ( map[CKey[x].y][CKey[x].x-1] == 239 )
 			{
 				colour(0x0A);
 				std::cout << (char)239;
@@ -294,21 +294,21 @@ void clearSkills(std::vector<Skill_Properties>& Skill)
 			}
 			else
 			{
-				std::cout<< map[Skill[x].y][Skill[x].x-1];
+				std::cout<< map[CKey[x].y][CKey[x].x-1];
 			}
 
-			gotoXY(Skill[x].x, Skill[x].y);
-			if ( map[Skill[x].y][Skill[x].x] == '#' ) // if wall
+			gotoXY(CKey[x].x, CKey[x].y);
+			if ( map[CKey[x].y][CKey[x].x] == '#' ) // if wall
 			{
 				std::cout << (char)219;
 			}
-			else if ( map[Skill[x].y][Skill[x].x] == 234 )
+			else if ( map[CKey[x].y][CKey[x].x] == 234 )
 			{
 				colour(0x0A);
 				std::cout << (char)234;
 				colour(0x0F);
 			}
-			else if ( map[Skill[x].y][Skill[x].x] == 239 )
+			else if ( map[CKey[x].y][CKey[x].x] == 239 )
 			{
 				colour(0x0A);
 				std::cout << (char)239;
@@ -316,21 +316,21 @@ void clearSkills(std::vector<Skill_Properties>& Skill)
 			}
 			else
 			{
-				std::cout<< map[Skill[x].y][Skill[x].x];
+				std::cout<< map[CKey[x].y][CKey[x].x];
 			}
 
-			gotoXY(Skill[x].x+1, Skill[x].y);
-			if ( map[Skill[x].y][Skill[x].x+1] == '#' ) // if wall
+			gotoXY(CKey[x].x+1, CKey[x].y);
+			if ( map[CKey[x].y][CKey[x].x+1] == '#' ) // if wall
 			{
 				std::cout << (char)219;
 			}
-			else if ( map[Skill[x].y][Skill[x].x+1] == 234 )
+			else if ( map[CKey[x].y][CKey[x].x+1] == 234 )
 			{
 				colour(0x0A);
 				std::cout << (char)234;
 				colour(0x0F);
 			}
-			else if ( map[Skill[x].y][Skill[x].x+1] == 239 )
+			else if ( map[CKey[x].y][CKey[x].x+1] == 239 )
 			{
 				colour(0x0A);
 				std::cout << (char)239;
@@ -338,63 +338,133 @@ void clearSkills(std::vector<Skill_Properties>& Skill)
 			}
 			else
 			{
-				std::cout<< map[Skill[x].y][Skill[x].x+1];
+				std::cout<< map[CKey[x].y][CKey[x].x+1];
 			}
 	}
 }
 
-void spawnSkill(std::vector<Skill_Properties>& Skill){
-	for(unsigned int x = 0; x < Skill.size(); ++x)
+void spawnSkill(){
+	for(unsigned int x = 0; x < CKey.size(); ++x)
 	{
-		if ( Skill[x].faceWhere == false )
+		if (CKey[x].isRENDERED == false)
 		{
-			clearSkills(Skill);
-			gotoXY(Skill[x].x, Skill[x].y);
-			if (Skill[x].index == 1)
+		gotoXY(CKey[x].x-1, CKey[x].y);
+			if ( map[CKey[x].y][CKey[x].x-1] == '#' ) // if wall
+			{
+				std::cout << (char)219;
+			}
+			else if ( map[CKey[x].y][CKey[x].x-1] == 234 )
+			{
+				colour(0x0A);
+				std::cout << (char)234;
+				colour(0x0F);
+			}
+			else if ( map[CKey[x].y][CKey[x].x-1] == 239 )
+			{
+				colour(0x0A);
+				std::cout << (char)239;
+				colour(0x0F);
+			}
+			else
+			{
+				std::cout<< map[CKey[x].y][CKey[x].x-1];
+			}
+
+			gotoXY(CKey[x].x, CKey[x].y);
+			if ( map[CKey[x].y][CKey[x].x] == '#' ) // if wall
+			{
+				std::cout << (char)219;
+			}
+			else if ( map[CKey[x].y][CKey[x].x] == 234 )
+			{
+				colour(0x0A);
+				std::cout << (char)234;
+				colour(0x0F);
+			}
+			else if ( map[CKey[x].y][CKey[x].x] == 239 )
+			{
+				colour(0x0A);
+				std::cout << (char)239;
+				colour(0x0F);
+			}
+			else
+			{
+				std::cout<< map[CKey[x].y][CKey[x].x];
+			}
+
+			gotoXY(CKey[x].x+1, CKey[x].y);
+			if ( map[CKey[x].y][CKey[x].x+1] == '#' ) // if wall
+			{
+				std::cout << (char)219;
+			}
+			else if ( map[CKey[x].y][CKey[x].x+1] == 234 )
+			{
+				colour(0x0A);
+				std::cout << (char)234;
+				colour(0x0F);
+			}
+			else if ( map[CKey[x].y][CKey[x].x+1] == 239 )
+			{
+				colour(0x0A);
+				std::cout << (char)239;
+				colour(0x0F);
+			}
+			else
+			{
+				std::cout<< map[CKey[x].y][CKey[x].x+1];
+			}
+		CKey.erase(CKey.begin() + x);
+		}
+		else
+		if ( CKey[x].faceWhere == false )
+		{
+			clearSkills();
+			gotoXY(CKey[x].x, CKey[x].y);
+			if (CKey[x].index == 1)
 			{
 				colour(0x04);
 			}
-			else if (Skill[x].index == 2)
+			else if (CKey[x].index == 2)
 			{
 				colour(0x8);
 			}
-			else if (Skill[x].index == 3)
+			else if (CKey[x].index == 3)
 			{
 				colour(0x03);
 			}
-			if (Skill[x].bulletTravelDistance == AddCKey.Range)
+			if (CKey[x].bulletTravelDistance == AddCKey.Range)
 			{
-				Skill.erase(Skill.begin() + x);
+				CKey.erase(CKey.begin() + x);
 			}
-			else if (Skill[x].isRENDERED == true)
+			else if (CKey[x].isRENDERED == true)
 			{
-				std::cout<<AddCKey.orbASCII;
+				std::cout<<CKey[x].orbASCII;
 			}
 			colour(0x0F);
 		}
-		else if ( Skill[x].faceWhere == true )
+		else if ( CKey[x].faceWhere == true )
 		{
-			clearSkills(Skill);
-			gotoXY(Skill[x].x, Skill[x].y);
-			if (Skill[x].index == 1)
+			clearSkills();
+			gotoXY(CKey[x].x, CKey[x].y);
+			if (CKey[x].index == 1)
 			{
 				colour(0x04);
 			}
-			else if (Skill[x].index == 2)
+			else if (CKey[x].index == 2)
 			{
 				colour(0x8);
 			}
-			else if (Skill[x].index == 3)
+			else if (CKey[x].index == 3)
 			{
 				colour(0x03);
 			}
-			if (Skill[x].bulletTravelDistance == AddCKey.Range)
+			if (CKey[x].bulletTravelDistance == AddCKey.Range)
 			{
-				Skill.erase(Skill.begin() + x);
+				CKey.erase(CKey.begin() + x);
 			}
-			else if (Skill[x].isRENDERED == true)
+			else if (CKey[x].isRENDERED == true)
 			{
-				std::cout<<AddCKey.orbASCII;
+				std::cout<<CKey[x].orbASCII;
 			}
 			colour(0x0F);
 		}
