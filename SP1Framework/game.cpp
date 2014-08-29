@@ -411,7 +411,7 @@ void updatedeathmenu(double dt)
 			{
 				checkLevel = 9;
 			}
-			else if(checkLevel >=25)
+			if(checkLevel > 25)
 			{
 				checkLevel = 25;
 			}
@@ -424,7 +424,7 @@ void updatedeathmenu(double dt)
 			{
 				checkLevel = 9;
 			}
-			else if(checkLevel >=25)
+			if(checkLevel > 25)
 			{
 				checkLevel = 25;
 			}
