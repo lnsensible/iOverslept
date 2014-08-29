@@ -420,8 +420,14 @@ void updatedeathmenu(double dt)
 
 		if(charLocation.X == 50)
 		{
-
-			checkLevel = 9;
+			if(checkLevel > 9 && checkLevel < 25)
+			{
+				checkLevel = 9;
+			}
+			if(checkLevel > 25)
+			{
+				checkLevel = 25;
+			}
 			gamestate = GAME;
 		}
 	}
