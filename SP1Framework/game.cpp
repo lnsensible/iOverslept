@@ -407,7 +407,14 @@ void updatedeathmenu(double dt)
 		PlayerHealth = 3;
 		if(charLocation.X == 60)
 		{
-			checkLevel = 9;
+			if(checkLevel > 9 && checkLevel < 25)
+			{
+				checkLevel = 9;
+			}
+			if(checkLevel > 25)
+			{
+				checkLevel = 25;
+			}
 			gamestate = LEVELMENU;
 		}
 
