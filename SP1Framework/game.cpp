@@ -1512,14 +1512,14 @@ void checkForElement()
 			checkLevel = 10;
 		}
 
-		else if(checkLevel == 9)
+		else if(checkLevel == 26)
 		{
-			checkLevel = 27;
+			checkLevel = 33;
 		}
 
-		else if(checkLevel == 27)
+		else if(checkLevel == 33)
 		{
-			checkLevel = 9;
+			checkLevel = 26;
 		}
 
 		else if(checkLevel == 31)
