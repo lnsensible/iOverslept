@@ -19,12 +19,9 @@ extern std::vector<Monster> Wengyew;
 extern std::vector<Monster> CatFish;
 extern std::vector<Monster> DeadFish;
 extern std::vector<Monster> LiveFish;
-<<<<<<< b902f142b4abfa35c3840e2d8b81af32b7f16158
 extern std::vector<Monster> Villager;
-=======
 extern std::vector<Monster> Shielded;
 extern std::vector<Monster> PianusHitbox;
->>>>>>> cf3d4221aa0744640efa4a3753dca785f21ae1d3
 extern void checkMonsterDead();
 Skill_Properties AddSpark;
 Skill_Properties AddFire;
@@ -127,7 +124,6 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		}
 	}
 
-<<<<<<< b902f142b4abfa35c3840e2d8b81af32b7f16158
 	for ( unsigned int i = 0; i < Villager.size(); i++)
 	{
 		for ( unsigned int j = 0; j < Skill.size(); j++)
@@ -142,10 +138,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		}
 	}
 
-	for ( unsigned int i = 0; i < Floater.size(); i++)
-=======
 	for ( unsigned int i = 0; i < Floater.size(); i++) // for all floaters
->>>>>>> cf3d4221aa0744640efa4a3753dca785f21ae1d3
 	{
 		for ( unsigned int j = 0; j < Skill.size(); j++)
 		{
