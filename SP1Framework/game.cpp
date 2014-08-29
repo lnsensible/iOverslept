@@ -1951,6 +1951,8 @@ void update(double dt)
 		{
 			MoneyCount = MoneyCount - 5;
 		}
+		playerExperience = 0;
+
 
 		saveGame();
 	}
