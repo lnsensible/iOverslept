@@ -23,6 +23,9 @@ extern std::vector<Monster> Villager;
 extern std::vector<Monster> Shielded;
 extern std::vector<Monster> PianusHitbox;
 extern void checkMonsterDead();
+extern bool FireUnlocked;
+extern bool SparkUnlocked;
+extern bool WaterUnlocked;
 Skill_Properties AddSpark;
 Skill_Properties AddFire;
 Skill_Properties AddWater;
@@ -39,7 +42,6 @@ void initSkill()
 	AddFire.Range = 10 + AddFire.rangeUpgrade;
 	AddFire.Speed = 1.0;
 	AddFire.index = 1;
-	AddFire.skillUnlocked = true;
 	AddFire.orbASCII = (char)15;
 
 	//Initialize LightningOrb Skill
@@ -81,12 +83,12 @@ void Attack()
 
 void nextSkill()
 {
-	if (AddCKey.index == 1 )
+	if (AddCKey.index == 1 && SparkUnlocked == true)
 	{
 		AddCKey = AddSpark;
 		AddCKey.index = 2;
 	}
-	else if (AddCKey.index == 2 )
+	else if (AddCKey.index == 2 && WaterUnlocked == true)
 	{
 		AddCKey = AddWater;
 		AddCKey.index = 3;
@@ -95,12 +97,12 @@ void nextSkill()
 
 void previousSkill()
 {
-	if (AddCKey.index == 3 )
+	if (AddCKey.index == 3 && SparkUnlocked == true)
 	{
 		AddCKey = AddSpark;
 		AddCKey.index = 2;
 	}
-	else if (AddCKey.index == 2 )
+	else if (AddCKey.index == 2 && FireUnlocked == true)
 	{
 		AddCKey = AddFire;
 		AddCKey.index = 1;
@@ -458,3 +460,95 @@ void spawnSkill(){
 	}
 	AddCKey.isRENDERED = false;
 }
+
+/*
+
+struct Shop_Items
+{
+int cost;
+int upgrade;
+int x,y; 
+};
+
+
+//Make these Variables.
+insideSHOP = false; //true = render shop
+
+void initShop()
+{
+//Fire Upgrades
+FDmgUp.cost = 100;
+FDmgUp.upgrade = 1;
+FDmgUp.x = 10;
+FDmgUp.y = 30;
+
+FRangeUp.cost = 50;
+FRangeUp.upgrade = 1;
+FRangeUp.x = 1;
+FRangeUp.y = 32;
+
+//Spark/Lightning Upgrades
+SDmgUp.cost = 100;
+SDmgUp.upgrade = 1;
+SDmgUp.x = 55;
+SDmgUp.y = 30;
+
+SRangeUp.cost = 150;
+SRangeUp.upgrade = 1;
+SRangeUp.x = 55;
+SRangeUp.y = 32;
+
+//Water Upgrades
+WDmgUp.cost = 170;
+WDmgUp.upgrade = 1;
+WDmgUp.x = 100;
+WDmgUp.y = 30;
+
+WRangeUp.cost = 100;
+WRangeUp.upgrade = 1;
+WRangeUp.x = 100;
+WRangeUp.y = 32;
+}
+
+void enterShop()
+{
+   insideSHOP = true;
+   charLocation.X = FDmgUp.x;
+   charLocation.Y = FDmgUp.y;
+}
+
+void updateShop()
+{
+
+if(keyPressed[K_ESCAPE])
+	{
+		gamestate = GAME;
+	}
+}
+
+void renderShop()
+{
+if (insideSHOP == true)
+{
+//Render SHOP.txt file
+
+//Render Fire Upgrade Locations
+gotoXY(FDmgUp.x,FDmgUp.y);
+std::cout<<+Damage;
+gotoXY(FRangeUp.x,FRangeUp.y);
+std::cout<<+Range;
+
+//Render Spark Upgrade Locations
+gotoXY(SDmgUp.x,SDmgUp.y);
+std::cout<<+Damage;
+gotoXY(SRangeUp.x,SRangeUp.y);
+std::cout<<+Range;
+
+//Render Water Upgrade Locations
+gotoXY(WDmgUp.x,WDmgUp.y);
+std::cout<<+Damage;
+gotoXY(WRangeUp.x,WRangeUp.y);
+std::cout<<+Range;
+}
+}
+*/
