@@ -1649,7 +1649,7 @@ void init()
 	hasStoryRendered = 0;
 	MoneyInv = 0;
 
-	playerLevel = 1;
+	//playerLevel = 1;
 
 	for(int i = 0; i < NUMBEROFLEVELS + 1; i++)
 	{
