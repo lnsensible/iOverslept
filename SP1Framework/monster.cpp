@@ -166,7 +166,7 @@ void renderMonster() // render mobs
 
 	for (unsigned int i = 0; i < DeadFish.size(); i++ ) // for all the DeadFishes
 	{
-		for ( int j = DeadFish[i].x-1; j < DeadFish[i].x+7; j++) // loop for checking left and right of DeadFish when it moves
+		for ( int j = DeadFish[i].x-2; j < DeadFish[i].x+7; j++) // loop for checking left and right of DeadFish when it moves
 		{
 			gotoXY(j, DeadFish[i].y); // go to coordinate selected
 			if ( map[DeadFish[i].y][j] == '#' ) // and reprint
