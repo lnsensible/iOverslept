@@ -26,6 +26,9 @@ extern COORD consoleSize;
 extern int gamestate;
 extern int hasMoved;
 
+extern int MoneyCount;
+extern int MoneyInv;
+
 void LevelUp()
 {
 	exptolevelup = playerLevel * 500;
@@ -120,6 +123,16 @@ void checkforDeath()
 {
 	if ( PlayerHealth <= 0 )
 	{
+
+		MoneyCount = MoneyCount - MoneyInv;
+		MoneyInv = 0;
+		if(MoneyCount > 4)
+		{
+			MoneyCount = MoneyCount - 5;
+		}
+		playerExperience = 0;
+
+		saveGame();
 		gamestate = DEATH;
 	}
 }

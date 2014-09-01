@@ -80,6 +80,7 @@ enum Keys
 	K_LEFT,
 	K_C,
 	K_E,
+	K_G,
 	K_Q,
 	K_RIGHT,
 	K_ESCAPE,

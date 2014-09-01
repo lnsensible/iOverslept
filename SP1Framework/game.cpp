@@ -57,6 +57,7 @@ extern double canJump;
 double elapsedTime;
 double deltaTime;
 bool keyPressed[K_COUNT];
+bool godmode = false;
 int gamestate = 0;
 COORD charLocation;
 COORD consoleSize;
@@ -1745,6 +1746,7 @@ void getInput()
 	keyPressed[K_Q] = isKeyPressed(0x51);
     keyPressed[K_E] = isKeyPressed(0x45);
     keyPressed[K_C] = isKeyPressed(0x43);
+	keyPressed[K_G] = isKeyPressed(0x47);
 }
 void update(double dt)
 {
@@ -1978,6 +1980,15 @@ void update(double dt)
 		}
 	}
 
+	if (keyPressed[K_G])
+	{
+		Beep(1337, 1000);
+		if ( godmode == false )
+			godmode = true;
+		else
+			godmode = false;
+	}
+
 	if (keyPressed[K_SPACE])
 	{
 		jump();
@@ -1990,20 +2001,8 @@ void update(double dt)
         gamestate = LEVELMENU;
 	}
 
-	if ( PlayerHealth <= 0 )
-	{
-		MoneyCount = MoneyCount - MoneyInv;
-		MoneyInv = 0;
-		if(MoneyCount > 4)
-		{
-			MoneyCount = MoneyCount - 5;
-		}
-		playerExperience = 0;
-
-
-		saveGame();
-	}
-	checkforDeath();
+	if ( godmode == false )
+		checkforDeath();
 }
 void render()
 {
