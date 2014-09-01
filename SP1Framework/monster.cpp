@@ -53,7 +53,9 @@ void renderMonster() // render mobs
 		}
 
 		gotoXY(MonsterSnail[i].x, MonsterSnail[i].y); // go to coordinates of snail in the vector 
+		colour(0x06);
 		std::cout << "@/'"; // print snail
+		colour(0x0f);
 	}
 
 	for (unsigned int i = 0; i < Floater.size(); i++ ) // for all the floaters
@@ -72,7 +74,9 @@ void renderMonster() // render mobs
 		}
 
 		gotoXY(Floater[i].x, Floater[i].y); // go to coordinates of floater in the vector
+		colour(0x0C);
 		std::cout << (char)235; // print floater
+		colour(0x0f);
 	}
 
 	for (unsigned int i = 0; i < InnerFear.size(); i++ ) // for all the InnerFears
@@ -91,7 +95,9 @@ void renderMonster() // render mobs
 		}
 
 		gotoXY(InnerFear[i].x, InnerFear[i].y); // go to coordinates of InnerFear in the vector
+		colour(0x0D);
 		std::cout << (char)12; // print InnerFear
+		colour(0x0f);
 	}
 		
 	for (unsigned int i = 0; i < Rat.size(); i++ ) // for all the Rats
@@ -110,7 +116,9 @@ void renderMonster() // render mobs
 		}
 
 		gotoXY(Rat[i].x, Rat[i].y); // go to coordinates of Rat in the vector
+		colour(0x08);
 		std::cout << "~~(_^" << (char)249 << ">"; // print Rat
+		colour(0x0f);
 	}
 
 	for (unsigned int i = 0; i < Wengyew.size(); i++ ) // for all the wengyews
@@ -129,7 +137,9 @@ void renderMonster() // render mobs
 		}
 
 		gotoXY(Wengyew[i].x, Wengyew[i].y); // go to coordinates of wengyew in the vector
+		colour(0x0C);
 		std::cout << (char)244 << (char)229 << (char)247 << (char)229 << (char)245; // print wengyew
+		colour(0x0f);
 	}
 	
 
@@ -149,7 +159,9 @@ void renderMonster() // render mobs
 		}
 
 		gotoXY(CatFish[i].x, CatFish[i].y); // go to coordinates of CatFish in the vector
+		colour(0x0e);
 		std::cout << ">)))^" << (char)249 << ">"; // print CatFish
+		colour(0x0f);
 	}
 
 	for (unsigned int i = 0; i < DeadFish.size(); i++ ) // for all the DeadFishes
@@ -168,7 +180,9 @@ void renderMonster() // render mobs
 		}
 
 		gotoXY(DeadFish[i].x, DeadFish[i].y); // go to coordinates of DeadFish in the vector
+		colour(0x09);
 		std::cout << ">++*>"; // print DeadFish
+		colour(0x0f);
 	}
 
 	for (unsigned int i = 0; i < LiveFish.size(); i++ ) // for all the LiveFishes
@@ -187,7 +201,9 @@ void renderMonster() // render mobs
 		}
 
 		gotoXY(LiveFish[i].x, LiveFish[i].y); // go to coordinates of LiveFish in the vector
+		colour(0x0A);
 		std::cout << ">((" << (char)248 << ">"; // print LiveFish
+		colour(0x0f);
 	}
 
 	for (unsigned int i = 0; i < Villager.size(); i++ ) // for all the Villagers
@@ -205,7 +221,7 @@ void renderMonster() // render mobs
 			}
 		}
 		gotoXY(Villager[i].x, Villager[i].y); // go to coordinates of Villager in the vector
-		colour(0x09);
+		colour(0x03);
 		std::cout << (char)1; // print Villager
 		colour(0x0f);
 	}
@@ -222,7 +238,9 @@ void renderMonster() // render mobs
 			else
 			{
 				 std::cout << map[Shielded[i].y][j]; // print whatever is on the map
+				 colour(0x04);
 				 std::cout << (char)206; // print Shielded
+				 colour(0x0f);
 			}
 		}
 	}
