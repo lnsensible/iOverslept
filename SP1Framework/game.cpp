@@ -106,6 +106,7 @@ double VillagerMoveDelay = 0; // delay between each Villager movement
 double ShieldedMoveDelay = 0; // delay between each Shielded movement 
 double PlayerSkillDelay = 0; //delay between skills
 double ProjectileSpeed = 0;
+double switchDelay = 0; //delay between switching weapons
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
 //Weapons
@@ -814,7 +815,7 @@ void renderSHOP()
 	colour(0x04);
 	if(FireUnlocked)
 	{
-		gotoXY(17, 5);
+		gotoXY(21, 5);
 		std::cout << "Owned!";
 	}
 	else
@@ -851,7 +852,7 @@ void renderSHOP()
 		std::cout<<"                 "<<"\n\n\n";  
 		std::cout<<"                         ";
 		gotoXY(16, 16);
-		std::cout << "        Owned!";
+		std::cout << "         Owned!\n\n              Press E/Q\n        To Switch Between Skills";
 	}
 	else if (SparkUnlocked == false)
 	{
@@ -892,7 +893,7 @@ void renderSHOP()
 		std::cout<<"                 "<<"\n\n\n";  
 		std::cout<<"                         ";
 		gotoXY(16, 26);
-		std::cout << "        Owned!";
+		std::cout << "         Owned!\n\n              Press E/Q\n        To Switch Between Skills";
 	}
 	else if (WaterUnlocked == false)
 	{
@@ -1492,6 +1493,63 @@ void renderHP() // displays amount of HP player still has.
 
 	gotoXY(0, 24);
 }
+
+void renderEquip() //Displays the Skill you're equipping currently
+{
+	if (AddCKey.index == 1)// Fire
+	{
+	colour(0x04);
+	gotoXY(6,32);
+	gotoXY(6,32);
+	std::cout<<"<<<<<<<<<<<<>>>>>>>>>>>>";
+	gotoXY(6,33);
+	std::cout<<"<                      >";
+	gotoXY(6,34);
+	std::cout<<"<                      >";
+	gotoXY(6,35);
+	std::cout<<"<                      >";
+	gotoXY(6,36);
+	std::cout<<"<                      >";
+	gotoXY(6,37);
+	std::cout<<"<<<<<<<<<FIRE>>>>>>>>>>>";
+	colour(0x0F);
+	}
+	else if(AddCKey.index == 2) // Spark
+	{
+		colour(0x0E);
+	gotoXY(6,32);
+	std::cout<<"########################";
+	gotoXY(6,33);
+	std::cout<<"#                      #";
+	gotoXY(6,34);
+	std::cout<<"#                      #";
+	gotoXY(6,35);
+	std::cout<<"#                      #";
+	gotoXY(6,36);
+	std::cout<<"#                      #";
+	gotoXY(6,37);
+	std::cout<<"##########SPARK#########";
+	colour(0x0F);
+	}
+	else if (AddCKey.index == 3)//Water
+	{
+		colour(0x03);
+	gotoXY(6,32);
+	std::cout<<"~~~~~~~~~~~~~~~~~~~~~~~~";
+	gotoXY(6,33);
+	std::cout<<"~                      ~";
+	gotoXY(6,34);
+	std::cout<<"~                      ~";
+	gotoXY(6,35);
+	std::cout<<"~                      ~";
+	gotoXY(6,36);
+	std::cout<<"~                      ~";
+	gotoXY(6,37);
+	std::cout<<"~~~~~~~~~~WATER~~~~~~~~~";
+	colour(0x0F);
+	}
+}
+
 void renderMoney()
 {
 	gotoXY(50, 26);
@@ -1772,6 +1830,7 @@ void update(double dt)
 	PlayerSkillDelay += dt;
     deltaTime = dt;
 	ProjectileSpeed += dt;
+	switchDelay += dt;
 	gravity();
 	checkforSpike();
 	checkForElement();
@@ -1960,14 +2019,16 @@ void update(double dt)
 		}
     }
 
-	if (keyPressed[K_Q])
+	if (keyPressed[K_Q] && switchDelay >= 1.0)
 	{
 		previousSkill();
+		switchDelay = 0;
 	}
 
-	if (keyPressed[K_E])
+	if (keyPressed[K_E] && switchDelay >= 1.0)
 	{
 		nextSkill();
+		switchDelay = 0;
 	}
 
 	if (keyPressed[K_C])
@@ -2136,4 +2197,6 @@ void render()
     colour(0x0C);
     std::cout << (char)1;
 	colour(0x0F);
+
+	renderEquip();//Render Skill Equipped UI
 }
