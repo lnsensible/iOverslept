@@ -180,80 +180,94 @@ void spawnWhere()
 					charLocation.X = j+1;
 					charLocation.Y = i;
 				}
+				if ( map[i][j] == 'c' )
+				{
+					map[i][j] = ' '; //replace c with space.
+				}
+				if ( map[i][j] == 'C' )
+				{
+					map[i][j] = ' '; //remove C.
+				}
+				if ( map[i][j] == 'f' )
+				{
+					map[i][j] = ' '; //replace f with space.
+				}
+
+				outsideShop = true;
 			}
 		}
 	}
 	else
-	if(fromSPortal == true)//if travel through special portal
-	{
-		for ( int i = 0; i < MAPHEIGHT; i++ )
+		if(fromSPortal == true)//if travel through special portal
 		{
-			for ( int j = 0; j < MAPWIDTH; j++ )
+			for ( int i = 0; i < MAPHEIGHT; i++ )
 			{
-				if ( map[i][j] == 'f' )
+				for ( int j = 0; j < MAPWIDTH; j++ )
 				{
-					charLocation.X = j;
-					charLocation.Y = i;
-					map[i][j] = ' '; //replace f with space.
-					fromSPortal = false;
-				}
+					if ( map[i][j] == 'f' )
+					{
+						charLocation.X = j;
+						charLocation.Y = i;
+						map[i][j] = ' '; //replace f with space.
+						fromSPortal = false;
+					}
 
-				if ( map[i][j] == 'c' )
-				{
-					map[i][j] = ' '; //replace c with space.
-				}
-				if ( map[i][j] == 'C' )
-				{
-					map[i][j] = ' '; //remove C.
+					if ( map[i][j] == 'c' )
+					{
+						map[i][j] = ' '; //replace c with space.
+					}
+					if ( map[i][j] == 'C' )
+					{
+						map[i][j] = ' '; //remove C.
+					}
 				}
 			}
 		}
-	}
 
-	else if (spawnwhere == true && fromSPortal == false) // came from next map
-	{
-		for ( int i = 0; i < MAPHEIGHT; i++ )
+		else if (spawnwhere == true && fromSPortal == false) // came from next map
 		{
-			for ( int j = 0; j < MAPWIDTH; j++ )
+			for ( int i = 0; i < MAPHEIGHT; i++ )
 			{
-				if ( map[i][j] == 'c' )
+				for ( int j = 0; j < MAPWIDTH; j++ )
 				{
-					charLocation.X = j;
-					charLocation.Y = i;
-					map[i][j] = ' '; //replace c with space.
-				}
-				if ( map[i][j] == 'C' )
-				{
-					map[i][j] = ' '; //remove C.
-				}
-				if ( map[i][j] == 'f' )
-				{
-					map[i][j] = ' '; //replace f with space.
+					if ( map[i][j] == 'c' )
+					{
+						charLocation.X = j;
+						charLocation.Y = i;
+						map[i][j] = ' '; //replace c with space.
+					}
+					if ( map[i][j] == 'C' )
+					{
+						map[i][j] = ' '; //remove C.
+					}
+					if ( map[i][j] == 'f' )
+					{
+						map[i][j] = ' '; //replace f with space.
+					}
 				}
 			}
 		}
-	}
-	else if (spawnwhere == false && fromSPortal == false) //came from previous map
-	{
-		for ( int i = 0; i < MAPHEIGHT; i++ )
+		else if (spawnwhere == false && fromSPortal == false) //came from previous map
 		{
-			for ( int j = 0; j < MAPWIDTH; j++ )
+			for ( int i = 0; i < MAPHEIGHT; i++ )
 			{
-				if ( map[i][j] == 'c' )
+				for ( int j = 0; j < MAPWIDTH; j++ )
 				{
-					map[i][j] = ' '; //remove c.
-				}
-				if ( map[i][j] == 'C' )
-				{
-					charLocation.X = j;
-					charLocation.Y = i;
-					map[i][j] = ' '; //replace C with space.
-				}
-				if ( map[i][j] == 'f' )
-				{
-					map[i][j] = ' '; //replace f with space.
+					if ( map[i][j] == 'c' )
+					{
+						map[i][j] = ' '; //remove c.
+					}
+					if ( map[i][j] == 'C' )
+					{
+						charLocation.X = j;
+						charLocation.Y = i;
+						map[i][j] = ' '; //replace C with space.
+					}
+					if ( map[i][j] == 'f' )
+					{
+						map[i][j] = ' '; //replace f with space.
+					}
 				}
 			}
 		}
-	}
 }
