@@ -48,13 +48,20 @@ void renderMonster() // render mobs
 			}
 			else
 			{
-				 std::cout << map[MonsterSnail[i].y][j]; // print whatever is on the map
+				std::cout << map[MonsterSnail[i].y][j]; // print whatever is on the map
 			}
 		}
 
 		gotoXY(MonsterSnail[i].x, MonsterSnail[i].y); // go to coordinates of snail in the vector 
 		colour(0x06);
-		std::cout << "@/'"; // print snail
+		if (MonsterSnail[i].faceRight == false) // print snail
+		{
+			std::cout<<"'\\@";
+		}
+		else
+		{
+			std::cout << "@/'";
+		}
 		colour(0x0f);
 	}
 
@@ -69,7 +76,7 @@ void renderMonster() // render mobs
 			}
 			else
 			{
-				 std::cout << map[Floater[i].y][j]; // print whatever is on the map
+				std::cout << map[Floater[i].y][j]; // print whatever is on the map
 			}
 		}
 
@@ -90,7 +97,7 @@ void renderMonster() // render mobs
 			}
 			else
 			{
-				 std::cout << map[InnerFear[i].y][j]; // print whatever is on the map
+				std::cout << map[InnerFear[i].y][j]; // print whatever is on the map
 			}
 		}
 
@@ -99,7 +106,7 @@ void renderMonster() // render mobs
 		std::cout << (char)12; // print InnerFear
 		colour(0x0f);
 	}
-		
+
 	for (unsigned int i = 0; i < Rat.size(); i++ ) // for all the Rats
 	{
 		for ( int j = Rat[i].x-1; j < Rat[i].x+9; j++) // loop for checking left and right of Rat when it moves
@@ -111,14 +118,21 @@ void renderMonster() // render mobs
 			}
 			else
 			{
-				 std::cout << map[Rat[i].y][j]; // print whatever is on the map
+				std::cout << map[Rat[i].y][j]; // print whatever is on the map
 			}
 		}
 
 		gotoXY(Rat[i].x, Rat[i].y); // go to coordinates of Rat in the vector
 		colour(0x08);
+		if (Rat[i].faceRight == false)
+		{
+			std::cout<<"<"<<(char)249<<"^_)~~";
+		}
+		else
+		{
 		std::cout << "~~(_^" << (char)249 << ">"; // print Rat
-		colour(0x0f);
+		}
+			colour(0x0f);
 	}
 
 	for (unsigned int i = 0; i < Wengyew.size(); i++ ) // for all the wengyews
@@ -132,16 +146,23 @@ void renderMonster() // render mobs
 			}
 			else
 			{
-				 std::cout << map[Wengyew[i].y][j]; // print whatever is on the map
+				std::cout << map[Wengyew[i].y][j]; // print whatever is on the map
 			}
 		}
 
 		gotoXY(Wengyew[i].x, Wengyew[i].y); // go to coordinates of wengyew in the vector
 		colour(0x0C);
+		if (Wengyew[i].faceRight == false)
+		{
 		std::cout << (char)244 << (char)229 << (char)247 << (char)229 << (char)245; // print wengyew
+		}
+		else
+		{
+		std::cout << (char)245<< (char)229<< (char)247 << (char)229 << (char)244  ; // print wengyew
+		}
 		colour(0x0f);
 	}
-	
+
 
 	for (unsigned int i = 0; i < CatFish.size(); i++ ) // for all the CatFishes
 	{
@@ -154,13 +175,20 @@ void renderMonster() // render mobs
 			}
 			else
 			{
-				 std::cout << map[CatFish[i].y][j]; // print whatever is on the map
+				std::cout << map[CatFish[i].y][j]; // print whatever is on the map
 			}
 		}
 
 		gotoXY(CatFish[i].x, CatFish[i].y); // go to coordinates of CatFish in the vector
 		colour(0x0e);
+		if (CatFish[i].faceRight == false)
+		{
+		std::cout << "<" << (char)249 << "^(((<";
+		}
+		else
+		{
 		std::cout << ">)))^" << (char)249 << ">"; // print CatFish
+		}
 		colour(0x0f);
 	}
 
@@ -175,13 +203,20 @@ void renderMonster() // render mobs
 			}
 			else
 			{
-				 std::cout << map[DeadFish[i].y][j]; // print whatever is on the map
+				std::cout << map[DeadFish[i].y][j]; // print whatever is on the map
 			}
 		}
 
 		gotoXY(DeadFish[i].x, DeadFish[i].y); // go to coordinates of DeadFish in the vector
 		colour(0x09);
+		if (DeadFish[i].faceRight == false)
+		{
+		std::cout<<"<*++<";
+		}
+		else
+		{
 		std::cout << ">++*>"; // print DeadFish
+		}
 		colour(0x0f);
 	}
 
@@ -196,13 +231,20 @@ void renderMonster() // render mobs
 			}
 			else
 			{
-				 std::cout << map[LiveFish[i].y][j]; // print whatever is on the map
+				std::cout << map[LiveFish[i].y][j]; // print whatever is on the map
 			}
 		}
 
 		gotoXY(LiveFish[i].x, LiveFish[i].y); // go to coordinates of LiveFish in the vector
 		colour(0x0A);
+		if (LiveFish[i].faceRight == false)
+		{
+			std::cout<<"<" <<(char)248<<"))<";
+		}
+		else
+		{
 		std::cout << ">((" << (char)248 << ">"; // print LiveFish
+		}
 		colour(0x0f);
 	}
 
@@ -217,7 +259,7 @@ void renderMonster() // render mobs
 			}
 			else
 			{
-				 std::cout << map[Villager[i].y][j]; // print whatever is on the map
+				std::cout << map[Villager[i].y][j]; // print whatever is on the map
 			}
 		}
 		gotoXY(Villager[i].x, Villager[i].y); // go to coordinates of Villager in the vector
@@ -237,10 +279,10 @@ void renderMonster() // render mobs
 			}
 			else
 			{
-				 std::cout << map[Shielded[i].y][j]; // print whatever is on the map
-				 colour(0x04);
-				 std::cout << (char)206; // print Shielded
-				 colour(0x0f);
+				std::cout << map[Shielded[i].y][j]; // print whatever is on the map
+				colour(0x04);
+				std::cout << (char)206; // print Shielded
+				colour(0x0f);
 			}
 		}
 	}
@@ -285,7 +327,7 @@ void checkCollisionInnerFear()
 }
 
 void checkCollisionRat()
-	{
+{
 	for ( unsigned int i = 0; i < Rat.size(); i++) // for all the Rats
 	{
 		if ( charLocation.X >= Rat[i].x && charLocation.X <= Rat[i].x+7 && charLocation.Y == Rat[i].y) // if player is touching the Rat
@@ -298,7 +340,7 @@ void checkCollisionRat()
 }
 
 void checkCollisionWengyew()
-	{
+{
 	for ( unsigned int i = 0; i < Wengyew.size(); i++) // for all the Wengyews
 	{
 		if ( charLocation.X >= Wengyew[i].x && charLocation.X <= Wengyew[i].x+4 && charLocation.Y == Wengyew[i].y) // if player is touching the Wengyew
@@ -311,7 +353,7 @@ void checkCollisionWengyew()
 }
 
 void checkCollisionCatFish()
-	{
+{
 	for ( unsigned int i = 0; i < CatFish.size(); i++) // for all the CatFishes
 	{
 		if ( charLocation.X >= CatFish[i].x && charLocation.X <= CatFish[i].x+6 && charLocation.Y == CatFish[i].y) // if player is touching the CatFish
@@ -324,7 +366,7 @@ void checkCollisionCatFish()
 }
 
 void checkCollisionDeadFish()
-	{
+{
 	for ( unsigned int i = 0; i < DeadFish.size(); i++) // for all the DeadFishes
 	{
 		if ( charLocation.X >= DeadFish[i].x && charLocation.X <= DeadFish[i].x+4 && charLocation.Y == DeadFish[i].y) // if player is touching the DeadFish
@@ -337,7 +379,7 @@ void checkCollisionDeadFish()
 }
 
 void checkCollisionLiveFish()
-	{
+{
 	for ( unsigned int i = 0; i < LiveFish.size(); i++) // for all the LiveFishes
 	{
 		if ( charLocation.X >= LiveFish[i].x && charLocation.X <= LiveFish[i].x+4 && charLocation.Y == LiveFish[i].y) // if player is touching the LiveFish
@@ -370,11 +412,13 @@ void updateSnails() // snail movement update
 		{
 			if ( map[MonsterSnail[i].y][MonsterSnail[i].x-1] != '#' && map[MonsterSnail[i].y+1][MonsterSnail[i].x-1] == '#' ) // If move left is possible
 				MonsterSnail[i].x--;
+			MonsterSnail[i].faceRight = false;
 		}
 		else
 		{
 			if ( map[MonsterSnail[i].y][MonsterSnail[i].x+3] != '#' && map[MonsterSnail[i].y+1][MonsterSnail[i].x+3] == '#' ) // If move right is possible
 				MonsterSnail[i].x++;
+			MonsterSnail[i].faceRight = true;
 		}
 	}
 }
@@ -387,11 +431,13 @@ void updateFloater() // floater movement update
 		{
 			if ( map[Floater[i].y][Floater[i].x-1] != '#' && map[Floater[i].y+1][Floater[i].x-1] == '#' ) // If move left is possible
 				Floater[i].x--;
+			Floater[i].faceRight = false;
 		}
 		else
 		{
 			if ( map[Floater[i].y][Floater[i].x+1] != '#' && map[Floater[i].y+1][Floater[i].x+1] == '#' ) // If move right is possible
 				Floater[i].x++;
+			Floater[i].faceRight = true;
 		}
 	}
 }
@@ -404,11 +450,13 @@ void updateInnerFear() // InnerFear movement update
 		{
 			if ( map[InnerFear[i].y][InnerFear[i].x-1] != '#' && map[InnerFear[i].y+1][InnerFear[i].x-1] == '#' ) // If move left is possible
 				InnerFear[i].x--;
+			InnerFear[i].faceRight = false;
 		}
 		else
 		{
 			if ( map[InnerFear[i].y][InnerFear[i].x+1] != '#' && map[InnerFear[i].y+1][InnerFear[i].x+1] == '#' ) // If move right is possible
 				InnerFear[i].x++;
+			InnerFear[i].faceRight = true;
 		}
 	}
 }
@@ -421,11 +469,13 @@ void updateRat() // Rat movement update
 		{
 			if ( map[Rat[i].y][Rat[i].x-1] != '#' && map[Rat[i].y+1][Rat[i].x-1] == '#' ) // If move left is possible
 				Rat[i].x--;
+			Rat[i].faceRight = false;
 		}
 		else
 		{
 			if ( map[Rat[i].y][Rat[i].x+8] != '#' && map[Rat[i].y+1][Rat[i].x+7] == '#' ) // If move right is possible
 				Rat[i].x++;
+			Rat[i].faceRight = true;
 		}
 	}
 }
@@ -440,22 +490,26 @@ void updateWengyew() // Wengyew movement update
 			{
 				if ( map[Wengyew[i].y][Wengyew[i].x-1] != '#' && map[Wengyew[i].y+1][Wengyew[i].x-1] == '#' ) // If move left is possible
 					Wengyew[i].x--; // chase player
+				Wengyew[i].faceRight = false;
 			}
 			else // if character on wengyews' right
 			{
 				if ( map[Wengyew[i].y][Wengyew[i].x+3] != '#' && map[Wengyew[i].y+1][Wengyew[i].x+7] == '#' ) // If move right is possible
 					Wengyew[i].x++; // chase player
+				Wengyew[i].faceRight = true;
 			}
 		}
 		if ( rand() % 2 == 0 )
 		{
 			if ( map[Wengyew[i].y][Wengyew[i].x-1] != '#' && map[Wengyew[i].y+1][Wengyew[i].x-1] == '#' ) // If move left is possible
 				Wengyew[i].x--;
+			Wengyew[i].faceRight = false;
 		}
 		else
 		{
 			if ( map[Wengyew[i].y][Wengyew[i].x+5] != '#' && map[Wengyew[i].y+1][Wengyew[i].x+7] == '#' ) // If move right is possible
 				Wengyew[i].x++;
+			Wengyew[i].faceRight = true;
 		}
 	}
 }
@@ -468,11 +522,13 @@ void updateCatFish() // CatFish movement update
 		{
 			if ( map[CatFish[i].y][CatFish[i].x-1] != '#' && map[CatFish[i].y+1][CatFish[i].x-1] == '#' ) // If move left is possible
 				CatFish[i].x--;
+			CatFish[i].faceRight = false;
 		}
 		else
 		{
 			if ( map[CatFish[i].y][CatFish[i].x+3] != '#' && map[CatFish[i].y+1][CatFish[i].x+7] == '#' ) // If move right is possible
 				CatFish[i].x++;
+			CatFish[i].faceRight = true;
 		}
 	}
 }
@@ -487,22 +543,26 @@ void updateDeadFish() // DeadFish movement update
 			{
 				if ( map[DeadFish[i].y][DeadFish[i].x-1] != '#' && map[DeadFish[i].y+1][DeadFish[i].x-1] == '#' ) // If move left is possible
 					DeadFish[i].x--; // chase player
+				DeadFish[i].faceRight = false;
 			}
 			else // if character on DeadFish's right
 			{
 				if ( map[DeadFish[i].y][DeadFish[i].x+3] != '#' && map[DeadFish[i].y+1][DeadFish[i].x+7] == '#' ) // If move right is possible
 					DeadFish[i].x++; // chase player
+				DeadFish[i].faceRight = true;
 			}
 		}
 		if ( rand() % 2 == 0 )
 		{
 			if ( map[DeadFish[i].y][DeadFish[i].x-1] != '#' && map[DeadFish[i].y+1][DeadFish[i].x-1] == '#' ) // If move left is possible
 				DeadFish[i].x--;
+			DeadFish[i].faceRight = false;
 		}
 		else
 		{
 			if ( map[DeadFish[i].y][DeadFish[i].x+5] != '#' && map[DeadFish[i].y+1][DeadFish[i].x+7] == '#' ) // If move right is possible
 				DeadFish[i].x++;
+			DeadFish[i].faceRight = true;
 		}
 	}
 }
@@ -518,22 +578,26 @@ void updateLiveFish() // LiveFish movement update
 			{
 				if ( map[LiveFish[i].y][LiveFish[i].x+6] != '#' && map[LiveFish[i].y+1][LiveFish[i].x+6] == '#' ) // If move right is possible
 					LiveFish[i].x++;  // run away
+				LiveFish[i].faceRight = false;
 			}
 			else // if character on LiveFish's right
 			{
 				if ( map[LiveFish[i].y][LiveFish[i].x-1] != '#' && map[LiveFish[i].y+1][LiveFish[i].x-1] == '#' ) // If move left is possible
 					LiveFish[i].x--; // run away
+				LiveFish[i].faceRight = true;
 			}
 		}
 		if ( rand() % 2 == 0 )
 		{
 			if ( map[LiveFish[i].y][LiveFish[i].x-1] != '#' && map[LiveFish[i].y+1][LiveFish[i].x-1] == '#' ) // If move left is possible
 				LiveFish[i].x--;
+			LiveFish[i].faceRight = false;
 		}
 		else
 		{
 			if ( map[LiveFish[i].y][LiveFish[i].x+6] != '#' && map[LiveFish[i].y+1][LiveFish[i].x+6] == '#' ) // If move right is possible
 				LiveFish[i].x++;
+			LiveFish[i].faceRight = true;
 		}
 	}
 }

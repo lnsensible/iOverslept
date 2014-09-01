@@ -47,6 +47,11 @@ struct Monster
 	int x;
 	int y;
 	int	health;
+	bool faceRight;
+	Monster()
+	{
+	faceRight = true;
+	}
 };
 
 struct Skill_Properties{
