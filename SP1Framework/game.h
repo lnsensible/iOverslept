@@ -98,6 +98,21 @@ enum Sequence
 	DEATH,
 };
 
+enum SoundType
+{
+    S_TREASURE,
+    S_BOSSFIGHT,
+	S_JUMP
+};
+
+void playGameSound(SoundType sound);
+
+void init();                // initialize your variables, allocate memory, etc
+void getInput();            // get input from player
+void update(double dt);     // update the game and the state of the game
+void render();              // renders the current state of the game to the console
+void shutdown();            // do clean up, free memory
+
 void init();                // initialize your variables, allocate memory, etc
 void getInput();            // get input from player
 void update(double dt);     // update the game and the state of the game

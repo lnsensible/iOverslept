@@ -45,6 +45,9 @@
     <ClCompile Include="weapon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\sound.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\console.h">
@@ -55,6 +58,9 @@
     </ClInclude>
     <ClInclude Include="game.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\sound.h">
+      <Filter>Header Files\Framework</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

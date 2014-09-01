@@ -58,7 +58,7 @@ void jump()
 {
 	if ( map[charLocation.Y+1][charLocation.X] == '#' && map[charLocation.Y-1][charLocation.X] != '#' && canJump > 0.800 ) // You're standing on the ground, and there's no ceiling above you, and you haven't jumped in the last 0.8 seconds
 	{
-		Beep(1000,30);
+		playGameSound(S_JUMP);
 		isJumping = 1;
 		canJump = 0.0;
 		hasMoved = 1;

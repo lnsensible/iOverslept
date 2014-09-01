@@ -77,6 +77,7 @@
   <ItemGroup>
     <ClCompile Include="boss.cpp" />
     <ClCompile Include="Framework\console.cpp" />
+    <ClCompile Include="Framework\sound.cpp" />
     <ClCompile Include="Framework\timer.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
@@ -86,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\console.h" />
+    <ClInclude Include="Framework\sound.h" />
     <ClInclude Include="Framework\timer.h" />
     <ClInclude Include="game.h" />
   </ItemGroup>

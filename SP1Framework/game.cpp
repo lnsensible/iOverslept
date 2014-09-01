@@ -3,6 +3,7 @@
 //
 #include "game.h"
 #include "Framework\console.h"
+#include "Framework\sound.h"
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -61,6 +62,7 @@ bool godmode = false;
 int gamestate = 0;
 COORD charLocation;
 COORD consoleSize;
+Sound snd;
 
 int NUMBEROFSIGNS = 43;
 
@@ -1071,6 +1073,19 @@ void saveGame()
 	Savefile.close();
 }
 
+void playGameSound(SoundType sound)
+{
+    switch (sound)
+    {
+        case S_TREASURE: snd.playSound("treasure");    
+			break;
+		case S_BOSSFIGHT : snd.playSound("bossmusic");
+			break;
+		case S_JUMP : snd.playSound("jump");
+			break;
+	}
+}
+
 void loadLevel(std::string filename) // loads level map from file.
 {
 	std::fstream LevelMap;
@@ -1700,6 +1715,9 @@ void init()
 	
 	//Prepare Skills
 	initSkill();
+	snd.loadWave("treasure", "treasure.wav");
+	snd.loadWave("bossmusic", "bossmusic.wav");
+	snd.loadWave("jump", "jump.wav");
 	//Add Shop Function here. Shop Function should Modify the Values inside initskill
 	//Create an int Variable called damageUpgrade = 0; This variable is added to the Damage(Even if no Value yet).
 	//Once it has a value. you know what happens.
