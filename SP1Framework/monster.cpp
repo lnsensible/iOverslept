@@ -205,7 +205,9 @@ void renderMonster() // render mobs
 			}
 		}
 		gotoXY(Villager[i].x, Villager[i].y); // go to coordinates of Villager in the vector
+		colour(0x09);
 		std::cout << (char)1; // print Villager
+		colour(0x0f);
 	}
 
 	for (unsigned int i = 0; i < Shielded.size(); i++ ) // for all the Shieldeds
@@ -414,7 +416,7 @@ void updateWengyew() // Wengyew movement update
 {
 	for (unsigned int i = 0; i < Wengyew.size(); i++ ) // for all Wengyews
 	{
-		if ( charLocation.Y == Wengyew[i].y ) // if character same Y coordinate as Wengyew
+		if ( charLocation.Y == Wengyew[i].y || charLocation.Y+1 == Wengyew[i].y ) // if character same Y coordinate as Wengyew
 		{
 			if ( charLocation.X <= Wengyew[i].x ) // if character on wengyew's left
 			{

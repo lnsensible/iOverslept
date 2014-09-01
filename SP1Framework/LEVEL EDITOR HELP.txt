@@ -12,6 +12,7 @@ Y - CatFish
 D - DeadFish
 L - LiveFish
 V - Villager
+A - Shielded
 
 Environment / Level elements
 C - Character spawn point
