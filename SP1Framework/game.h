@@ -107,7 +107,10 @@ enum SoundType
 {
     S_TREASURE,
     S_BOSSFIGHT,
-	S_JUMP
+	S_JUMP,
+	S_FIREBALL,
+	S_SPARK,
+	S_WATER
 };
 
 void playGameSound(SoundType sound);

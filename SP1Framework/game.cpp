@@ -1083,6 +1083,12 @@ void playGameSound(SoundType sound)
 			break;
 		case S_JUMP : snd.playSound("jump");
 			break;
+		case S_FIREBALL : snd.playSound("fireball");
+			break;
+		case S_SPARK : snd.playSound("spark");
+			break;
+		case S_WATER : snd.playSound("water");
+			break;
 	}
 }
 
@@ -1555,6 +1561,7 @@ void checkForElement()
 
 	if (map[charLocation.Y][charLocation.X] == 15)//treasure
 	{
+		playGameSound(S_TREASURE);
 		map[charLocation.Y][charLocation.X] = 32; //clear treasure
 		MoneyCount = MoneyCount + 10;
 		MoneyInv = MoneyInv + 10;
@@ -1718,6 +1725,9 @@ void init()
 	snd.loadWave("treasure", "treasure.wav");
 	snd.loadWave("bossmusic", "bossmusic.wav");
 	snd.loadWave("jump", "jump.wav");
+	snd.loadWave("fireball", "fireball.wav");
+	snd.loadWave("spark", "spark.wav");
+	snd.loadWave("water", "water.wav");
 	//Add Shop Function here. Shop Function should Modify the Values inside initskill
 	//Create an int Variable called damageUpgrade = 0; This variable is added to the Damage(Even if no Value yet).
 	//Once it has a value. you know what happens.
@@ -1935,7 +1945,6 @@ void update(double dt)
     {
        if (map[charLocation.Y][charLocation.X-1] != '#') // There is no wall on the left.
 		{
-			Beep(1440, 30);
 			gotoXY(charLocation.X, charLocation.Y); // Preventing screen flickering.
 			hasMoved = 1;
 			charLocation.X--; // Move left.
@@ -1947,7 +1956,6 @@ void update(double dt)
     {
 		if (map[charLocation.Y][charLocation.X+1] != '#') // There is no wall on the right.
 		{
-			Beep(1440, 30);
 			gotoXY(charLocation.X, charLocation.Y); // Preventing screen flickering.
 			hasMoved = 1;
 			charLocation.X++;
@@ -1976,7 +1984,7 @@ void update(double dt)
 
 	if (keyPressed[K_G])
 	{
-		Beep(1337, 1000);
+		Beep(1337, 500);
 		if ( godmode == false )
 			godmode = true;
 		else

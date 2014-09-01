@@ -78,6 +78,21 @@ void Attack()
 		AddCKey.faceWhere = true;
 		AddCKey.isRENDERED = true;
 	}
+	if (AddCKey.index == 1)
+	{
+		playGameSound(S_FIREBALL);
+	}
+
+	if (AddCKey.index == 2)
+	{
+		playGameSound(S_SPARK);
+	}
+
+	if (AddCKey.index == 3)
+	{
+		playGameSound(S_WATER);
+	}
+
 	CKey.push_back(AddCKey);
 }
 
