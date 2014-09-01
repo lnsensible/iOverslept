@@ -577,9 +577,6 @@ void initSHOP()
 
 	charLocation.X = 59;
 	charLocation.Y = 7;
-	WaterUnlocked = false;
-	FireUnlocked = true;
-	SparkUnlocked = false;
 	initSkill();
 }
 void updateSHOP(double dt)
@@ -848,7 +845,7 @@ void renderSHOP()
 	colour(0x0F);
 	colour(0x0E);
 	//Spark Section
-	if(SparkUnlocked)
+	if(SparkUnlocked == true)
 	{
 		gotoXY(16,16);
 		std::cout<<"                 "<<"\n\n\n";  
@@ -856,7 +853,7 @@ void renderSHOP()
 		gotoXY(16, 16);
 		std::cout << "        Owned!";
 	}
-	else
+	else if (SparkUnlocked == false)
 	{
 		gotoXY(16, 16);
 		std::cout << "->> Buy $300 <<- "<<"\n\n\n";
@@ -889,7 +886,7 @@ void renderSHOP()
 	colour(0x0F);
 	colour(0x03);
 	//Water Section
-	if(WaterUnlocked)
+	if(WaterUnlocked == true)
 	{
 		gotoXY(16,26);
 		std::cout<<"                 "<<"\n\n\n";  
@@ -897,7 +894,7 @@ void renderSHOP()
 		gotoXY(16, 26);
 		std::cout << "        Owned!";
 	}
-	else
+	else if (WaterUnlocked == false)
 	{
 		gotoXY(16, 26);
 		std::cout << "->> Buy $222 <<- "<<"\n\n\n";
