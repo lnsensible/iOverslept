@@ -25,9 +25,13 @@ extern COORD charLocation;
 extern COORD consoleSize;
 extern int gamestate;
 extern int hasMoved;
+extern bool outsideShop;
+
 
 extern int MoneyCount;
 extern int MoneyInv;
+
+
 
 void LevelUp()
 {
@@ -100,9 +104,9 @@ void jump()
 			}
 		}
 		else if ( map[charLocation.Y-1][charLocation.X] == '#' ) // If there is a ceiling, stop the jump.
-			{
-				isJumping = 0;
-			}
+		{
+			isJumping = 0;
+		}
 	}
 }
 
@@ -148,8 +152,38 @@ void checkforSpike() // checks if character is standing on a trap.
 	}
 }
 
+
+/*
+void checkforShop()
+{
+if (map[charLocation.Y][charLocation.X] == '+')
+{
+isSHOP = true; //If true, then you can enter.
+}
+}
+
+void renderShop()
+{
+
+}
+*/
 void spawnWhere()
 {
+	if (outsideShop == false)// If travel through shop
+	{
+		for ( int i = 0; i < MAPHEIGHT; i++ )
+		{
+			for ( int j = 0; j < MAPWIDTH; j++ )
+			{
+				if (map[i][j] == '+')
+				{
+					charLocation.X = j+1;
+					charLocation.Y = i;
+				}
+			}
+		}
+	}
+	else
 	if(fromSPortal == true)//if travel through special portal
 	{
 		for ( int i = 0; i < MAPHEIGHT; i++ )
