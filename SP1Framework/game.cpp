@@ -2043,6 +2043,18 @@ void render()
 					std::cout << (char)239;
 					colour(0x0F);
 				}
+				else if ( map[j][i] == 209)
+				{
+					colour(0x07);
+					std::cout << (char)209;
+					colour(0x0F);
+				}
+				else if ( map[j][i] == 227)
+				{
+					colour(0x0B);
+					std::cout << (char)227;
+					colour(0x0F);
+				}
 				else
 					std::cout << map[j][i];
 			}
