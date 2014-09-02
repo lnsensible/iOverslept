@@ -1166,36 +1166,36 @@ void updateBossHitbox()
 		}
 		else if ( Randomzxc == 1 )
 		{
-			spawnHitbox.x = 14;
+			spawnHitbox.x = 28;
 			spawnHitbox.y = 5;
 
 			BossHitbox.push_back(spawnHitbox);
 		}
 		else if ( Randomzxc == 2 )
 		{
-			spawnHitbox.x = 28;
-			spawnHitbox.y = 5;
-
-			BossHitbox.push_back(spawnHitbox);
-		}
-		else if ( Randomzxc == 3 )
-		{
 			spawnHitbox.x = 21;
 			spawnHitbox.y = 7;
 
 			BossHitbox.push_back(spawnHitbox);
 		}
-		else if ( Randomzxc == 4 )
+		else if ( Randomzxc == 3 )
 		{
 			spawnHitbox.x = 14;
 			spawnHitbox.y = 9;
 
 			BossHitbox.push_back(spawnHitbox);
 		}
-		else if ( Randomzxc == 5 )
+		else if ( Randomzxc == 4 )
 		{
 			spawnHitbox.x = 28;
 			spawnHitbox.y = 9;
+
+			BossHitbox.push_back(spawnHitbox);
+		}
+		else if ( Randomzxc == 5 )
+		{
+			spawnHitbox.x = 21;
+			spawnHitbox.y = 11;
 
 			BossHitbox.push_back(spawnHitbox);
 		}
@@ -1319,15 +1319,15 @@ void renderBossHitbox()
 	{
 		if ( BossHitbox.size() == 1 )
 		{
-			gotoXY(BossHitbox[0].x, BossHitbox[0].x );
+			gotoXY(BossHitbox[0].x, BossHitbox[0].y );
 			std::cout << (char)3;
 		}
 		if ( BossHitbox.size() > 1 )
 		{
-			gotoXY(BossHitbox[0].x, BossHitbox[0].x );
+			gotoXY(BossHitbox[0].x, BossHitbox[0].y );
 			std::cout << " ";
 			BossHitbox.erase(BossHitbox.begin()); // remove first hitbox
-			gotoXY(BossHitbox[0].x, BossHitbox[0].x );
+			gotoXY(BossHitbox[0].x, BossHitbox[0].y );
 			std::cout << (char)3;
 		}
 	}
