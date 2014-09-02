@@ -127,7 +127,6 @@ void checkforDeath()
 {
 	if ( PlayerHealth <= 0 )
 	{
-
 		MoneyCount = MoneyCount - MoneyInv;
 		MoneyInv = 0;
 		if(MoneyCount > 4)
@@ -135,6 +134,26 @@ void checkforDeath()
 			MoneyCount = MoneyCount - 5;
 		}
 		playerExperience = 0;
+
+		if(checkLevel > 9 && checkLevel < 25)
+		{
+			checkLevel = 9;
+		}
+
+		else if(checkLevel == 43)
+		{
+			checkLevel = 42;
+		}
+
+		else if(checkLevel == 17)
+		{
+			checkLevel = 16;
+		}
+
+		else if(checkLevel > 25)
+		{
+			checkLevel = 25;
+		}
 
 		saveGame();
 		gamestate = DEATH;

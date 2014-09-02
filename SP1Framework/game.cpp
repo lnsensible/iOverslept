@@ -420,29 +420,14 @@ void updatedeathmenu(double dt)
 	if(keyPressed[K_ENTER])
 	{
 		PlayerHealth = 3;
+
 		if(charLocation.X == 60)
 		{
-			if(checkLevel > 9 && checkLevel < 25)
-			{
-				checkLevel = 9;
-			}
-			if(checkLevel > 25)
-			{
-				checkLevel = 25;
-			}
 			gamestate = LEVELMENU;
 		}
 
 		if(charLocation.X == 50)
 		{
-			if(checkLevel > 9 && checkLevel < 25)
-			{
-				checkLevel = 9;
-			}
-			if(checkLevel > 25)
-			{
-				checkLevel = 25;
-			}
 			gamestate = GAME;
 		}
 	}
