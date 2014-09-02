@@ -431,13 +431,11 @@ void updateFloater() // floater movement update
 		{
 			if ( map[Floater[i].y][Floater[i].x-1] != '#' && map[Floater[i].y+1][Floater[i].x-1] == '#' ) // If move left is possible
 				Floater[i].x--;
-			Floater[i].faceRight = false;
 		}
 		else
 		{
 			if ( map[Floater[i].y][Floater[i].x+1] != '#' && map[Floater[i].y+1][Floater[i].x+1] == '#' ) // If move right is possible
 				Floater[i].x++;
-			Floater[i].faceRight = true;
 		}
 	}
 }
@@ -450,13 +448,11 @@ void updateInnerFear() // InnerFear movement update
 		{
 			if ( map[InnerFear[i].y][InnerFear[i].x-1] != '#' && map[InnerFear[i].y+1][InnerFear[i].x-1] == '#' ) // If move left is possible
 				InnerFear[i].x--;
-			InnerFear[i].faceRight = false;
 		}
 		else
 		{
 			if ( map[InnerFear[i].y][InnerFear[i].x+1] != '#' && map[InnerFear[i].y+1][InnerFear[i].x+1] == '#' ) // If move right is possible
 				InnerFear[i].x++;
-			InnerFear[i].faceRight = true;
 		}
 	}
 }
