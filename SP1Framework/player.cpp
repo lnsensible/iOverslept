@@ -152,21 +152,6 @@ void checkforSpike() // checks if character is standing on a trap.
 	}
 }
 
-
-/*
-void checkforShop()
-{
-if (map[charLocation.Y][charLocation.X] == '+')
-{
-isSHOP = true; //If true, then you can enter.
-}
-}
-
-void renderShop()
-{
-
-}
-*/
 void spawnWhere()
 {
 	if (outsideShop == false)// If travel through shop
