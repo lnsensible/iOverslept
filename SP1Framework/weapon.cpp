@@ -417,7 +417,7 @@ void spawnSkill(std::vector<Skill_Properties>& Skill){
 				{
 					colour(0x03);
 				}
-				if (Skill[x].bulletTravelDistance == AddCKey.Range)
+				if (Skill[x].bulletTravelDistance == Skill[x].Range)
 				{
 					Skill.erase(Skill.begin() + x);
 				}
@@ -426,14 +426,6 @@ void spawnSkill(std::vector<Skill_Properties>& Skill){
 					std::cout<<Skill[x].orbASCII;
 				}
 				colour(0x0F);
-				for ( unsigned int y = 0; y< Skill.size(); ++y)
-				{
-					if (map[Skill[y].y][Skill[y].x+1] != '#' || map[Skill[y].y][Skill[y].x-1] != '.')
-					{
-						gotoXY(Skill[y].x+1, Skill[y].y);
-						std::cout<<map[Skill[y].y][Skill[y].x+1];
-					}
-				}
 			}
 			else if ( Skill[x].faceWhere == true )
 			{
@@ -455,7 +447,7 @@ void spawnSkill(std::vector<Skill_Properties>& Skill){
 				{
 					colour(0x03);
 				}
-				if (Skill[x].bulletTravelDistance == AddCKey.Range)
+				if (Skill[x].bulletTravelDistance == Skill[x].Range)
 				{
 					Skill.erase(Skill.begin() + x);
 				}
@@ -464,7 +456,8 @@ void spawnSkill(std::vector<Skill_Properties>& Skill){
 					std::cout<<Skill[x].orbASCII;
 				}
 				colour(0x0F);
-				for ( unsigned int y = 0; y< Skill.size(); ++y)
+			}
+			for ( unsigned int y = 0; y< Skill.size(); ++y)
 				{
 					if (map[Skill[y].y][Skill[y].x-1] != '#' || map[Skill[y].y][Skill[y].x-1] != '.')
 					{
@@ -472,7 +465,6 @@ void spawnSkill(std::vector<Skill_Properties>& Skill){
 						std::cout<<map[Skill[y].y][Skill[y].x-1];
 					}
 				}
-			}
 	}
 	AddCKey.isRENDERED = false;
 }
