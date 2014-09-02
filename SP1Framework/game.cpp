@@ -112,7 +112,7 @@ int PlayerHealth = 3; // Player's HP. Default = 3.
 //Weapons
 extern void Attack();
 extern void updateSkill(std::vector<Skill_Properties>& Skill);
-extern void spawnSkill();
+extern void spawnSkill(std::vector<Skill_Properties>& Skill);
 extern void initSkill();
 extern void nextSkill();
 extern void previousSkill();
@@ -2131,7 +2131,7 @@ void render()
 	//render Skill
 	if ( CKey.size() != 0 )
 	{
-		spawnSkill();
+		spawnSkill(CKey);
 	}
 
 	renderSigns();  
