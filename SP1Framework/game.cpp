@@ -971,9 +971,9 @@ void loadGameUpdate()
 	MoneyCount = Savedata[0][0];
 	PlayerHealth = Savedata[0][1];
 	checkLevel = Savedata[0][2];	
-	AddSpark.skillUnlocked = Savedata[0][3];
-	AddWater.skillUnlocked = Savedata[0][4];
-	AddFire.skillUnlocked = Savedata[0][5];
+	SparkUnlocked = Savedata[0][3];
+	WaterUnlocked = Savedata[0][4];
+	FireUnlocked = Savedata[0][5];
 
 	playerLevel = Savedata[0][6];
 	playerExperience = Savedata[0][7];
@@ -1020,7 +1020,7 @@ void saveGame()
 			outputData[0][2] = 1;
 		}
 
-		if(AddSpark.skillUnlocked == true)
+		if(SparkUnlocked == true)
 		{
 			outputData[0][3] = 1;
 			outputData[1][3] = AddSpark.dmgUpgrade;
@@ -1033,7 +1033,7 @@ void saveGame()
 		}
 
 
-		if(AddWater.skillUnlocked == true)
+		if(WaterUnlocked == true)
 		{
 			outputData[0][4] = 1;
 			outputData[1][4] = AddWater.dmgUpgrade;
@@ -1045,7 +1045,7 @@ void saveGame()
 			outputData[0][4] = 0;
 		}
 
-		if(AddFire.skillUnlocked == true)
+		if(FireUnlocked == true)
 		{
 			outputData[0][5] = 1;
 			outputData[1][5] = AddFire.dmgUpgrade;
