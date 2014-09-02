@@ -106,7 +106,7 @@ enum Sequence
 enum SoundType
 {
     S_TREASURE,
-    S_BOSSFIGHT,
+    S_MENU,
 	S_JUMP,
 	S_FIREBALL,
 	S_SPARK,

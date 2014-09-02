@@ -82,6 +82,7 @@ void mainLoop()
 		{
 			if ( initialisedornot != 1 )
 			{
+				playGameSound(S_MENU);
 				initmainmenu();
 				initialisedornot = 1;
 			}

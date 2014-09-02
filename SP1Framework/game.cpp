@@ -254,6 +254,10 @@ void rendermainmenu()
 	std::cout << "Shop";
 	gotoXY(57, 24);
 	std::cout << "Quit";
+	gotoXY(55, 17);
+	colour(0x0C);
+	std::cout << "QUENSTORY";
+	colour(0x0F);
 
 	gotoXY(charLocation);
 	colour(0x0C);
@@ -306,6 +310,7 @@ void updatelevelmenu(double dt)
 
 	if(keyPressed[K_ENTER])
 	{
+		playGameSound(S_TREASURE);
 		if(charLocation.Y == 15)
 		{
 			hasLevelRendered = 0;
@@ -560,6 +565,7 @@ void renderendmenu()
 	std::cout << (char)16;
 	colour(0x0F);
 }
+
 void initSHOP()
 {
 	// Set precision for floating point output
@@ -1073,11 +1079,18 @@ void saveGame()
 
 void playGameSound(SoundType sound)
 {
+	snd.loadWave("treasure", "treasure.wav");
+	snd.loadWave("menu", "menu.wav");
+	snd.loadWave("jump", "jump.wav");
+	snd.loadWave("fireball", "fireball.wav");
+	snd.loadWave("spark", "spark.wav");
+	snd.loadWave("water", "water.wav");
+
     switch (sound)
     {
         case S_TREASURE: snd.playSound("treasure");    
 			break;
-		case S_BOSSFIGHT : snd.playSound("bossmusic");
+		case S_MENU : snd.playSound("menu");
 			break;
 		case S_JUMP : snd.playSound("jump");
 			break;
@@ -1777,12 +1790,6 @@ void init()
 	
 	//Prepare Skills
 	initSkill();
-	snd.loadWave("treasure", "treasure.wav");
-	snd.loadWave("bossmusic", "bossmusic.wav");
-	snd.loadWave("jump", "jump.wav");
-	snd.loadWave("fireball", "fireball.wav");
-	snd.loadWave("spark", "spark.wav");
-	snd.loadWave("water", "water.wav");
 	//Add Shop Function here. Shop Function should Modify the Values inside initskill
 	//Create an int Variable called damageUpgrade = 0; This variable is added to the Damage(Even if no Value yet).
 	//Once it has a value. you know what happens.
