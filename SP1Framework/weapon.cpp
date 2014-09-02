@@ -30,6 +30,7 @@ Skill_Properties AddSpark;
 Skill_Properties AddFire;
 Skill_Properties AddWater;
 Skill_Properties AddCKey;
+Skill_Properties AddFart;
 std::vector<Skill_Properties> CKey;
 
 void initSkill()
@@ -161,7 +162,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		{
 			if (Skill[j].x == Floater[i].x && Skill[j].y == Floater[i].y) // if skill touches mob
 			{
-				Floater[i].health -= AddCKey.Damage; // health from mob is deducted by skill damage
+				Floater[i].health -= Skill[j].Damage; // health from mob is deducted by skill damage
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -176,7 +177,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		{
 			if (Skill[j].x == Rat[i].x && Skill[j].y == Rat[i].y) // if skill touches mob
 			{
-				Rat[i].health -= AddCKey.Damage; // health from mob is deducted by skill damage
+				Rat[i].health -= Skill[j].Damage; // health from mob is deducted by skill damage
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -209,7 +210,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		{
 			if (Skill[j].x == InnerFear[i].x && Skill[j].y == InnerFear[i].y) // if skill touches mob
 			{
-				InnerFear[i].health -= AddCKey.Damage; // health from mob is deducted by skill damage
+				InnerFear[i].health -= Skill[j].Damage; // health from mob is deducted by skill damage
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -224,7 +225,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		{
 			if (Skill[j].x == Wengyew[i].x && Skill[j].y == Wengyew[i].y) // if skill touches mob
 			{
-				Wengyew[i].health -= AddCKey.Damage; // health from mob is deducted by skill damage
+				Wengyew[i].health -= Skill[j].Damage; // health from mob is deducted by skill damage
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -239,7 +240,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		{
 			if (Skill[j].x == CatFish[i].x && Skill[j].y == CatFish[i].y) // if skill touches mob
 			{
-				CatFish[i].health -= AddCKey.Damage; // health from mob is deducted by skill damage
+				CatFish[i].health -= Skill[j].Damage; // health from mob is deducted by skill damage
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -254,7 +255,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		{
 			if (Skill[j].x == DeadFish[i].x && Skill[j].y == DeadFish[i].y) // if skill touches mob
 			{
-				DeadFish[i].health -= AddCKey.Damage; // health from mob is deducted by skill damage
+				DeadFish[i].health -= Skill[j].Damage; // health from mob is deducted by skill damage
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -269,7 +270,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		{
 			if (Skill[j].x == LiveFish[i].x && Skill[j].y == LiveFish[i].y) // if skill touches mob
 			{
-				LiveFish[i].health -= AddCKey.Damage; // health from mob is deducted by skill damage
+				LiveFish[i].health -= Skill[j].Damage; // health from mob is deducted by skill damage
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead();
 				i = 0;
@@ -284,7 +285,7 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 		{
 			if (Skill[j].x == Shielded[i].x && Skill[j].y == Shielded[i].y) // if skill touches mob
 			{
-				Shielded[i].health -= AddCKey.Damage; // health from mob is deducted by skill damage
+				Shielded[i].health -= Skill[j].Damage; // health from mob is deducted by skill damage
 				Skill.erase(Skill.begin() + j); // remove Skill
 				checkMonsterDead(); 
 				i = 0;
@@ -323,23 +324,23 @@ void updateSkill(std::vector<Skill_Properties>& Skill)
 	}
 }
 
-void spawnSkill(){
-	for(unsigned int x = 0; x < CKey.size(); ++x)
+void spawnSkill(std::vector<Skill_Properties>& Skill){
+	for(unsigned int x = 0; x < Skill.size(); ++x)
 	{
-		if (CKey[x].isRENDERED == false)//If hit something other than monster, then rendered = false and this happens.
+		if (Skill[x].isRENDERED == false)//If hit something other than monster, then rendered = false and this happens.
 		{
-			gotoXY(CKey[x].x-1, CKey[x].y);
-			if ( map[CKey[x].y][CKey[x].x-1] == '#' ) 
+			gotoXY(Skill[x].x-1, Skill[x].y);
+			if ( map[Skill[x].y][Skill[x].x-1] == '#' ) 
 			{
 				std::cout << (char)219;
 			}
-			else if ( map[CKey[x].y][CKey[x].x-1] == 234 )
+			else if ( map[Skill[x].y][Skill[x].x-1] == 234 )
 			{
 				colour(0x0A);
 				std::cout << (char)234;
 				colour(0x0F);
 			}
-			else if ( map[CKey[x].y][CKey[x].x-1] == 239 )
+			else if ( map[Skill[x].y][Skill[x].x-1] == 239 )
 			{
 				colour(0x0A);
 				std::cout << (char)239;
@@ -347,21 +348,21 @@ void spawnSkill(){
 			}
 			else
 			{
-				std::cout<< map[CKey[x].y][CKey[x].x-1];
+				std::cout<< map[Skill[x].y][Skill[x].x-1];
 			}
 
-			gotoXY(CKey[x].x, CKey[x].y);
-			if ( map[CKey[x].y][CKey[x].x] == '#' ) // if wall
+			gotoXY(Skill[x].x, Skill[x].y);
+			if ( map[Skill[x].y][Skill[x].x] == '#' ) // if wall
 			{
 				std::cout << (char)219;
 			}
-			else if ( map[CKey[x].y][CKey[x].x] == 234 )
+			else if ( map[Skill[x].y][Skill[x].x] == 234 )
 			{
 				colour(0x0A);
 				std::cout << (char)234;
 				colour(0x0F);
 			}
-			else if ( map[CKey[x].y][CKey[x].x] == 239 )
+			else if ( map[Skill[x].y][Skill[x].x] == 239 )
 			{
 				colour(0x0A);
 				std::cout << (char)239;
@@ -369,21 +370,21 @@ void spawnSkill(){
 			}
 			else
 			{
-				std::cout<< map[CKey[x].y][CKey[x].x];
+				std::cout<< map[Skill[x].y][Skill[x].x];
 			}
 
-			gotoXY(CKey[x].x+1, CKey[x].y);
-			if ( map[CKey[x].y][CKey[x].x+1] == '#' ) // if wall
+			gotoXY(Skill[x].x+1, Skill[x].y);
+			if ( map[Skill[x].y][Skill[x].x+1] == '#' ) // if wall
 			{
 				std::cout << (char)219;
 			}
-			else if ( map[CKey[x].y][CKey[x].x+1] == 234 )
+			else if ( map[Skill[x].y][Skill[x].x+1] == 234 )
 			{
 				colour(0x0A);
 				std::cout << (char)234;
 				colour(0x0F);
 			}
-			else if ( map[CKey[x].y][CKey[x].x+1] == 239 )
+			else if ( map[Skill[x].y][Skill[x].x+1] == 239 )
 			{
 				colour(0x0A);
 				std::cout << (char)239;
@@ -391,84 +392,84 @@ void spawnSkill(){
 			}
 			else
 			{
-				std::cout<< map[CKey[x].y][CKey[x].x+1];
+				std::cout<< map[Skill[x].y][Skill[x].x+1];
 			}
-			CKey.erase(CKey.begin() + x);
+			Skill.erase(Skill.begin() + x);
 		}
 		else
-			if ( CKey[x].faceWhere == false )
+			if ( Skill[x].faceWhere == false )
 			{
-				for ( unsigned int y = 0; y< CKey.size(); ++y)
+				for ( unsigned int y = 0; y< Skill.size(); ++y)
 				{
-					gotoXY(CKey[y].x+1, CKey[y].y);
+					gotoXY(Skill[y].x+1, Skill[y].y);
 					std::cout<<" ";
 				}
-				gotoXY(CKey[x].x, CKey[x].y);
-				if (CKey[x].index == 1)
+				gotoXY(Skill[x].x, Skill[x].y);
+				if (Skill[x].index == 1)
 				{
 					colour(0x04);
 				}
-				else if (CKey[x].index == 2)
+				else if (Skill[x].index == 2)
 				{
 					colour(0x8);
 				}
-				else if (CKey[x].index == 3)
+				else if (Skill[x].index == 3)
 				{
 					colour(0x03);
 				}
-				if (CKey[x].bulletTravelDistance == AddCKey.Range)
+				if (Skill[x].bulletTravelDistance == AddCKey.Range)
 				{
-					CKey.erase(CKey.begin() + x);
+					Skill.erase(Skill.begin() + x);
 				}
-				else if (CKey[x].isRENDERED == true)
+				else if (Skill[x].isRENDERED == true)
 				{
-					std::cout<<CKey[x].orbASCII;
+					std::cout<<Skill[x].orbASCII;
 				}
 				colour(0x0F);
-				for ( unsigned int y = 0; y< CKey.size(); ++y)
+				for ( unsigned int y = 0; y< Skill.size(); ++y)
 				{
-					if (map[CKey[y].y][CKey[y].x+1] != '#' || map[CKey[y].y][CKey[y].x-1] != '.')
+					if (map[Skill[y].y][Skill[y].x+1] != '#' || map[Skill[y].y][Skill[y].x-1] != '.')
 					{
-						gotoXY(CKey[y].x+1, CKey[y].y);
-						std::cout<<map[CKey[y].y][CKey[y].x+1];
+						gotoXY(Skill[y].x+1, Skill[y].y);
+						std::cout<<map[Skill[y].y][Skill[y].x+1];
 					}
 				}
 			}
-			else if ( CKey[x].faceWhere == true )
+			else if ( Skill[x].faceWhere == true )
 			{
-				for ( unsigned int y = 0; y< CKey.size(); ++y)
+				for ( unsigned int y = 0; y< Skill.size(); ++y)
 				{
-					gotoXY(CKey[y].x-1, CKey[y].y);
+					gotoXY(Skill[y].x-1, Skill[y].y);
 					std::cout<<" ";
 				}
-				gotoXY(CKey[x].x, CKey[x].y);
-				if (CKey[x].index == 1)
+				gotoXY(Skill[x].x, Skill[x].y);
+				if (Skill[x].index == 1)
 				{
 					colour(0x04);
 				}
-				else if (CKey[x].index == 2)
+				else if (Skill[x].index == 2)
 				{
 					colour(0x8);
 				}
-				else if (CKey[x].index == 3)
+				else if (Skill[x].index == 3)
 				{
 					colour(0x03);
 				}
-				if (CKey[x].bulletTravelDistance == AddCKey.Range)
+				if (Skill[x].bulletTravelDistance == AddCKey.Range)
 				{
-					CKey.erase(CKey.begin() + x);
+					Skill.erase(Skill.begin() + x);
 				}
-				else if (CKey[x].isRENDERED == true)
+				else if (Skill[x].isRENDERED == true)
 				{
-					std::cout<<CKey[x].orbASCII;
+					std::cout<<Skill[x].orbASCII;
 				}
 				colour(0x0F);
-				for ( unsigned int y = 0; y< CKey.size(); ++y)
+				for ( unsigned int y = 0; y< Skill.size(); ++y)
 				{
-					if (map[CKey[y].y][CKey[y].x-1] != '#' || map[CKey[y].y][CKey[y].x-1] != '.')
+					if (map[Skill[y].y][Skill[y].x-1] != '#' || map[Skill[y].y][Skill[y].x-1] != '.')
 					{
-						gotoXY(CKey[y].x-1, CKey[y].y);
-						std::cout<<map[CKey[y].y][CKey[y].x-1];
+						gotoXY(Skill[y].x-1, Skill[y].y);
+						std::cout<<map[Skill[y].y][Skill[y].x-1];
 					}
 				}
 			}
