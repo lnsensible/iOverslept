@@ -177,6 +177,8 @@ void checkforSpike() // checks if character is standing on a trap.
 
 void spawnWhere()
 {
+	AddFart.Range = 1;
+	AddFart.Damage = 0;
 	AddFart.Speed = 0;
 	AddFart.rangeUpgrade = 0;
 	AddFart.dmgUpgrade = 0;
