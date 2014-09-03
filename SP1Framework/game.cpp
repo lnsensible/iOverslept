@@ -1477,10 +1477,10 @@ void renderEquip() //Displays the Skill you're equipping currently
 	if (AddCKey.index == 1)// Fire
 	{
 		colour(0x04);
-		gotoXY(6,32); std::cout<<"         )    /\  (  ;    )   ";
-		gotoXY(6,33); std::cout<<"    ;   (  /\/vv\/\     (     ";
-		gotoXY(6,34); std::cout<<"       _/\/  vvvv  \/\_)      ";
-		gotoXY(6,35); std::cout<<"     ; \    vvvvvv    /       ";
+		gotoXY(6,32); std::cout<<"         )    /\\  (  ;    )  ";
+		gotoXY(6,33); std::cout<<"    ;   (  /\\/vv\/\\     (   ";
+		gotoXY(6,34); std::cout<<"  (     _/\\  vvvv  /\\_)   ; ";
+		gotoXY(6,35); std::cout<<"     ;  \\   vvvvvv   /       ";
 		gotoXY(6,36); std::cout<<"                              ";
 		gotoXY(6,37); std::cout<<"             FIRE             ";
 		colour(0x0F);
@@ -1488,23 +1488,23 @@ void renderEquip() //Displays the Skill you're equipping currently
 	else if(AddCKey.index == 2) // Spark
 	{
 		colour(0x0E);
-		gotoXY(6,32); std::cout<<"                             ";
-		gotoXY(6,33); std::cout<<"                             ";
-		gotoXY(6,34); std::cout<<"                             ";
-		gotoXY(6,35); std::cout<<"                             ";
-		gotoXY(6,36); std::cout<<"                             ";
-		gotoXY(6,37); std::cout<<"             SPARK           ";
+		gotoXY(6,32); std::cout<<"      \\  VVVVVVVVVVV  /      ";
+		gotoXY(6,33); std::cout<<"     -  >>>>>>o<<<<<<  -      ";
+		gotoXY(6,34); std::cout<<"    -   >>>>>ooo<<<<<   -     ";
+		gotoXY(6,35); std::cout<<"     -  >>>>>>o<<<<<<  -      ";
+		gotoXY(6,36); std::cout<<"      /  YYYYYYYYYYY  \\      ";
+		gotoXY(6,37); std::cout<<"             SPARK            ";
 		colour(0x0F);
 	}
 	else if (AddCKey.index == 3)//Water
 	{
 		colour(0x03);
-		gotoXY(6,32); std::cout<<"                             ";
-		gotoXY(6,33); std::cout<<"                             ";
-        gotoXY(6,34); std::cout<<"                             ";
-		gotoXY(6,35); std::cout<<"                             ";
-		gotoXY(6,36); std::cout<<"                             ";
-		gotoXY(6,37); std::cout<<"             WATER           ";
+		gotoXY(6,32); std::cout<<"     ~~~~~~~~~~~~~\\     ~    ";
+		gotoXY(6,33); std::cout<<"    / \\ ~~~~~~~~~~~\\  ~   ~ ";
+        gotoXY(6,34); std::cout<<"   /     /  \\~~~~~~~\\       ";
+		gotoXY(6,35); std::cout<<"  /   /      /  \\~~~~\\     ~";
+		gotoXY(6,36); std::cout<<" / /    /   /           ~     ";
+		gotoXY(6,37); std::cout<<"            WATER             ";
 		colour(0x0F);
 	}
 }
