@@ -2228,6 +2228,8 @@ void render()
 	if (XKey.size() != 0)
 	{
 		spawnSkill(XKey);
+		AddFart.Damage = 0;
+		AddFart.Range = 1;
 	}
 
 	renderSigns();  
