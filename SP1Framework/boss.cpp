@@ -405,6 +405,7 @@ void renderLava()
 
 void bossStand1()
 {
+	colour(0x0d);
 	gotoXY(60, 4);	std::cout << "    ~,~~             ?=:,";
 	gotoXY(60, 5);	std::cout << "    =~,~~,,      ,==?~~~";
 	gotoXY(60, 6);	std::cout << "    =~~7IIIIIIIII+~=~~,,~";
@@ -423,10 +424,12 @@ void bossStand1()
 	gotoXY(50, 19);	std::cout << "            +I            77IIII======";
 	gotoXY(50, 20);	std::cout << "             +III7777777IIIIII?=~=";
 	gotoXY(50, 21);	std::cout << "          ,~~~.+IIIIIIIIIII??+.~:,,";
+	colour(0x0f);
 }
 
 void bossStand2()
 {
+	colour(0x0d);
 	gotoXY(60, 4);	std::cout << "    ~,~~             ?=:,";
 	gotoXY(60, 5);	std::cout << "    =~,~~,,      ,==?~~~";
 	gotoXY(60, 6);	std::cout << "    =~~7IIIIIIIII+~=~~,,~";
@@ -445,10 +448,12 @@ void bossStand2()
 	gotoXY(50, 19);	std::cout << "            +I            77IIII======";
 	gotoXY(50, 20);	std::cout << "             +III7777777IIIIII?=~=";
 	gotoXY(50, 21);	std::cout << "          ,~~~.+IIIIIIIIIII??+.~:,,";
+	colour(0x0f);
 }
 
 void bossMeteor1()
 {
+	colour(0x0d);
 	gotoXY(60, 4);	std::cout << "    ~,~~             ?=:,";
 	gotoXY(60, 5);	std::cout << "    =~,~~,,      ,==?~~~";
 	gotoXY(60, 6);	std::cout << "    =~~7IIIIIIIII+~=~~,,~";
@@ -467,11 +472,13 @@ void bossMeteor1()
 	gotoXY(50, 19);	std::cout << "            +I            77IIII======            ";
 	gotoXY(50, 20);	std::cout << "             +III7777777IIIIII?=~=";
 	gotoXY(50, 21);	std::cout << "          ,~~~.+IIIIIIIIIII??+.~:,,";
+	colour(0x0f);
 
 }
 
 void bossMeteor2()
 {
+	colour(0x0d);
 	gotoXY(60, 4);	std::cout << "    ~,~~             ?=:,";
 	gotoXY(60, 5);	std::cout << "    =~,~~,,      ,==?~~~";
 	gotoXY(60, 6);	std::cout << "    =~~7IIIIIIIII+~=~~,,~";
@@ -490,11 +497,12 @@ void bossMeteor2()
 	gotoXY(50, 19);	std::cout << "            +I            77IIII======";
 	gotoXY(50, 20);	std::cout << "             +III7777777IIIIII?=~=";
 	gotoXY(50, 21);	std::cout << "          ,~~~.+IIIIIIIIIII??+.~:,,";
-
+	colour(0x0f);
 }
 
 void bossMeteor3()
 {
+	colour(0x0d);
 	gotoXY(60, 4);	std::cout << "    ~,~~             ?=:,";
 	gotoXY(60, 5);	std::cout << "    =~,~~,,      ,==?~~~";
 	gotoXY(60, 6);	std::cout << "    =~~7IIIIIIIII+~=~~,,~";
@@ -513,6 +521,7 @@ void bossMeteor3()
 	gotoXY(50, 19);	std::cout << "            +I            77IIII======";
 	gotoXY(50, 20);	std::cout << "             +III7777777IIIIII?=~=";
 	gotoXY(50, 21);	std::cout << "          ,~~~.+IIIIIIIIIII??+.~:,,";
+	colour(0x0f);
 }
 
 void bossMeteorEffect() // spawns meteors !
@@ -625,6 +634,7 @@ void renderMeteor() // cout meteors to console
 
 void bossSplint1()
 {
+	colour(0x0d);
 	gotoXY(60, 4);
 	std::cout << "    ~,~~             ?=:,";
 	gotoXY(60, 5);
@@ -661,10 +671,12 @@ void bossSplint1()
 	std::cout << " ++???=~~   +III7777777IIIIII?=~=";
 	gotoXY(51, 21);
 	std::cout << " =????=~=,~~~.+IIIIIIIIIII??+.~:,,";
+	colour(0x0f);
 }
 
 void bossSplint2()
 {
+	colour(0x0d);
 	gotoXY(60, 4);
 	std::cout << "    ~,~~             ?=:,";
 	gotoXY(60, 5);
@@ -701,10 +713,12 @@ void bossSplint2()
 	std::cout << " ++???=~~   +III7777777IIIIII?=~=";
 	gotoXY(51, 21);
 	std::cout << " =????=~=,~~~.+IIIIIIIIIII??+.~:,,";
+	colour(0x0f);
 }
 
 void bossSplint3()
 {
+	colour(0x0d);
 	gotoXY(60, 4);
 	std::cout << "    ~,~~             ?=:,";
 	gotoXY(60, 5);
@@ -741,6 +755,7 @@ void bossSplint3()
 	std::cout << " ++???=~~   +III7777777IIIIII?=~=";
 	gotoXY(51, 21);
 	std::cout << " =????=~=,~~~.+IIIIIIIIIII??+.~:,,";
+	colour(0x0f);
 }
 
 void bossSplintEffect()
@@ -754,6 +769,7 @@ void bossSplintEffect()
 
 void bossDead1()
 {
+	colour(0x0d);
 	gotoXY(50, 4);	std::cout << "                                                     ";
 	gotoXY(50, 5);	std::cout << "                                                     ";
 	gotoXY(50, 6);	std::cout << "              =~,~~,,      ,==?~~~~                  ";
@@ -772,6 +788,7 @@ void bossDead1()
 	gotoXY(50, 19);	std::cout << "            +777            77II?===   =             ";
 	gotoXY(50, 20);	std::cout << "            +I            77IIII======               ";
 	gotoXY(50, 21);	std::cout << "           +IIIIII7777777IIIIIIII======              ";
+	colour(0x0f);
 }
 
 void bossDead2()
@@ -798,6 +815,7 @@ void bossDead2()
 
 void bossDead3()
 {
+	colour(0x0d);
 	gotoXY(50, 4);	std::cout << "                                                     ";
 	gotoXY(50, 5);	std::cout << "                                                     ";
 	gotoXY(50, 6);	std::cout << "                                                     ";
@@ -816,6 +834,7 @@ void bossDead3()
 	gotoXY(50, 19);	std::cout << "             +II          +I??7?++=~                 ";
 	gotoXY(50, 20);	std::cout << "            +777            77II?===                 ";
 	gotoXY(50, 21);	std::cout << "           +IIIIII7777777IIIIIIIIIII=======~~~-      ";
+	colour(0x0f);
 }
 
 void updateSplint()
