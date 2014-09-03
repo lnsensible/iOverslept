@@ -33,6 +33,7 @@ extern int LiveFishcounter;
 extern int Villagercounter;
 extern int Shieldedcounter;
 
+extern bool startDelay;
 extern int MoneyCount;
 
 void renderMonster() // render mobs
@@ -291,7 +292,7 @@ void checkCollisionSnail()
 {
 	for ( unsigned int i = 0; i < MonsterSnail.size(); i++) // for all the Snails
 	{
-		if ( charLocation.X >= MonsterSnail[i].x && charLocation.X <= MonsterSnail[i].x+2 && charLocation.Y == MonsterSnail[i].y) // if player is touching the Snail
+		if ( charLocation.X >= MonsterSnail[i].x && charLocation.X <= MonsterSnail[i].x+2 && charLocation.Y == MonsterSnail[i].y && startDelay == false) // if player is touching the Snail
 		{
 			hasbeenDamaged = 1; // damage player by 1
 			if ( PlayerHealth > 0 ) // if player health is more than zero
@@ -304,7 +305,7 @@ void checkCollisionFloater()
 {
 	for ( unsigned int i = 0; i < Floater.size(); i++) // for all the Floaters
 	{
-		if ( charLocation.X ==Floater[i].x && charLocation.Y == Floater[i].y) // if player is touching the Floater
+		if ( charLocation.X ==Floater[i].x && charLocation.Y == Floater[i].y && startDelay == false) // if player is touching the Floater
 		{
 			hasbeenDamaged = 1; // damage player by 1
 			if ( PlayerHealth > 0 ) // if player health is more than zero
@@ -317,7 +318,7 @@ void checkCollisionInnerFear()
 {
 	for ( unsigned int i = 0; i < InnerFear.size(); i++) // for all the InnerFears
 	{
-		if ( charLocation.X ==InnerFear[i].x && charLocation.Y == InnerFear[i].y) // if player is touching the InnerFear
+		if ( charLocation.X ==InnerFear[i].x && charLocation.Y == InnerFear[i].y && startDelay == false) // if player is touching the InnerFear
 		{
 			hasbeenDamaged = 1; // damage player by 1
 			if ( PlayerHealth > 0 ) // if player health is more than zero
@@ -330,7 +331,7 @@ void checkCollisionRat()
 {
 	for ( unsigned int i = 0; i < Rat.size(); i++) // for all the Rats
 	{
-		if ( charLocation.X >= Rat[i].x && charLocation.X <= Rat[i].x+7 && charLocation.Y == Rat[i].y) // if player is touching the Rat
+		if ( charLocation.X >= Rat[i].x && charLocation.X <= Rat[i].x+7 && charLocation.Y == Rat[i].y && startDelay == false) // if player is touching the Rat
 		{
 			hasbeenDamaged = 1; // damage player by 1
 			if ( PlayerHealth > 0 ) // if player health is more than zero
@@ -343,7 +344,7 @@ void checkCollisionWengyew()
 {
 	for ( unsigned int i = 0; i < Wengyew.size(); i++) // for all the Wengyews
 	{
-		if ( charLocation.X >= Wengyew[i].x && charLocation.X <= Wengyew[i].x+4 && charLocation.Y == Wengyew[i].y) // if player is touching the Wengyew
+		if ( charLocation.X >= Wengyew[i].x && charLocation.X <= Wengyew[i].x+4 && charLocation.Y == Wengyew[i].y && startDelay == false) // if player is touching the Wengyew
 		{
 			hasbeenDamaged = 1; // damage player by 1
 			if ( PlayerHealth > 0 ) // if player health is more than zero
@@ -356,7 +357,7 @@ void checkCollisionCatFish()
 {
 	for ( unsigned int i = 0; i < CatFish.size(); i++) // for all the CatFishes
 	{
-		if ( charLocation.X >= CatFish[i].x && charLocation.X <= CatFish[i].x+6 && charLocation.Y == CatFish[i].y) // if player is touching the CatFish
+		if ( charLocation.X >= CatFish[i].x && charLocation.X <= CatFish[i].x+6 && charLocation.Y == CatFish[i].y && startDelay == false) // if player is touching the CatFish
 		{
 			hasbeenDamaged = 1; // damage player by 1
 			if ( PlayerHealth > 0 ) // if player health is more than zero
@@ -369,7 +370,7 @@ void checkCollisionDeadFish()
 {
 	for ( unsigned int i = 0; i < DeadFish.size(); i++) // for all the DeadFishes
 	{
-		if ( charLocation.X >= DeadFish[i].x && charLocation.X <= DeadFish[i].x+4 && charLocation.Y == DeadFish[i].y) // if player is touching the DeadFish
+		if ( charLocation.X >= DeadFish[i].x && charLocation.X <= DeadFish[i].x+4 && charLocation.Y == DeadFish[i].y && startDelay == false) // if player is touching the DeadFish
 		{
 			hasbeenDamaged = 1; // damage player by 1
 			if ( PlayerHealth > 0 ) // if player health is more than zero
@@ -382,7 +383,7 @@ void checkCollisionLiveFish()
 {
 	for ( unsigned int i = 0; i < LiveFish.size(); i++) // for all the LiveFishes
 	{
-		if ( charLocation.X >= LiveFish[i].x && charLocation.X <= LiveFish[i].x+4 && charLocation.Y == LiveFish[i].y) // if player is touching the LiveFish
+		if ( charLocation.X >= LiveFish[i].x && charLocation.X <= LiveFish[i].x+4 && charLocation.Y == LiveFish[i].y && startDelay == false) // if player is touching the LiveFish
 		{
 			hasbeenDamaged = 1; // damage player by 1
 			if ( PlayerHealth > 0 ) // if player health is more than zero
@@ -395,7 +396,7 @@ void checkCollisionShielded()
 {
 	for ( unsigned int i = 0; i < Shielded.size(); i++) // for all the Shieldeds
 	{
-		if ( charLocation.X >= Shielded[i].x && charLocation.X <= Shielded[i].x+2 && charLocation.Y == Shielded[i].y) // if player is touching the Shielded
+		if ( charLocation.X >= Shielded[i].x && charLocation.X <= Shielded[i].x+2 && charLocation.Y == Shielded[i].y && startDelay == false) // if player is touching the Shielded
 		{
 			hasbeenDamaged = 1; // damage player by 1
 			if ( PlayerHealth > 0 ) // if player health is more than zero
