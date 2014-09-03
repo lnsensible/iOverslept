@@ -104,7 +104,7 @@ enum Sequence
 	DEATH,
 };
 
-enum SoundType
+enum SoundType //woohoo sounds
 {
     S_TREASURE,
     S_MENU,

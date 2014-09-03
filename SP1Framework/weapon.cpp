@@ -443,7 +443,7 @@ void spawnSkill(std::vector<Skill_Properties>& Skill)
 
 void UltAttack()
 {
-	playGameSound(S_FART);
+	playGameSound(S_FART); //POOP
 	AddFart.Speed = (double)AddFart.dmgUpgrade;
 	if ( playerFacing == 0 ) // if facing left
 	{
