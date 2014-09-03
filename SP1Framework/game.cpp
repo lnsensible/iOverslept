@@ -258,9 +258,9 @@ void rendermainmenu()
 	std::cout << "Shop";
 	gotoXY(57, 24);
 	std::cout << "Quit";
-	gotoXY(55, 17);
+	gotoXY(52, 17);
 	colour(0x0C);
-	std::cout << "QUENSTORY";
+	std::cout << "QUEN OVERSLEPT";
 	colour(0x0F);
 
 	gotoXY(charLocation);
@@ -1375,28 +1375,23 @@ void renderLevel() // Renders map into console
 		for (int j = 0; j < MAPWIDTH; j++)
 		{
 			gotoXY(j, i); // go to XY coords respectively,
-			if ( map[i][j] == '#')
-			{
-				std::cout << (char)219; // and print block to replace walls
-			}
-
 			if ( map[i][j] == 239)
 			{
-				colour(0x0A);
+				colour(0x02);
 				std::cout << (char)239; // Portal next
 				colour(0x0F);
 			}
 
 			if ( map[i][j] == 234)
 			{
-				colour(0x0A);
+				colour(0x02);
 				std::cout << (char)234; // Portal back
 				colour(0x0F);
 			}
 
 			if ( map[i][j] == 21)
 			{
-				colour(0x0A);
+				colour(0x02);
 				std::cout << (char)21; // Portal special
 				colour(0x0F);
 			}
@@ -1412,6 +1407,13 @@ void renderLevel() // Renders map into console
 			{
 				colour(0x07);
 				std::cout << (char)209; // Sign
+				colour(0x0F);
+			}
+
+			if ( map[i][j] == '#')
+			{
+				colour(0xFF);
+				std::cout << (char)219; // and print block to replace walls
 				colour(0x0F);
 			}
 
@@ -1475,11 +1477,10 @@ void renderUIborders()
 	gotoXY(MAPWIDTH-2, 37);
 	std::cout << (char)217;
 }
-
 void renderHP() // displays amount of HP player still has.
 {
 	gotoXY(14, 26); // Clear HP section for render again
-	std::cout << "        ";
+	std::cout << "             ";
 	colour(0x0F);
 	gotoXY(6, 26);
 	std::cout << "Health: ";
@@ -1495,7 +1496,6 @@ void renderHP() // displays amount of HP player still has.
 
 	gotoXY(0, 24);
 }
-
 void renderEquip() //Displays the Skill you're equipping currently
 {
 	if (AddCKey.index == 1)// Fire
@@ -1551,7 +1551,6 @@ void renderEquip() //Displays the Skill you're equipping currently
 		colour(0x0F);
 	}
 }
-
 void renderFartMeter()
 {
 	gotoXY(40,28);
@@ -1581,7 +1580,6 @@ void renderFartMeter()
 	colour(0x0F);
 	}
 }
-
 void renderMoney()
 {
 	gotoXY(50, 26);
@@ -2177,7 +2175,11 @@ void render()
 			{
 				gotoXY(i, j);
 				if ( map[j][i] == '#' )
+				{
+					colour(0xFF);
 					std::cout << (char)219;
+					colour(0x0F);
+				}
 				else if ( map[j][i] == 234 )
 				{
 					colour(0x0A);
