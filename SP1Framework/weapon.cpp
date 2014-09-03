@@ -136,11 +136,11 @@ void previousSkill()
 
 void checkPlayerFront()
 {
-	if (playerFacing == 1 && map[charLocation.Y][charLocation.X+2] == '#' || map[charLocation.Y][charLocation.X+2] == 227 || map[charLocation.Y][charLocation.X+2] == 239 || map[charLocation.Y][charLocation.X+2] == 234 || map[charLocation.Y][charLocation.X+2] == 21 )
+	if (playerFacing == 1 && map[charLocation.Y][charLocation.X+2] == '#' || map[charLocation.Y][charLocation.X+2] == 227 || map[charLocation.Y][charLocation.X+2] == 239 || map[charLocation.Y][charLocation.X+2] == 234 || map[charLocation.Y][charLocation.X+2] == 21 || map[charLocation.Y][charLocation.X+2] == 16 || map[charLocation.Y][charLocation.X+2] == 17 || map[charLocation.Y][charLocation.X+2] == 16 || map[charLocation.Y][charLocation.X+2] == 17 )
 	{
 		cannotAttack = true;
 	}
-	else if (playerFacing == 0 && map[charLocation.Y][charLocation.X-2] == '#' || map[charLocation.Y][charLocation.X-2] == 227 || map[charLocation.Y][charLocation.X-2] == 239 || map[charLocation.Y][charLocation.X-2] == 234 || map[charLocation.Y][charLocation.X-2] == 21 )
+	else if (playerFacing == 0 && map[charLocation.Y][charLocation.X-2] == '#' || map[charLocation.Y][charLocation.X-2] == 227 || map[charLocation.Y][charLocation.X-2] == 239 || map[charLocation.Y][charLocation.X-2] == 234 || map[charLocation.Y][charLocation.X-2] == 21 || map[charLocation.Y][charLocation.X-2] == 16 || map[charLocation.Y][charLocation.X-2] == 17 || map[charLocation.Y][charLocation.X+2] == 16 || map[charLocation.Y][charLocation.X+2] == 17 )
 	{
 		cannotAttack = true;
 	}
@@ -306,7 +306,7 @@ void checkCollisionWithWall(std::vector<Skill_Properties>& Skill)
 	{
 		if (Skill[i].faceWhere == true)//Skill Moving RIght
 		{
-			if ( map[Skill[i].y][Skill[i].x+1] == '#' || map[Skill[i].y][Skill[i].x+1] == 227 || map[Skill[i].y][Skill[i].x+1] == 239 || map[Skill[i].y][Skill[i].x+1] == 234 || map[Skill[i].y][Skill[i].x+1] == 21) 
+			if ( map[Skill[i].y][Skill[i].x+1] == '#' || map[Skill[i].y][Skill[i].x+1] == 227 || map[Skill[i].y][Skill[i].x+1] == 239 || map[Skill[i].y][Skill[i].x+1] == 234 || map[Skill[i].y][Skill[i].x+1] == 21 || map[Skill[i].y][Skill[i].x+1] == 16 || map[Skill[i].y][Skill[i].x+1] == 17) 
 			{
 				Skill[i].isRENDERED = false;
 			}
@@ -314,7 +314,7 @@ void checkCollisionWithWall(std::vector<Skill_Properties>& Skill)
 		}
 		else if (Skill[i].faceWhere == false)//Skill Moving Left
 		{
-			if ( map[Skill[i].y][Skill[i].x-1] == '#' || map[Skill[i].y][Skill[i].x-1] == 227 || map[Skill[i].y][Skill[i].x-1] == 239 || map[Skill[i].y][Skill[i].x-1] == 234 || map[Skill[i].y][Skill[i].x-1] == 21) 
+			if ( map[Skill[i].y][Skill[i].x-1] == '#' || map[Skill[i].y][Skill[i].x-1] == 227 || map[Skill[i].y][Skill[i].x-1] == 239 || map[Skill[i].y][Skill[i].x-1] == 234 || map[Skill[i].y][Skill[i].x-1] == 21 || map[Skill[i].y][Skill[i].x-1] == 16 || map[Skill[i].y][Skill[i].x-1] == 17) 
 			{
 				Skill[i].isRENDERED = false;
 			}
@@ -357,8 +357,6 @@ void spawnSkill(std::vector<Skill_Properties>& Skill)
 				std::cout<<map[Skill[x].y][Skill[x].x];
 			}
 			Skill.erase(Skill.begin() + x);
-			gotoXY(51,30);
-			std::cout<<"Something has Hit!!";
 		}
 		else
 		{
