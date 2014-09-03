@@ -785,7 +785,7 @@ void renderSHOP()
 	if(FireUnlocked)
 	{
 		gotoXY(21, 5);
-		std::cout << "Owned!";
+		std::cout << "\n\n\n         Owned!";
 	}
 	else
 	{
@@ -821,7 +821,7 @@ void renderSHOP()
 		std::cout<<"                 "<<"\n\n\n";  
 		std::cout<<"                         ";
 		gotoXY(16, 16);
-		std::cout << "         Owned!\n\n              Press E/Q\n        To Switch Between Skills";
+		std::cout << "\n\n\n         Owned!";
 	}
 	else if (SparkUnlocked == false)
 	{
@@ -862,13 +862,13 @@ void renderSHOP()
 		std::cout<<"                 "<<"\n\n\n";  
 		std::cout<<"                         ";
 		gotoXY(16, 26);
-		std::cout << "         Owned!\n\n              Press E/Q\n        To Switch Between Skills";
+		std::cout << "\n\n\n         Owned!";
 	}
 	else if (WaterUnlocked == false)
 	{
 		gotoXY(16, 26);
 		std::cout << "->> Buy $222 <<- "<<"\n\n\n";
-		std::cout<<"        PRESS Q TO UNLOCK";
+		std::cout<<"        PRESS E TO UNLOCK";
 	}
 	gotoXY(8, 26);
 	std::cout << "Water";
@@ -2091,7 +2091,7 @@ void update(double dt)
 	if (keyPressed[K_X] && cooldownStart == false)
 	{
 		chargingUlt = true;
-		if (chargeDelay >= 2)
+		if (chargeDelay >= 1.5)
 		{
 			AddFart.dmgUpgrade =  AddFart.dmgUpgrade + 1;
 			AddFart.rangeUpgrade = AddFart.rangeUpgrade + 3;
