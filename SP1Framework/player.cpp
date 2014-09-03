@@ -135,7 +135,7 @@ void checkforDeath()
 		}
 		playerExperience = 0;
 
-		if(checkLevel > 9 && checkLevel < 25)
+		if(checkLevel > 9 && checkLevel < 25 && checkLevel != 17)
 		{
 			checkLevel = 9;
 		}
@@ -150,7 +150,7 @@ void checkforDeath()
 			checkLevel = 16;
 		}
 
-		else if(checkLevel > 25)
+		else if(checkLevel > 25 && checkLevel != 43)
 		{
 			checkLevel = 25;
 		}
