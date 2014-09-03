@@ -294,7 +294,6 @@ void checkCollisionSnail()
 		if ( charLocation.X >= MonsterSnail[i].x && charLocation.X <= MonsterSnail[i].x+2 && charLocation.Y == MonsterSnail[i].y) // if player is touching the Snail
 		{
 			hasbeenDamaged = 1; // damage player by 1
-			hasbeenDamaged = 0;
 			if ( PlayerHealth > 0 ) // if player health is more than zero
 				PlayerHealth--; // damage player
 		}
