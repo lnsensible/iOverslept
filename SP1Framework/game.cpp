@@ -188,7 +188,7 @@ void updatemainmenu(double dt)
 
 	if(keyPressed[K_DOWN])
 	{
-		if (charLocation.Y != 24 )
+		if (charLocation.Y != 22 )
 		{
 			gotoXY(charLocation);
 			std::cout << " ";
@@ -205,11 +205,6 @@ void updatemainmenu(double dt)
 		}
 
 		if(charLocation.Y == 22)
-		{
-			gamestate = SHOP;
-		}
-
-		if(charLocation.Y == 24)
 		{
 			g_quitGame = true;
 		}
@@ -232,8 +227,6 @@ void rendermainmenu()
 	gotoXY(57, 20);
 	std::cout << "Play!";
 	gotoXY(57, 22);
-	std::cout << "Shop";
-	gotoXY(57, 24);
 	std::cout << "Quit";
 	gotoXY(52, 17);
 	colour(0x0C);
