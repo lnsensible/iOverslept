@@ -31,6 +31,10 @@ extern bool outsideShop;
 extern int MoneyCount;
 extern int MoneyInv;
 
+extern bool chargingUlt; 
+extern bool cooldownStart;
+extern Skill_Properties AddFart;
+
 
 
 void LevelUp()
@@ -173,6 +177,11 @@ void checkforSpike() // checks if character is standing on a trap.
 
 void spawnWhere()
 {
+	AddFart.Speed = 0;
+	AddFart.rangeUpgrade = 0;
+	AddFart.dmgUpgrade = 0;
+	cooldownStart = false;
+	chargingUlt = false;
 	if (outsideShop == false)// If travel through shop
 	{
 		for ( int i = 0; i < MAPHEIGHT; i++ )
