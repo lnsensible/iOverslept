@@ -1482,53 +1482,34 @@ void renderEquip() //Displays the Skill you're equipping currently
 	if (AddCKey.index == 1)// Fire
 	{
 		colour(0x04);
-		gotoXY(6,32);
-		gotoXY(6,32);
-		std::cout<<"<<<<<<<<<<<<>>>>>>>>>>>>";
-		gotoXY(6,33);
-		std::cout<<"<                      >";
-		gotoXY(6,34);
-		std::cout<<"<                      >";
-		gotoXY(6,35);
-		std::cout<<"<                      >";
-		gotoXY(6,36);
-		std::cout<<"<                      >";
-		gotoXY(6,37);
-		std::cout<<"<<<<<<<<<FIRE>>>>>>>>>>>";
+		gotoXY(6,32); std::cout<<"         )    /\  (  ;    )   ";
+		gotoXY(6,33); std::cout<<"    ;   (  /\/vv\/\     (     ";
+		gotoXY(6,34); std::cout<<"       _/\/  vvvv  \/\_)      ";
+		gotoXY(6,35); std::cout<<"     ; \    vvvvvv    /       ";
+		gotoXY(6,36); std::cout<<"                              ";
+		gotoXY(6,37); std::cout<<"             FIRE             ";
 		colour(0x0F);
 	}
 	else if(AddCKey.index == 2) // Spark
 	{
 		colour(0x0E);
-		gotoXY(6,32);
-		std::cout<<"########################";
-		gotoXY(6,33);
-		std::cout<<"#                      #";
-		gotoXY(6,34);
-		std::cout<<"#                      #";
-		gotoXY(6,35);
-		std::cout<<"#                      #";
-		gotoXY(6,36);
-		std::cout<<"#                      #";
-		gotoXY(6,37);
-		std::cout<<"##########SPARK#########";
+		gotoXY(6,32); std::cout<<"                             ";
+		gotoXY(6,33); std::cout<<"                             ";
+		gotoXY(6,34); std::cout<<"                             ";
+		gotoXY(6,35); std::cout<<"                             ";
+		gotoXY(6,36); std::cout<<"                             ";
+		gotoXY(6,37); std::cout<<"             SPARK           ";
 		colour(0x0F);
 	}
 	else if (AddCKey.index == 3)//Water
 	{
 		colour(0x03);
-		gotoXY(6,32);
-		std::cout<<"~~~~~~~~~~~~~~~~~~~~~~~~";
-		gotoXY(6,33);
-		std::cout<<"~                      ~";
-		gotoXY(6,34);
-		std::cout<<"~                      ~";
-		gotoXY(6,35);
-		std::cout<<"~                      ~";
-		gotoXY(6,36);
-		std::cout<<"~                      ~";
-		gotoXY(6,37);
-		std::cout<<"~~~~~~~~~~WATER~~~~~~~~~";
+		gotoXY(6,32); std::cout<<"                             ";
+		gotoXY(6,33); std::cout<<"                             ";
+        gotoXY(6,34); std::cout<<"                             ";
+		gotoXY(6,35); std::cout<<"                             ";
+		gotoXY(6,36); std::cout<<"                             ";
+		gotoXY(6,37); std::cout<<"             WATER           ";
 		colour(0x0F);
 	}
 }
@@ -2104,7 +2085,7 @@ void update(double dt)
 
 	if (XKey.size() != 0)
 	{
-		updateSkill(XKey);
+			updateSkill(XKey);
 	}
 
 	if (AddFart.Speed == 0 && cooldownStart == true)//Cooldown of Ultimate
@@ -2112,7 +2093,7 @@ void update(double dt)
 		cooldownStart = false;
 	}
 
-	if (keyPressed[K_X] && cooldownStart == false)
+	if (keyPressed[K_X] && cooldownStart == false && cannotAttack == false)
 	{
 		chargingUlt = true;
 		if (chargeDelay >= 1.0)
