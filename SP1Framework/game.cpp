@@ -1764,13 +1764,13 @@ void init()
 
 		if (checkLevel == 43)
 		{
-			isBossLevel = 1;
+			isBossLevel = 2;
 			bosscurrentHP = bossHP;
 		}
 
 		if (checkLevel == 17)
 		{
-			isBossLevel = 2;
+			isBossLevel = 1;
 			pianuscurrentHP = pianusHP;
 		}
 
