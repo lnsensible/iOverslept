@@ -1045,14 +1045,14 @@ void saveGame()
 
 void playGameSound(SoundType sound)
 {
-	snd.loadWave("treasure", "treasure.wav");
-	snd.loadWave("menu", "menu.wav");
-	snd.loadWave("jump", "jump.wav");
-	snd.loadWave("fireball", "fireball.wav");
-	snd.loadWave("spark", "spark.wav");
-	snd.loadWave("fart", "fart.wav");
-	snd.loadWave("fartcharge", "fartcharge.wav");
-	snd.loadWave("water", "water.wav");
+	snd.loadWave("treasure", "soundbank\\treasure.wav");
+	snd.loadWave("menu", "soundbank\\menu.wav");
+	snd.loadWave("jump", "soundbank\\jump.wav");
+	snd.loadWave("fireball", "soundbank\\fireball.wav");
+	snd.loadWave("spark", "soundbank\\spark.wav");
+	snd.loadWave("fart", "soundbank\\fart.wav");
+	snd.loadWave("fartcharge", "soundbank\\fartcharge.wav");
+	snd.loadWave("water", "soundbank\\water.wav");
 
 	switch (sound)
 	{
@@ -1114,7 +1114,7 @@ void updateSigns()
 		isonSign = 1;
 		for(int i = 0; i < NUMBEROFSIGNS + 1; i++)
 		{
-			signtoload = "sign";
+			signtoload = "signs\\sign";
 
 			if (signNumber == i)
 			{
@@ -1743,7 +1743,7 @@ void init()
 
 	for(int i = 0; i < NUMBEROFLEVELS + 1; i++)
 	{
-		leveltoload = "level";
+		leveltoload = "levels\\level";
 
 		if (checkLevel == 43)
 		{
