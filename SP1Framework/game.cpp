@@ -103,6 +103,7 @@ double ProjectileSpeed = 0;
 double switchDelay = 0; //delay between switching weapons
 double chargeDelay = 0; //delay between Power Up Charges during Ultimate Skill
 double CDdelay = 0;
+double damageDelay = 0;
 
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
@@ -127,6 +128,7 @@ bool WaterUnlocked = false;
 bool outsideShop = true;
 bool chargingUlt = false; 
 bool cooldownStart = false;
+bool startDelay = false;
 
 
 std::string StoryPage1[7] = {"Quen has been addicted to the game Maplestory since recently when his friend introduced it to him.",
@@ -2118,6 +2120,22 @@ void update(double dt)
 	{
 		saveGame();
 		gamestate = LEVELMENU;
+	}
+
+	if (hasbeenDamaged == 1)
+	{
+	godmode = true;
+	startDelay = true;
+	}
+	if (startDelay == true)
+	{
+		damageDelay += dt;
+	}
+	if (damageDelay >= 1.0)
+	{
+	godmode = false;
+	damageDelay = 0;
+	startDelay = false;
 	}
 
 	if ( godmode == false )
