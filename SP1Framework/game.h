@@ -82,6 +82,7 @@ enum Keys
 	K_UP,
 	K_DOWN,
 	K_LEFT,
+	K_X,
 	K_C,
 	K_E,
 	K_G,
