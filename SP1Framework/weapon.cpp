@@ -26,6 +26,8 @@ extern void checkMonsterDead();
 extern bool FireUnlocked;
 extern bool SparkUnlocked;
 extern bool WaterUnlocked;
+extern bool cooldownStart;
+extern bool chargingUlt;
 Skill_Properties AddSpark;
 Skill_Properties AddFire;
 Skill_Properties AddWater;
@@ -34,6 +36,23 @@ Skill_Properties AddFart;
 std::vector<Skill_Properties> XKey;
 std::vector<Skill_Properties> CKey;
 bool cannotAttack = false;
+
+void fartClear()
+{
+	AddFart.Range = 1;
+	AddFart.Damage = 0;
+	AddFart.Speed = 0;
+	AddFart.rangeUpgrade = 0;
+	AddFart.dmgUpgrade = 0;
+	cooldownStart = false;
+	chargingUlt = false;
+}
+
+void skillClear()
+{
+	CKey.clear();
+	XKey.clear();
+}
 
 void initSkill()
 {

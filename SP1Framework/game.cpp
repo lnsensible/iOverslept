@@ -116,6 +116,8 @@ extern void nextSkill();
 extern void previousSkill();
 extern void UltAttack();
 extern void checkPlayerFront();
+extern void fartClear();
+extern void skillClear();
 extern Skill_Properties AddCKey;
 extern Skill_Properties AddFire;
 extern Skill_Properties AddSpark;
@@ -1693,6 +1695,8 @@ void resetElements() // removes monsters and effects on the map
 	lava.clear();
 	BossHitbox.clear();
 	PianusHitbox.clear();
+	skillClear();
+	fartClear();
 }
 void init()
 {

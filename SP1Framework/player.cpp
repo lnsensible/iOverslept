@@ -177,13 +177,6 @@ void checkforSpike() // checks if character is standing on a trap.
 
 void spawnWhere()
 {
-	AddFart.Range = 1;
-	AddFart.Damage = 0;
-	AddFart.Speed = 0;
-	AddFart.rangeUpgrade = 0;
-	AddFart.dmgUpgrade = 0;
-	cooldownStart = false;
-	chargingUlt = false;
 	if (outsideShop == false)// If travel through shop
 	{
 		for ( int i = 0; i < MAPHEIGHT; i++ )

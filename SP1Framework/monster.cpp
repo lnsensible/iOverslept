@@ -45,7 +45,9 @@ void renderMonster() // render mobs
 			gotoXY(j, MonsterSnail[i].y); // go to coordinate selected
 			if ( map[MonsterSnail[i].y][j] == '#' ) // and reprint
 			{
-				std::cout << (char)219; // the wall
+				colour(0xFF);
+				std::cout << (char)219;
+				colour(0x0F);
 			}
 			else
 			{
@@ -73,7 +75,9 @@ void renderMonster() // render mobs
 			gotoXY(j, Floater[i].y); // go to coordinate selected
 			if ( map[Floater[i].y][j] == '#' ) // and reprint
 			{
-				std::cout << (char)219; // the wall
+				colour(0xFF);
+				std::cout << (char)219;
+				colour(0x0F);
 			}
 			else
 			{
@@ -94,7 +98,9 @@ void renderMonster() // render mobs
 			gotoXY(j, InnerFear[i].y); // go to coordinate selected
 			if ( map[InnerFear[i].y][j] == '#' ) // and reprint
 			{
-				std::cout << (char)219; // the wall
+				colour(0xFF);
+				std::cout << (char)219;
+				colour(0x0F);
 			}
 			else
 			{
@@ -115,7 +121,9 @@ void renderMonster() // render mobs
 			gotoXY(j, Rat[i].y); // go to coordinate selected
 			if ( map[Rat[i].y][j] == '#' ) // and reprint
 			{
-				std::cout << (char)219; // the wall
+				colour(0xFF);
+				std::cout << (char)219;
+				colour(0x0F);
 			}
 			else
 			{
@@ -143,7 +151,9 @@ void renderMonster() // render mobs
 			gotoXY(j, Wengyew[i].y); // go to coordinate selected
 			if ( map[Wengyew[i].y][j] == '#' ) // and reprint
 			{
-				std::cout << (char)219; // the wall
+				colour(0xFF);
+				std::cout << (char)219;
+				colour(0x0F);
 			}
 			else
 			{
@@ -172,7 +182,9 @@ void renderMonster() // render mobs
 			gotoXY(j, CatFish[i].y); // go to coordinate selected
 			if ( map[CatFish[i].y][j] == '#' ) // and reprint
 			{
-				std::cout << (char)219; // the wall
+				colour(0xFF);
+				std::cout << (char)219;
+				colour(0x0F);
 			}
 			else
 			{
@@ -200,7 +212,9 @@ void renderMonster() // render mobs
 			gotoXY(j, DeadFish[i].y); // go to coordinate selected
 			if ( map[DeadFish[i].y][j] == '#' ) // and reprint
 			{
-				std::cout << (char)219; // the wall
+				colour(0xFF);
+				std::cout << (char)219;
+				colour(0x0F);
 			}
 			else
 			{
@@ -228,7 +242,9 @@ void renderMonster() // render mobs
 			gotoXY(j, LiveFish[i].y); // go to coordinate selected
 			if ( map[LiveFish[i].y][j] == '#' ) // and reprint
 			{
-				std::cout << (char)219; // the wall
+				colour(0xFF);
+				std::cout << (char)219;
+				colour(0x0F);
 			}
 			else
 			{
@@ -256,7 +272,9 @@ void renderMonster() // render mobs
 			gotoXY(j, Villager[i].y); // go to coordinate selected
 			if ( map[Villager[i].y][j] == '#' ) // and reprint
 			{
-				std::cout << (char)219; // the wall
+				colour(0xFF);
+				std::cout << (char)219;
+				colour(0x0F);
 			}
 			else
 			{
@@ -276,7 +294,9 @@ void renderMonster() // render mobs
 			gotoXY(j, Shielded[i].y); // go to coordinate selected
 			if ( map[Shielded[i].y][j] == '#' ) // and reprint
 			{
-				std::cout << (char)219; // the wall
+				colour(0xFF);
+				std::cout << (char)219;
+				colour(0x0F);
 			}
 			else
 			{
