@@ -38,15 +38,9 @@ extern std::vector<Monster> Villager;
 extern std::vector<Monster> Shielded;
 
 extern std::vector<Skill_Properties> CKey;
-extern std::vector<Skill_Properties> EKey;
+extern std::vector<Skill_Properties> XKey;
 
 extern int hasbeenStabbed;
-extern int weaponDAMAGE;       
-extern int weaponSPEED;         
-extern int weaponHITCOUNT;   
-extern std::string beforeATTACK,afterATTACK;
-extern std::string weaponHITBOX; 
-extern std::string weaponSTATE;  
 
 std::string leveltoload;
 std::string signtoload;
@@ -107,6 +101,9 @@ double ShieldedMoveDelay = 0; // delay between each Shielded movement
 double PlayerSkillDelay = 0; //delay between skills
 double ProjectileSpeed = 0;
 double switchDelay = 0; //delay between switching weapons
+double chargeDelay = 0; //delay between Power Up Charges during Ultimate Skill
+double CDdelay = 0;
+
 
 int PlayerHealth = 3; // Player's HP. Default = 3.
 //Weapons
@@ -116,33 +113,40 @@ extern void spawnSkill(std::vector<Skill_Properties>& Skill);
 extern void initSkill();
 extern void nextSkill();
 extern void previousSkill();
+extern void UltAttack();
+extern void checkPlayerFront();
 extern Skill_Properties AddCKey;
 extern Skill_Properties AddFire;
 extern Skill_Properties AddSpark;
 extern Skill_Properties AddWater;
+extern Skill_Properties AddFart;
+extern bool cannotAttack;
 bool SparkUnlocked = false;
 bool FireUnlocked = true;
 bool WaterUnlocked = false;
 bool outsideShop = true;
+bool chargingUlt = false; 
+bool cooldownStart = false;
+
 
 std::string StoryPage1[7] = {"Quen has been addicted to the game Maplestory since recently when his friend introduced it to him.",
-							 "Trying to surpass his friend, he would sacrifice his sleep and play throughout the night, sleeping",
-						     "for less than 2 hours everyday. Being sleep deprived, he would doze off during lessons, usually   ",
-						     "getting him into trouble. However, this didn't stop him from playing. Eventually, Quen decided to ",
-						     "stay awake throughout the night, and catch some sleep during school. But this sleep wasn't enough,",
-					         "and one night, he was so tired that his brain forced him to fall asleep. But he was still thinking",
-						     "of Maplestory, and so he started dreaming...."};
+	"Trying to surpass his friend, he would sacrifice his sleep and play throughout the night, sleeping",
+	"for less than 2 hours everyday. Being sleep deprived, he would doze off during lessons, usually   ",
+	"getting him into trouble. However, this didn't stop him from playing. Eventually, Quen decided to ",
+	"stay awake throughout the night, and catch some sleep during school. But this sleep wasn't enough,",
+	"and one night, he was so tired that his brain forced him to fall asleep. But he was still thinking",
+	"of Maplestory, and so he started dreaming...."};
 
 std::string StoryPage2[4] = {"Quen was mentally awake when he entered his dream. He recognised his surroundings to be that of   ",
-							 "Maplestory's. He figured that his wish to be able to play Maplestory forever has been granted, and",
-							 "he's now living within the Maple World. Quen makes up his mind to become stronger in order to",
-							 "explore the world. But first, he must learn how to move around in this world..."};
+	"Maplestory's. He figured that his wish to be able to play Maplestory forever has been granted, and",
+	"he's now living within the Maple World. Quen makes up his mind to become stronger in order to",
+	"explore the world. But first, he must learn how to move around in this world..."};
 
 std::string StoryPage3[5] = {"Quen notices something moving further ahead. Upon moving closer, he sees that its a snail. Its    ",
-							 "just like when he was just starting out in Maplestory. Now that he wasn't just using a keyboard    ",
-							 "to control his character on a screen, he wondered if he could fight in this world too.            ",
-							 "",
-							 "And so, his journey continues..."};
+	"just like when he was just starting out in Maplestory. Now that he wasn't just using a keyboard    ",
+	"to control his character on a screen, he wondered if he could fight in this world too.            ",
+	"",
+	"And so, his journey continues..."};
 
 void initmainmenu()
 {
@@ -233,7 +237,7 @@ void updatemainmenu(double dt)
 			g_quitGame = true;
 		}
 	}
-	
+
 	if(keyPressed[K_ESCAPE])
 	{
 		g_quitGame = true;
@@ -471,7 +475,7 @@ void initendmenu()
 	consoleSize.X = csbi.srWindow.Right + 1;
 	consoleSize.Y = csbi.srWindow.Bottom + 1;
 
-	
+
 
 	charLocation.X = 47;
 	charLocation.Y = 22;
@@ -584,15 +588,15 @@ void updateSHOP(double dt)
 			std::cout << " ";
 			if ( charLocation.Y == 28)
 			{
-			charLocation.Y -= 7;
+				charLocation.Y -= 7;
 			}
 			else if (charLocation.Y == 17)
 			{
-			charLocation.Y -= 6;
+				charLocation.Y -= 6;
 			}
 			else
 			{
-			charLocation.Y -= 4;
+				charLocation.Y -= 4;
 			}
 		}
 	}
@@ -605,7 +609,7 @@ void updateSHOP(double dt)
 			std::cout << " ";
 			if (charLocation.Y == 11)
 			{
-			charLocation.Y += 6;
+				charLocation.Y += 6;
 			}
 			else if (charLocation.Y == 21)
 			{
@@ -613,7 +617,7 @@ void updateSHOP(double dt)
 			}
 			else
 			{
-			charLocation.Y += 4;
+				charLocation.Y += 4;
 			}
 		}
 	}
@@ -621,154 +625,154 @@ void updateSHOP(double dt)
 	if (keyPressed[K_Q])
 	{
 		if(SparkUnlocked== true)
-				{
-					gotoXY(54, 5);
-					std::cout << "Already owned!         ";
-				}
-				else
-				{
-					if(MoneyCount >= 300)
-					{
-						gotoXY(54, 5);
-						MoneyCount = MoneyCount - 300;
-						SparkUnlocked = true;
-						std::cout << "Purchase succesful";
-					}
-					else
-					{
-						gotoXY(54, 5);
-						std::cout << "Not enough Money!      ";
-					}
-				}
+		{
+			gotoXY(54, 5);
+			std::cout << "Already owned!         ";
+		}
+		else
+		{
+			if(MoneyCount >= 300)
+			{
+				gotoXY(54, 5);
+				MoneyCount = MoneyCount - 300;
+				SparkUnlocked = true;
+				std::cout << "Purchase succesful";
+			}
+			else
+			{
+				gotoXY(54, 5);
+				std::cout << "Not enough Money!      ";
+			}
+		}
 	}
 
 	if (keyPressed[K_E])
 	{
 		if(WaterUnlocked== true)
-				{
-					gotoXY(54, 5);
-					std::cout << "Already owned!         ";
-				}
-				else
-				{
-					if(MoneyCount >= 222)
-					{
-						gotoXY(54, 5);
-						MoneyCount = MoneyCount - 222;
-						WaterUnlocked = true;
-						std::cout << "Purchase succesful";
-					}
-					else
-					{
-						gotoXY(54, 5);
-						std::cout << "Not enough Money!      ";
-					}
-				}
+		{
+			gotoXY(54, 5);
+			std::cout << "Already owned!         ";
+		}
+		else
+		{
+			if(MoneyCount >= 222)
+			{
+				gotoXY(54, 5);
+				MoneyCount = MoneyCount - 222;
+				WaterUnlocked = true;
+				std::cout << "Purchase succesful";
+			}
+			else
+			{
+				gotoXY(54, 5);
+				std::cout << "Not enough Money!      ";
+			}
+		}
 	}
 
 	if(keyPressed[K_ENTER])
 	{
 		if (charLocation.Y == 7)
 		{
-		if(MoneyCount >= 100)
-				{
-					MoneyCount = MoneyCount - 100;
-					AddFire.dmgUpgrade = AddFire.dmgUpgrade + 1;
-					initSkill();
-					gotoXY(54, 5);
-					std::cout << "Upgrade successful!";
-					gotoXY(20, 10);
-				}
-				else
-				{
-					gotoXY(54, 5);
-					std::cout << "Not enough Money!      ";
-				}
+			if(MoneyCount >= 100)
+			{
+				MoneyCount = MoneyCount - 100;
+				AddFire.dmgUpgrade = AddFire.dmgUpgrade + 1;
+				initSkill();
+				gotoXY(54, 5);
+				std::cout << "Upgrade successful!";
+				gotoXY(20, 10);
+			}
+			else
+			{
+				gotoXY(54, 5);
+				std::cout << "Not enough Money!      ";
+			}
 		}
 		else if(charLocation.Y == 11)
 		{
 			if(MoneyCount >= 50)
-				{
-					MoneyCount = MoneyCount - 50;
-					AddFire.rangeUpgrade = AddFire.rangeUpgrade + 1;
-					initSkill();
-					gotoXY(54, 5);
-					std::cout << "Upgrade successful!";
-				}
-				else
-				{
-					gotoXY(54, 5);
-					std::cout << "Not enough Money!      ";
-				}
+			{
+				MoneyCount = MoneyCount - 50;
+				AddFire.rangeUpgrade = AddFire.rangeUpgrade + 1;
+				initSkill();
+				gotoXY(54, 5);
+				std::cout << "Upgrade successful!";
+			}
+			else
+			{
+				gotoXY(54, 5);
+				std::cout << "Not enough Money!      ";
+			}
 		}
 		else if (charLocation.Y == 17)
 		{
 			if(MoneyCount >= 100)
-				{
-					MoneyCount = MoneyCount - 100;
-					AddSpark.dmgUpgrade = AddSpark.dmgUpgrade + 1;
-					initSkill();
-					gotoXY(54, 5);
-					std::cout << "Upgrade successful!";
-				}
-				else
-				{
-					gotoXY(54, 5);
-					std::cout << "Not enough Money!      ";
-				}
+			{
+				MoneyCount = MoneyCount - 100;
+				AddSpark.dmgUpgrade = AddSpark.dmgUpgrade + 1;
+				initSkill();
+				gotoXY(54, 5);
+				std::cout << "Upgrade successful!";
+			}
+			else
+			{
+				gotoXY(54, 5);
+				std::cout << "Not enough Money!      ";
+			}
 		}
 		else if (charLocation.Y == 21)
 		{
-			
-				if(MoneyCount >= 100)
-				{
-					MoneyCount = MoneyCount - 100;
-					AddSpark.rangeUpgrade = AddSpark.rangeUpgrade + 1;
-					initSkill();
-					gotoXY(54, 5);
-					std::cout << "Upgrade successful!";
-				}
-				else
-				{
-					gotoXY(54, 5);
-					std::cout << "Not enough Money!      ";
-				}
+
+			if(MoneyCount >= 100)
+			{
+				MoneyCount = MoneyCount - 100;
+				AddSpark.rangeUpgrade = AddSpark.rangeUpgrade + 1;
+				initSkill();
+				gotoXY(54, 5);
+				std::cout << "Upgrade successful!";
+			}
+			else
+			{
+				gotoXY(54, 5);
+				std::cout << "Not enough Money!      ";
+			}
 		}
 		else if(charLocation.Y == 28)
 		{
 			if(MoneyCount >= 170)
-				{
-					MoneyCount = MoneyCount - 170;
-					AddWater.dmgUpgrade = AddWater.dmgUpgrade + 1;
-					initSkill();
-					gotoXY(54, 5);
-					std::cout << "Upgrade successful!";
-				}
-				else
-				{
-					gotoXY(54, 5);
-					std::cout << "Not enough Money!      ";
-				}
+			{
+				MoneyCount = MoneyCount - 170;
+				AddWater.dmgUpgrade = AddWater.dmgUpgrade + 1;
+				initSkill();
+				gotoXY(54, 5);
+				std::cout << "Upgrade successful!";
+			}
+			else
+			{
+				gotoXY(54, 5);
+				std::cout << "Not enough Money!      ";
+			}
 		}
 		else if(charLocation.Y == 32)
 		{
 			if(MoneyCount >= 50)
-				{
-					MoneyCount = MoneyCount - 50;
-					AddWater.rangeUpgrade = AddWater.rangeUpgrade + 1;
-					initSkill();
-					gotoXY(54, 5);
-					std::cout << "Upgrade successful!";
-				}
-				else
-				{
-					gotoXY(54, 5);
-					std::cout << "Not enough Money!      ";
-				}
+			{
+				MoneyCount = MoneyCount - 50;
+				AddWater.rangeUpgrade = AddWater.rangeUpgrade + 1;
+				initSkill();
+				gotoXY(54, 5);
+				std::cout << "Upgrade successful!";
+			}
+			else
+			{
+				gotoXY(54, 5);
+				std::cout << "Not enough Money!      ";
+			}
 		}
-}
+	}
 
-	
+
 	if(keyPressed[K_ESCAPE])
 	{
 		outsideShop = false;
@@ -922,8 +926,8 @@ void renderSHOP()
 
 bool fileExists(std::string fileName)
 {
-    std::ifstream infile(fileName);
-    return infile.good();
+	std::ifstream infile(fileName);
+	return infile.good();
 }
 void loadGame() // loads game from file.
 {
@@ -958,7 +962,7 @@ void loadGameUpdate()
 	checkLevel = Savedata[0][2];	
 	SparkUnlocked = Savedata[0][3];
 	WaterUnlocked = Savedata[0][4];
-	FireUnlocked = Savedata[0][5];
+	FireUnlocked = Savedata[1][5];
 
 	playerLevel = Savedata[0][6];
 	playerExperience = Savedata[0][7];
@@ -1071,20 +1075,20 @@ void playGameSound(SoundType sound)
 	snd.loadWave("spark", "spark.wav");
 	snd.loadWave("water", "water.wav");
 
-    switch (sound)
-    {
-        case S_TREASURE: snd.playSound("treasure");    
-			break;
-		case S_MENU : snd.playSound("menu");
-			break;
-		case S_JUMP : snd.playSound("jump");
-			break;
-		case S_FIREBALL : snd.playSound("fireball");
-			break;
-		case S_SPARK : snd.playSound("spark");
-			break;
-		case S_WATER : snd.playSound("water");
-			break;
+	switch (sound)
+	{
+	case S_TREASURE: snd.playSound("treasure");    
+		break;
+	case S_MENU : snd.playSound("menu");
+		break;
+	case S_JUMP : snd.playSound("jump");
+		break;
+	case S_FIREBALL : snd.playSound("fireball");
+		break;
+	case S_SPARK : snd.playSound("spark");
+		break;
+	case S_WATER : snd.playSound("water");
+		break;
 	}
 }
 
@@ -1153,7 +1157,7 @@ void renderSigns()
 				{
 					Signprint[i][j] = ' ';// replace \ with space
 				}
-					std::cout << Signprint[i][j];
+				std::cout << Signprint[i][j];
 			}
 		}
 		isonSign = 2;
@@ -1439,7 +1443,7 @@ void renderUIborders()
 
 	gotoXY(79, 25);
 	std::cout << (char)218;
-	
+
 	for ( int i = 26; i < 37; i++)
 	{
 		gotoXY(79, i);
@@ -1451,7 +1455,7 @@ void renderUIborders()
 
 	gotoXY(MAPWIDTH-2, 25);
 	std::cout << (char)191;
-	
+
 	for ( int i = 26; i < 37; i++)
 	{
 		gotoXY(MAPWIDTH-2, i);
@@ -1461,7 +1465,7 @@ void renderUIborders()
 	gotoXY(MAPWIDTH-2, 37);
 	std::cout << (char)217;
 
-	
+
 	for ( int i = 26; i < 37; i++)
 	{
 		gotoXY(MAPWIDTH-2, i);
@@ -1496,54 +1500,84 @@ void renderEquip() //Displays the Skill you're equipping currently
 {
 	if (AddCKey.index == 1)// Fire
 	{
-	colour(0x04);
-	gotoXY(6,32);
-	gotoXY(6,32);
-	std::cout<<"<<<<<<<<<<<<>>>>>>>>>>>>";
-	gotoXY(6,33);
-	std::cout<<"<                      >";
-	gotoXY(6,34);
-	std::cout<<"<                      >";
-	gotoXY(6,35);
-	std::cout<<"<                      >";
-	gotoXY(6,36);
-	std::cout<<"<                      >";
-	gotoXY(6,37);
-	std::cout<<"<<<<<<<<<FIRE>>>>>>>>>>>";
-	colour(0x0F);
+		colour(0x04);
+		gotoXY(6,32);
+		gotoXY(6,32);
+		std::cout<<"<<<<<<<<<<<<>>>>>>>>>>>>";
+		gotoXY(6,33);
+		std::cout<<"<                      >";
+		gotoXY(6,34);
+		std::cout<<"<                      >";
+		gotoXY(6,35);
+		std::cout<<"<                      >";
+		gotoXY(6,36);
+		std::cout<<"<                      >";
+		gotoXY(6,37);
+		std::cout<<"<<<<<<<<<FIRE>>>>>>>>>>>";
+		colour(0x0F);
 	}
 	else if(AddCKey.index == 2) // Spark
 	{
 		colour(0x0E);
-	gotoXY(6,32);
-	std::cout<<"########################";
-	gotoXY(6,33);
-	std::cout<<"#                      #";
-	gotoXY(6,34);
-	std::cout<<"#                      #";
-	gotoXY(6,35);
-	std::cout<<"#                      #";
-	gotoXY(6,36);
-	std::cout<<"#                      #";
-	gotoXY(6,37);
-	std::cout<<"##########SPARK#########";
-	colour(0x0F);
+		gotoXY(6,32);
+		std::cout<<"########################";
+		gotoXY(6,33);
+		std::cout<<"#                      #";
+		gotoXY(6,34);
+		std::cout<<"#                      #";
+		gotoXY(6,35);
+		std::cout<<"#                      #";
+		gotoXY(6,36);
+		std::cout<<"#                      #";
+		gotoXY(6,37);
+		std::cout<<"##########SPARK#########";
+		colour(0x0F);
 	}
 	else if (AddCKey.index == 3)//Water
 	{
 		colour(0x03);
-	gotoXY(6,32);
-	std::cout<<"~~~~~~~~~~~~~~~~~~~~~~~~";
-	gotoXY(6,33);
-	std::cout<<"~                      ~";
-	gotoXY(6,34);
-	std::cout<<"~                      ~";
-	gotoXY(6,35);
-	std::cout<<"~                      ~";
-	gotoXY(6,36);
-	std::cout<<"~                      ~";
-	gotoXY(6,37);
-	std::cout<<"~~~~~~~~~~WATER~~~~~~~~~";
+		gotoXY(6,32);
+		std::cout<<"~~~~~~~~~~~~~~~~~~~~~~~~";
+		gotoXY(6,33);
+		std::cout<<"~                      ~";
+		gotoXY(6,34);
+		std::cout<<"~                      ~";
+		gotoXY(6,35);
+		std::cout<<"~                      ~";
+		gotoXY(6,36);
+		std::cout<<"~                      ~";
+		gotoXY(6,37);
+		std::cout<<"~~~~~~~~~~WATER~~~~~~~~~";
+		colour(0x0F);
+	}
+}
+
+void renderFartMeter()
+{
+	gotoXY(40,28);
+	std::cout<<"FART METER:";
+	if(cooldownStart == true)
+	{
+		gotoXY(51+AddFart.Speed,28);
+		std::cout<<" ";
+	}
+	else if (cooldownStart == false)
+	{
+		colour(0x0A);
+	if(AddFart.dmgUpgrade >= 5)
+	{
+		colour(0x0E);
+	}
+	if(AddFart.dmgUpgrade >= 10)
+	{
+		colour(0x04);
+	}
+	if(AddFart.dmgUpgrade >= 15)
+	{
+		colour(0x0C);
+	}
+	gotoXY(51+AddFart.dmgUpgrade,28);
+	std::cout<<(char)219;
 	colour(0x0F);
 	}
 }
@@ -1629,7 +1663,7 @@ void checkForElement()
 }
 void renderStory()
 {
-		if ( checkLevel == 1 ) // render story
+	if ( checkLevel == 1 ) // render story
 	{
 		if ( hasStoryRendered == 0 )
 		{
@@ -1654,7 +1688,7 @@ void renderStory()
 			hasStoryRendered = 1;
 		}
 	}
-	
+
 	if ( checkLevel == 3 ) // render story
 	{
 		if ( hasStoryRendered == 0 )
@@ -1689,20 +1723,20 @@ void resetElements() // removes monsters and effects on the map
 }
 void init()
 {
-    // Set precision for floating point output
-    std::cout << std::fixed << std::setprecision(3);
+	// Set precision for floating point output
+	std::cout << std::fixed << std::setprecision(3);
 
-    // Get console width and height
-    CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
+	// Get console width and height
+	CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
 
-    /* get the number of character cells in the current buffer */ 
-    GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &csbi );
-    consoleSize.X = csbi.srWindow.Right + 1;
-    consoleSize.Y = csbi.srWindow.Bottom + 1;
+	/* get the number of character cells in the current buffer */ 
+	GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &csbi );
+	consoleSize.X = csbi.srWindow.Right + 1;
+	consoleSize.Y = csbi.srWindow.Bottom + 1;
 
-    // set the character to be in the center of the screen.
+	// set the character to be in the center of the screen.
 
-    elapsedTime = 0.0;
+	elapsedTime = 0.0;
 	hasLevelRendered = 0;
 	skillDelay = 0.0;
 	fallDelay = 0.0;
@@ -1729,7 +1763,7 @@ void init()
 	for(int i = 0; i < NUMBEROFLEVELS + 1; i++)
 	{
 		leveltoload = "level";
-		
+
 		if (checkLevel == 43)
 		{
 			isBossLevel = 1;
@@ -1772,7 +1806,7 @@ void init()
 
 	// prepares map for rendering
 	prepareLevel();
-	
+
 	//Prepare Skills
 	initSkill();
 	//Add Shop Function here. Shop Function should Modify the Values inside initskill
@@ -1787,22 +1821,23 @@ void shutdown()
 }
 void getInput()
 {    
-    keyPressed[K_UP] = isKeyPressed(VK_UP);
-    keyPressed[K_DOWN] = isKeyPressed(VK_DOWN);
-    keyPressed[K_LEFT] = isKeyPressed(VK_LEFT);
-    keyPressed[K_RIGHT] = isKeyPressed(VK_RIGHT);
-    keyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
+	keyPressed[K_UP] = isKeyPressed(VK_UP);
+	keyPressed[K_DOWN] = isKeyPressed(VK_DOWN);
+	keyPressed[K_LEFT] = isKeyPressed(VK_LEFT);
+	keyPressed[K_RIGHT] = isKeyPressed(VK_RIGHT);
+	keyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
 	keyPressed[K_SPACE] = isKeyPressed(VK_SPACE);
 	keyPressed[K_ENTER] = isKeyPressed(VK_RETURN);
 	keyPressed[K_Q] = isKeyPressed(0x51);
-    keyPressed[K_E] = isKeyPressed(0x45);
-    keyPressed[K_C] = isKeyPressed(0x43);
+	keyPressed[K_E] = isKeyPressed(0x45);
+	keyPressed[K_C] = isKeyPressed(0x43);
 	keyPressed[K_G] = isKeyPressed(0x47);
+	keyPressed[K_X] = isKeyPressed(0x58);
 }
 void update(double dt)
 {
-    // get the delta time
-    elapsedTime += dt;
+	// get the delta time
+	elapsedTime += dt;
 	jumpDelay += dt;
 	fallDelay += dt;
 	skillDelay += dt;
@@ -1820,15 +1855,33 @@ void update(double dt)
 	hitboxDelay += dt;
 	canJump += dt;
 	PlayerSkillDelay += dt;
-    deltaTime = dt;
+	deltaTime = dt;
 	ProjectileSpeed += dt;
 	switchDelay += dt;
+	chargeDelay += dt;
 	gravity();
 	checkforSpike();
 	checkForElement();
 	updateSigns();
 
 	LevelUp();
+
+	if (cooldownStart == true)//Start Cooldown
+	{
+		CDdelay += dt;
+	}
+
+	if (AddFart.Speed == 0 && cooldownStart == true) //Check if Cooldown end
+	{
+	cooldownStart = false;
+	}
+	else if (CDdelay >= 1.0)//Cooldown 
+	{
+	AddFart.rangeUpgrade = AddFart.rangeUpgrade - 3;
+	AddFart.dmgUpgrade = AddFart.dmgUpgrade - 1;
+	AddFart.Speed -= 1.0;
+	CDdelay = 0;
+	}
 
 	if ( hasbeenStabbed == 1 ) 
 	{
@@ -1923,7 +1976,7 @@ void update(double dt)
 		checkCollisionInnerFear();
 	}
 
-		if ( Wengyew.size() != 0 ) // When there are wengyews
+	if ( Wengyew.size() != 0 ) // When there are wengyews
 	{
 		if ( WengyewMoveDelay > 0.100 ) // wengyews move every 100ms
 		{
@@ -1933,7 +1986,7 @@ void update(double dt)
 		checkCollisionWengyew();
 	}
 
-		if ( CatFish.size() != 0 ) // When there are CatFishes
+	if ( CatFish.size() != 0 ) // When there are CatFishes
 	{
 		if ( CatFishMoveDelay > 0.450 ) // CatFishes move every 450ms
 		{
@@ -1943,7 +1996,7 @@ void update(double dt)
 		checkCollisionCatFish();
 	}
 
-		if ( DeadFish.size() != 0 ) // When there are DeadFishes
+	if ( DeadFish.size() != 0 ) // When there are DeadFishes
 	{
 		if ( DeadFishMoveDelay > 0.250 ) // DeadFishes move every 250ms
 		{
@@ -1953,7 +2006,7 @@ void update(double dt)
 		checkCollisionDeadFish();
 	}
 
-		if ( LiveFish.size() != 0 ) // When there are LiveFishes
+	if ( LiveFish.size() != 0 ) // When there are LiveFishes
 	{
 		if ( LiveFishMoveDelay > 0.250 ) // LiveFishes move every 250ms
 		{
@@ -1963,7 +2016,7 @@ void update(double dt)
 		checkCollisionLiveFish();
 	}
 
-		if ( Villager.size() != 0 ) // When there are Villagers
+	if ( Villager.size() != 0 ) // When there are Villagers
 	{
 		if ( VillagerMoveDelay > 0.800 ) // Villagers move every 800ms
 		{
@@ -1972,7 +2025,7 @@ void update(double dt)
 		}
 	}
 
-		if ( Shielded.size() != 0 ) // When there are Shieldeds
+	if ( Shielded.size() != 0 ) // When there are Shieldeds
 	{
 		if ( ShieldedMoveDelay > 1.000 ) // Shielded move every 1000ms
 		{
@@ -1988,20 +2041,20 @@ void update(double dt)
 		ProjectileSpeed = 0;
 	}
 
-    // Updating the location of the character based on the key press
-    if (keyPressed[K_LEFT])
-    {
-       if (map[charLocation.Y][charLocation.X-1] != '#') // There is no wall on the left.
+	// Updating the location of the character based on the key press
+	if (keyPressed[K_LEFT])
+	{
+		if (map[charLocation.Y][charLocation.X-1] != '#') // There is no wall on the left.
 		{
 			gotoXY(charLocation.X, charLocation.Y); // Preventing screen flickering.
 			hasMoved = 1;
 			charLocation.X--; // Move left.
 			playerFacing = 0;
 		}
-    }
+	}
 
-    if (keyPressed[K_RIGHT])
-    {
+	if (keyPressed[K_RIGHT])
+	{
 		if (map[charLocation.Y][charLocation.X+1] != '#') // There is no wall on the right.
 		{
 			gotoXY(charLocation.X, charLocation.Y); // Preventing screen flickering.
@@ -2009,7 +2062,7 @@ void update(double dt)
 			charLocation.X++;
 			playerFacing = 1;
 		}
-    }
+	}
 
 	if (keyPressed[K_Q] && switchDelay >= 1.0)
 	{
@@ -2023,13 +2076,56 @@ void update(double dt)
 		switchDelay = 0;
 	}
 
+	checkPlayerFront();
+
 	if (keyPressed[K_C])
 	{
 		if(PlayerSkillDelay >= AddCKey.Speed)
 		{
-		Attack();
-		PlayerSkillDelay = 0;
+			if (cannotAttack == false)
+			{
+			Attack();
+			PlayerSkillDelay = 0;
+			}
 		}
+	}
+	
+
+	if (XKey.size() != 0)
+	{
+		updateSkill(XKey);
+	}
+
+	if (AddFart.Speed == 0 && cooldownStart == true)//Cooldown of Ultimate
+	{
+		cooldownStart = false;
+	}
+
+	if (keyPressed[K_X] && cooldownStart == false)
+	{
+		chargingUlt = true;
+		if (chargeDelay >= 0.5)
+		{
+			AddFart.dmgUpgrade =  AddFart.dmgUpgrade + 1;
+			AddFart.rangeUpgrade = AddFart.rangeUpgrade + 3;
+			chargeDelay = 0;
+		}
+		if (AddFart.dmgUpgrade == 20)//Reaches the Limit
+		{
+			chargingUlt = false;
+			cooldownStart = true;
+			AddFart.Damage += AddFart.dmgUpgrade;
+			AddFart.Range += AddFart.rangeUpgrade;
+			UltAttack();
+		}
+	}
+	else if (!keyPressed[K_X] && chargingUlt == true)
+	{
+		chargingUlt = false;
+		cooldownStart = true;
+		AddFart.Damage += AddFart.dmgUpgrade;
+		AddFart.Range += AddFart.rangeUpgrade;
+		UltAttack();
 	}
 
 	if (keyPressed[K_G])
@@ -2046,11 +2142,11 @@ void update(double dt)
 		jump();
 	}
 
-    // quits the game if player hits the escape key
-    if (keyPressed[K_ESCAPE])
+	// quits the game if player hits the escape key
+	if (keyPressed[K_ESCAPE])
 	{
 		saveGame();
-        gamestate = LEVELMENU;
+		gamestate = LEVELMENU;
 	}
 
 	if ( godmode == false )
@@ -2058,7 +2154,7 @@ void update(double dt)
 }
 void render()
 {
-    // clear previous screen if need to re render
+	// clear previous screen if need to re render
 	if ( hasLevelRendered == 0 )
 	{
 		cls();
@@ -2119,6 +2215,12 @@ void render()
 		spawnSkill(CKey);
 	}
 
+	//render Ultimate Skill
+	if (XKey.size() != 0)
+	{
+		spawnSkill(XKey);
+	}
+
 	renderSigns();  
 	renderStory();
 
@@ -2127,7 +2229,7 @@ void render()
 		renderHP();
 		hasbeenDamaged = 0;
 	}
-	
+
 	if ( isBossLevel == 1 ) // These renders only occur when it's a boss level
 	{
 		bossRenderHP();
@@ -2171,24 +2273,25 @@ void render()
 	//gotoXY(6, 3);
 	//std::cout << "X: " << charLocation.X << " Y: " << charLocation.Y;
 
-    colour(0x0F);
+	colour(0x0F);
 
-    //render the game
+	//render the game
 
-    // render time taken to calculate this frame
-    //gotoXY(70, 0);
-    //colour(0x1A);
-    //std::cout << 1.0 / deltaTime << "fps" << std::endl;
-  
-    //gotoXY(0, 0);
-    //colour(0x59);
-    //std::cout << elapsedTime << "secs" << std::endl;
-	
+	// render time taken to calculate this frame
+	//gotoXY(70, 0);
+	//colour(0x1A);
+	//std::cout << 1.0 / deltaTime << "fps" << std::endl;
+
+	//gotoXY(0, 0);
+	//colour(0x59);
+	//std::cout << elapsedTime << "secs" << std::endl;
+
 	// render character
-    gotoXY(charLocation);
-    colour(0x0C);
-    std::cout << (char)1;
+	gotoXY(charLocation);
+	colour(0x0C);
+	std::cout << (char)1;
 	colour(0x0F);
 
 	renderEquip();//Render Skill Equipped UI
+	renderFartMeter();
 }
