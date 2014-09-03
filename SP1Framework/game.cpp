@@ -173,49 +173,21 @@ void updatemainmenu(double dt)
 
 	if(keyPressed[K_UP])
 	{
-		if (charLocation.Y == 20 )
+		if (charLocation.Y != 20 )
 		{
 			gotoXY(charLocation);
 			std::cout << " ";
-			charLocation.Y = 20;
-		}
-
-		else if (charLocation.Y == 22)
-		{
-			gotoXY(charLocation);
-			std::cout << " ";
-			charLocation.Y = 20;
-		}
-
-		else if (charLocation.Y == 24)
-		{
-			gotoXY(charLocation);
-			std::cout << " ";
-			charLocation.Y = 22;
+			charLocation.Y -= 2;
 		}
 	}
 
 	if(keyPressed[K_DOWN])
 	{
-		if (charLocation.Y == 20 )
+		if (charLocation.Y != 24 )
 		{
 			gotoXY(charLocation);
 			std::cout << " ";
-			charLocation.Y = 22;
-		}
-
-		else if (charLocation.Y == 22)
-		{
-			gotoXY(charLocation);
-			std::cout << " ";
-			charLocation.Y = 24;
-		}
-
-		else if (charLocation.Y == 24)
-		{
-			gotoXY(charLocation);
-			std::cout << " ";
-			charLocation.Y = 24;
+			charLocation.Y += 2;
 		}
 	}
 
@@ -1721,6 +1693,7 @@ void resetElements() // removes monsters and effects on the map
 }
 void init()
 {
+	SetConsoleTitle(L"Quen Overslept");
 	// Set precision for floating point output
 	std::cout << std::fixed << std::setprecision(3);
 
