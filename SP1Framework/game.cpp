@@ -2153,7 +2153,9 @@ void update(double dt)
 	}
 
 	if ( godmode == false )
+	{
 		checkforDeath();
+	}
 }
 void render()
 {

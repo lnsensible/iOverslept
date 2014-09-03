@@ -19,8 +19,8 @@ double bossDifficulty = 0; // decreases delay as boss' hp goes down
 
 const int bossHP = 20; // max hp= 20
 const int pianusHP = 20; // max hp= 20
-int bosscurrentHP = 0;
-int pianuscurrentHP = 0;
+int bosscurrentHP = 20;
+int pianuscurrentHP = 20;
 
 char bossHPbar[20];
 char pianusHPbar[20];
@@ -175,7 +175,9 @@ void renderLaser()
 				gotoXY( laser[i].X+1, j );
 				if ( map[j][laser[i].X+1] == '#')
 				{
+					colour(0xff);
 					std::cout << (char)219; // and print block to replace walls
+					colour(0x0f);
 				}
 				else
 				{
@@ -203,7 +205,9 @@ void renderLaser()
 					gotoXY(k, j);
 					if ( map[j][k] == '#')
 					{
+						colour(0xff);
 						std::cout << (char)219; // and print block to replace walls
+						colour(0x0f);
 					}
 					else
 					{
@@ -384,7 +388,9 @@ void renderLava()
 				gotoXY(j, k);
 				if ( map[k][j] == '#')
 				{
+					colour(0xff);
 					std::cout << (char)219; // and print block to replace walls
+					colour(0x0f);
 				}
 				else
 				{
@@ -560,7 +566,9 @@ void renderMeteor() // cout meteors to console
 					gotoXY(k, j); // go to XY coords respectively,
 					if ( map[j][k] == '#')
 					{
+						colour(0xff);
 						std::cout << (char)219; // and print block to replace walls
+						colour(0x0f);
 					}
 					else
 					{
@@ -598,7 +606,9 @@ void renderMeteor() // cout meteors to console
 					gotoXY(k, j);
 					if ( map[j][k] == '#')
 					{
+						colour(0xff);
 						std::cout << (char)219; // and print block to replace walls
+						colour(0x0f);
 					}
 					else
 					{
@@ -847,7 +857,9 @@ void renderSplint()
 					gotoXY(j, k);
 					if ( map[k][j] == '#')
 					{
+						colour(0xff);
 						std::cout << (char)219; // and print block to replace walls
+						colour(0x0f);
 					}
 					else
 					{
