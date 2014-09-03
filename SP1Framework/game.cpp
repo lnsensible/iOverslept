@@ -2091,10 +2091,10 @@ void update(double dt)
 	if (keyPressed[K_X] && cooldownStart == false)
 	{
 		chargingUlt = true;
-		if (chargeDelay >= 1.5)
+		if (chargeDelay >= 1.0)
 		{
 			AddFart.dmgUpgrade =  AddFart.dmgUpgrade + 1;
-			AddFart.rangeUpgrade = AddFart.rangeUpgrade + 3;
+			AddFart.rangeUpgrade = AddFart.rangeUpgrade + 2;
 			chargeDelay = 0;
 		}
 		if (AddFart.dmgUpgrade == 20)//Reaches the Limit
