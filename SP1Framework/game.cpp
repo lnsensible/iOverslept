@@ -782,7 +782,7 @@ void renderSHOP()
 
 	//Fire Section
 	colour(0x04);
-	if(FireUnlocked)
+	if(FireUnlocked == true)
 	{
 		gotoXY(21, 5);
 		std::cout << "\n\n\n         Owned!";
