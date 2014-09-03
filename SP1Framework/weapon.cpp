@@ -31,7 +31,9 @@ Skill_Properties AddFire;
 Skill_Properties AddWater;
 Skill_Properties AddCKey;
 Skill_Properties AddFart;
+std::vector<Skill_Properties> XKey;
 std::vector<Skill_Properties> CKey;
+bool cannotAttack = false;
 
 void initSkill()
 {
@@ -55,9 +57,16 @@ void initSkill()
 	//Initialize WaterOrb Skill
 	AddWater.Damage = 1 + AddWater.dmgUpgrade;
 	AddWater.Range = 100 + AddWater.rangeUpgrade;
-	AddWater.Speed = 1.0;
+	AddWater.Speed = 1.5;
 	AddSpark.index = 3;
 	AddWater.orbASCII = (char)247;
+
+	//Init AddFart Skill
+	AddFart.Damage = 0;
+	AddFart.Range = 1;
+	AddFart.Speed = 0; //AddFart's Cooldown is based on how long the Player holds X
+	AddFart.index = 4;
+	AddFart.orbASCII = 'O';
 
 	//Initializes Player Equipped Skill to Fire
 	AddCKey = AddFire;
@@ -125,6 +134,20 @@ void previousSkill()
 	}
 }
 
+void checkPlayerFront()
+{
+	if (playerFacing == 1 && map[charLocation.Y][charLocation.X+2] == '#' || map[charLocation.Y][charLocation.X+2] == 227 || map[charLocation.Y][charLocation.X+2] == 239 || map[charLocation.Y][charLocation.X+2] == 234 || map[charLocation.Y][charLocation.X+2] == 21 )
+	{
+		cannotAttack = true;
+	}
+	else if (playerFacing == 0 && map[charLocation.Y][charLocation.X-2] == '#' || map[charLocation.Y][charLocation.X-2] == 227 || map[charLocation.Y][charLocation.X-2] == 239 || map[charLocation.Y][charLocation.X-2] == 234 || map[charLocation.Y][charLocation.X-2] == 21 )
+	{
+		cannotAttack = true;
+	}
+	else
+		cannotAttack = false;
+}
+
 void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 {
 	for ( unsigned int i = 0; i < MonsterSnail.size(); i++) // for all snails
@@ -185,24 +208,6 @@ void checkCollisionWithMonster(std::vector<Skill_Properties>& Skill)
 			}
 		}
 	}
-
-	/*
-	for ( unsigned int i = 0; i < PianusHitbox.size(); i++)//PIanus thingy
-	{
-	for ( unsigned int j = 0; j < Skill.size(); j++)
-	{
-	if (Skill[j].x == PianusHitbox[i].x && Skill[j].y == PianusHitbox[i].y)
-	{
-	PianusHitbox[i].health -= Skill[j].Damage;
-	Skill.erase(FireOrb.begin() + j); // remove Skill
-	checkMonsterDead();
-	i = 0;
-	j = 0;
-	}
-	}
-	}
-	*/
-
 
 	for ( unsigned int i = 0; i < InnerFear.size(); i++) // for all innerfears
 	{
@@ -299,9 +304,20 @@ void checkCollisionWithWall(std::vector<Skill_Properties>& Skill)
 {
 	for ( unsigned int i = 0; i < Skill.size(); ++i )
 	{
-		if ( map[Skill[i].y][Skill[i].x] == '#' ) 
+		if (Skill[i].faceWhere == true)//Skill Moving RIght
 		{
-			Skill[i].isRENDERED = false;
+			if ( map[Skill[i].y][Skill[i].x+1] == '#' || map[Skill[i].y][Skill[i].x+1] == 227 || map[Skill[i].y][Skill[i].x+1] == 239 || map[Skill[i].y][Skill[i].x+1] == 234 || map[Skill[i].y][Skill[i].x+1] == 21) 
+			{
+				Skill[i].isRENDERED = false;
+			}
+
+		}
+		else if (Skill[i].faceWhere == false)//Skill Moving Left
+		{
+			if ( map[Skill[i].y][Skill[i].x-1] == '#' || map[Skill[i].y][Skill[i].x-1] == 227 || map[Skill[i].y][Skill[i].x-1] == 239 || map[Skill[i].y][Skill[i].x-1] == 234 || map[Skill[i].y][Skill[i].x-1] == 21) 
+			{
+				Skill[i].isRENDERED = false;
+			}
 		}
 	}
 }
@@ -324,85 +340,34 @@ void updateSkill(std::vector<Skill_Properties>& Skill)
 	}
 }
 
-void spawnSkill(std::vector<Skill_Properties>& Skill){
-	for(unsigned int x = 0; x < Skill.size(); ++x)
+void spawnSkill(std::vector<Skill_Properties>& Skill)
+{
+	for (unsigned int x = 0; x< Skill.size(); ++x)
 	{
-		if (Skill[x].isRENDERED == false)//If hit something other than monster, then rendered = false and this happens.
+		if (Skill[x].isRENDERED == false)
 		{
-			gotoXY(Skill[x].x-1, Skill[x].y);
-			if ( map[Skill[x].y][Skill[x].x-1] == '#' ) 
+			if (Skill[x].faceWhere == true)
 			{
-				std::cout << (char)219;
+				gotoXY(Skill[x].x-1,Skill[x].y);
+				std::cout<<map[Skill[x].y][Skill[x].x];
 			}
-			else if ( map[Skill[x].y][Skill[x].x-1] == 234 )
+			else if (Skill[x].faceWhere == false)
 			{
-				colour(0x0A);
-				std::cout << (char)234;
-				colour(0x0F);
-			}
-			else if ( map[Skill[x].y][Skill[x].x-1] == 239 )
-			{
-				colour(0x0A);
-				std::cout << (char)239;
-				colour(0x0F);
-			}
-			else
-			{
-				std::cout<< map[Skill[x].y][Skill[x].x-1];
-			}
-
-			gotoXY(Skill[x].x, Skill[x].y);
-			if ( map[Skill[x].y][Skill[x].x] == '#' ) // if wall
-			{
-				std::cout << (char)219;
-			}
-			else if ( map[Skill[x].y][Skill[x].x] == 234 )
-			{
-				colour(0x0A);
-				std::cout << (char)234;
-				colour(0x0F);
-			}
-			else if ( map[Skill[x].y][Skill[x].x] == 239 )
-			{
-				colour(0x0A);
-				std::cout << (char)239;
-				colour(0x0F);
-			}
-			else
-			{
-				std::cout<< map[Skill[x].y][Skill[x].x];
-			}
-
-			gotoXY(Skill[x].x+1, Skill[x].y);
-			if ( map[Skill[x].y][Skill[x].x+1] == '#' ) // if wall
-			{
-				std::cout << (char)219;
-			}
-			else if ( map[Skill[x].y][Skill[x].x+1] == 234 )
-			{
-				colour(0x0A);
-				std::cout << (char)234;
-				colour(0x0F);
-			}
-			else if ( map[Skill[x].y][Skill[x].x+1] == 239 )
-			{
-				colour(0x0A);
-				std::cout << (char)239;
-				colour(0x0F);
-			}
-			else
-			{
-				std::cout<< map[Skill[x].y][Skill[x].x+1];
+				gotoXY(Skill[x].x+1,Skill[x].y);
+				std::cout<<map[Skill[x].y][Skill[x].x];
 			}
 			Skill.erase(Skill.begin() + x);
+			gotoXY(51,30);
+			std::cout<<"Something has Hit!!";
 		}
 		else
-			if ( Skill[x].faceWhere == false )
+		{
+			if (Skill[x].faceWhere == false )
 			{
-				for ( unsigned int y = 0; y< Skill.size(); ++y)
+				for ( unsigned int y = 0; y< Skill.size(); ++y)//Clears Shot
 				{
 					gotoXY(Skill[y].x+1, Skill[y].y);
-					std::cout<<" ";
+					std::cout<<map[Skill[y].y][Skill[y].x+1];
 				}
 				gotoXY(Skill[x].x, Skill[x].y);
 				if (Skill[x].index == 1)
@@ -417,6 +382,10 @@ void spawnSkill(std::vector<Skill_Properties>& Skill){
 				{
 					colour(0x03);
 				}
+				else if (Skill[x].index == 4)
+				{
+					colour(0x02);
+				}
 				if (Skill[x].bulletTravelDistance == Skill[x].Range)
 				{
 					Skill.erase(Skill.begin() + x);
@@ -426,15 +395,16 @@ void spawnSkill(std::vector<Skill_Properties>& Skill){
 					std::cout<<Skill[x].orbASCII;
 				}
 				colour(0x0F);
+
 			}
-			else if ( Skill[x].faceWhere == true )
+			else if (Skill[x].faceWhere == true )
 			{
-				for ( unsigned int y = 0; y< Skill.size(); ++y)
+				for ( unsigned int y = 0; y< Skill.size(); ++y)//Clears Shot
 				{
 					gotoXY(Skill[y].x-1, Skill[y].y);
-					std::cout<<" ";
+					std::cout<<map[Skill[y].y][Skill[y].x-1];
 				}
-				gotoXY(Skill[x].x, Skill[x].y);
+				gotoXY(Skill[x].x, Skill[x].y);//Prints Shot
 				if (Skill[x].index == 1)
 				{
 					colour(0x04);
@@ -447,6 +417,10 @@ void spawnSkill(std::vector<Skill_Properties>& Skill){
 				{
 					colour(0x03);
 				}
+				else if (Skill[x].index == 4)
+				{
+					colour(0x02);
+				}
 				if (Skill[x].bulletTravelDistance == Skill[x].Range)
 				{
 					Skill.erase(Skill.begin() + x);
@@ -457,106 +431,34 @@ void spawnSkill(std::vector<Skill_Properties>& Skill){
 				}
 				colour(0x0F);
 			}
-			for ( unsigned int y = 0; y< Skill.size(); ++y)
-				{
-					if (map[Skill[y].y][Skill[y].x-1] != '#' || map[Skill[y].y][Skill[y].x-1] != '.')
-					{
-						gotoXY(Skill[y].x-1, Skill[y].y);
-						std::cout<<map[Skill[y].y][Skill[y].x-1];
-					}
-				}
+		}
+		for ( unsigned int y = 0; y< Skill.size(); ++y)
+		{
+			if ( map[Skill[y].y][Skill[y].x-1] == ' ')
+			{
+				gotoXY(Skill[y].x-1, Skill[y].y);
+				std::cout<<map[Skill[y].y][Skill[y].x-1];
+			}
+		}
 	}
-	AddCKey.isRENDERED = false;
 }
 
-/*
-
-struct Shop_Items
+void UltAttack()
 {
-int cost;
-int upgrade;
-int x,y; 
-};
-
-
-//Make these Variables.
-insideSHOP = false; //true = render shop
-
-void initShop()
-{
-//Fire Upgrades
-FDmgUp.cost = 100;
-FDmgUp.upgrade = 1;
-FDmgUp.x = 10;
-FDmgUp.y = 30;
-
-FRangeUp.cost = 50;
-FRangeUp.upgrade = 1;
-FRangeUp.x = 1;
-FRangeUp.y = 32;
-
-//Spark/Lightning Upgrades
-SDmgUp.cost = 100;
-SDmgUp.upgrade = 1;
-SDmgUp.x = 55;
-SDmgUp.y = 30;
-
-SRangeUp.cost = 150;
-SRangeUp.upgrade = 1;
-SRangeUp.x = 55;
-SRangeUp.y = 32;
-
-//Water Upgrades
-WDmgUp.cost = 170;
-WDmgUp.upgrade = 1;
-WDmgUp.x = 100;
-WDmgUp.y = 30;
-
-WRangeUp.cost = 100;
-WRangeUp.upgrade = 1;
-WRangeUp.x = 100;
-WRangeUp.y = 32;
-}
-
-void enterShop()
-{
-   insideSHOP = true;
-   charLocation.X = FDmgUp.x;
-   charLocation.Y = FDmgUp.y;
-}
-
-void updateShop()
-{
-
-if(keyPressed[K_ESCAPE])
+	AddFart.Speed = (double)AddFart.dmgUpgrade;
+	if ( playerFacing == 0 ) // if facing left
 	{
-		gamestate = GAME;
+		AddFart.x = charLocation.X-1;
+		AddFart.y = charLocation.Y;
+		AddFart.faceWhere = false;
+		AddFart.isRENDERED = true;
 	}
+	else if ( playerFacing == 1 ) // if facing right
+	{
+		AddFart.x = charLocation.X+1;
+		AddFart.y = charLocation.Y;
+		AddFart.faceWhere = true;
+		AddFart.isRENDERED = true;
+	}
+	XKey.push_back(AddFart);
 }
-
-void renderShop()
-{
-if (insideSHOP == true)
-{
-//Render SHOP.txt file
-
-//Render Fire Upgrade Locations
-gotoXY(FDmgUp.x,FDmgUp.y);
-std::cout<<+Damage;
-gotoXY(FRangeUp.x,FRangeUp.y);
-std::cout<<+Range;
-
-//Render Spark Upgrade Locations
-gotoXY(SDmgUp.x,SDmgUp.y);
-std::cout<<+Damage;
-gotoXY(SRangeUp.x,SRangeUp.y);
-std::cout<<+Range;
-
-//Render Water Upgrade Locations
-gotoXY(WDmgUp.x,WDmgUp.y);
-std::cout<<+Damage;
-gotoXY(WRangeUp.x,WRangeUp.y);
-std::cout<<+Range;
-}
-}
-*/
