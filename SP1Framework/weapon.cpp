@@ -122,12 +122,12 @@ void nextSkill()
 
 void previousSkill()
 {
-	if (AddCKey.index == 3 && SparkUnlocked == true)
+	if (AddCKey.index == 3)
 	{
 		AddCKey = AddSpark;
 		AddCKey.index = 2;
 	}
-	else if (AddCKey.index == 2 && FireUnlocked == true)
+	else if (AddCKey.index == 2)
 	{
 		AddCKey = AddFire;
 		AddCKey.index = 1;
