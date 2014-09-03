@@ -1883,6 +1883,10 @@ void update(double dt)
 	if (AddFart.Speed == 0 && cooldownStart == true) //Check if Cooldown end
 	{
 		cooldownStart = false;
+		AddFart.Damage = 0;
+		AddFart.Range = 1;
+		AddFart.rangeUpgrade = 0;
+		AddFart.dmgUpgrade = 0;
 	}
 	else if (CDdelay >= 1.0)//Cooldown 
 	{
@@ -2233,8 +2237,6 @@ void render()
 	if (XKey.size() != 0)
 	{
 		spawnSkill(XKey);
-		AddFart.Damage = 0;
-		AddFart.Range = 1;
 	}
 
 	renderSigns();  
