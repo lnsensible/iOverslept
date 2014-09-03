@@ -155,6 +155,9 @@ std::string StoryPage3[5] = {"Quen notices something moving further ahead. Upon 
 std::string StoryPage43[2] = {"Pianus, Quen's fish. The fish he has forgotten. The fish he didn't feed.",
 	"The fish that now wants his flesh. The fish he regrets not feeding...."};
 
+std::string StoryPage44[2] = {"And so you have defeated your fears, and now it is time, for you to",
+	"leave your dream, and go back into reality....."};
+
 void initmainmenu()
 {
 	// Set precision for floating point output
@@ -1604,6 +1607,11 @@ void checkForElement()
 			checkLevel = 25;
 		}
 
+		else if(checkLevel == 44)
+		{
+			checkLevel = 25;
+		}
+
 		fromSPortal = true;
 		init();
 	}
@@ -1672,6 +1680,19 @@ if ( checkLevel == 42 ) // render story
 			{	
 				gotoXY(6+6, i+5);
 				std::cout << StoryPage43[i];
+			}
+			hasStoryRendered = 1;
+		}
+	}
+
+if ( checkLevel == 44 ) // render story
+	{
+		if ( hasStoryRendered == 0 )
+		{
+			for ( unsigned int i = 0; i < 2; i++)
+			{	
+				gotoXY(6+6, i+5);
+				std::cout << StoryPage44[i];
 			}
 			hasStoryRendered = 1;
 		}
