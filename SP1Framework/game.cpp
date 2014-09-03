@@ -1531,27 +1531,34 @@ void renderFartMeter()
 	std::cout<<"FART METER:";
 	if(cooldownStart == true)
 	{
+		for (int x = 0; x<AddFart.Speed; ++x)
+		{
 		gotoXY(51+AddFart.Speed,28);
 		std::cout<<" ";
+		}
 	}
 	else if (cooldownStart == false)
 	{
 		colour(0x0A);
-	if(AddFart.dmgUpgrade >= 5)
-	{
-		colour(0x0E);
-	}
-	if(AddFart.dmgUpgrade >= 10)
-	{
-		colour(0x04);
-	}
-	if(AddFart.dmgUpgrade >= 15)
-	{
-		colour(0x0C);
-	}
-	gotoXY(51+AddFart.dmgUpgrade,28);
-	std::cout<<(char)219;
-	colour(0x0F);
+		if (AddFart.dmgUpgrade == 0)
+		{
+			colour(0x08);
+		}
+		if(AddFart.dmgUpgrade >= 5)
+		{
+			colour(0x0E);
+		}
+		if(AddFart.dmgUpgrade >= 10)
+		{
+			colour(0x04);
+		}
+		if(AddFart.dmgUpgrade >= 15)
+		{
+			colour(0x0C);
+		}
+		gotoXY(51+AddFart.dmgUpgrade,28);
+		std::cout<<(char)219;
+		colour(0x0F);
 	}
 }
 void renderMoney()
@@ -1782,9 +1789,6 @@ void init()
 
 	//Prepare Skills
 	initSkill();
-	//Add Shop Function here. Shop Function should Modify the Values inside initskill
-	//Create an int Variable called damageUpgrade = 0; This variable is added to the Damage(Even if no Value yet).
-	//Once it has a value. you know what happens.
 }
 void shutdown()
 {
@@ -1839,6 +1843,18 @@ void update(double dt)
 
 	LevelUp();
 
+	if (startDelay == true)
+	{
+		damageDelay += dt;
+		//Insert Cannot Damage Code Here = True
+	}
+	if (damageDelay >= 1.0)
+	{
+		damageDelay = 0;
+		//Insert Cannot Damage Code Here = False
+		startDelay = false;
+	}
+
 	if (cooldownStart == true)//Start Cooldown
 	{
 		CDdelay += dt;
@@ -1846,20 +1862,19 @@ void update(double dt)
 
 	if (AddFart.Speed == 0 && cooldownStart == true) //Check if Cooldown end
 	{
-	cooldownStart = false;
+		cooldownStart = false;
 	}
 	else if (CDdelay >= 1.0)//Cooldown 
 	{
-	AddFart.rangeUpgrade = AddFart.rangeUpgrade - 3;
-	AddFart.dmgUpgrade = AddFart.dmgUpgrade - 1;
-	AddFart.Speed -= 1.0;
-	CDdelay = 0;
+		AddFart.rangeUpgrade = AddFart.rangeUpgrade - 3;
+		AddFart.dmgUpgrade = AddFart.dmgUpgrade - 1;
+		AddFart.Speed -= 1.0;
+		CDdelay = 0;
 	}
 
 	if ( hasbeenStabbed == 1 ) 
 	{
 		colour(0x0F);
-
 		hasbeenStabbed = 0;
 		gotoXY(14, 8);
 	}
@@ -2057,12 +2072,11 @@ void update(double dt)
 		{
 			if (cannotAttack == false)
 			{
-			Attack();
-			PlayerSkillDelay = 0;
+				Attack();
+				PlayerSkillDelay = 0;
 			}
 		}
-	}
-	
+	}	
 
 	if (XKey.size() != 0)
 	{
@@ -2077,7 +2091,7 @@ void update(double dt)
 	if (keyPressed[K_X] && cooldownStart == false)
 	{
 		chargingUlt = true;
-		if (chargeDelay >= 0.5)
+		if (chargeDelay >= 2)
 		{
 			AddFart.dmgUpgrade =  AddFart.dmgUpgrade + 1;
 			AddFart.rangeUpgrade = AddFart.rangeUpgrade + 3;
@@ -2120,22 +2134,6 @@ void update(double dt)
 	{
 		saveGame();
 		gamestate = LEVELMENU;
-	}
-
-	if (hasbeenDamaged == 1)
-	{
-	godmode = true;
-	startDelay = true;
-	}
-	if (startDelay == true)
-	{
-		damageDelay += dt;
-	}
-	if (damageDelay >= 1.0)
-	{
-	godmode = false;
-	damageDelay = 0;
-	startDelay = false;
 	}
 
 	if ( godmode == false )
@@ -2221,6 +2219,7 @@ void render()
 	{
 		renderHP();
 		hasbeenDamaged = 0;
+		startDelay = true;
 	}
 
 	if ( isBossLevel == 1 ) // These renders only occur when it's a boss level
