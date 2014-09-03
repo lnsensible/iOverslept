@@ -111,7 +111,9 @@ enum SoundType
 	S_JUMP,
 	S_FIREBALL,
 	S_SPARK,
-	S_WATER
+	S_WATER,
+	S_FART,
+	S_FARTCHARGE
 };
 
 void playGameSound(SoundType sound);

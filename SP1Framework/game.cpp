@@ -1050,11 +1050,13 @@ void playGameSound(SoundType sound)
 	snd.loadWave("jump", "jump.wav");
 	snd.loadWave("fireball", "fireball.wav");
 	snd.loadWave("spark", "spark.wav");
+	snd.loadWave("fart", "fart.wav");
+	snd.loadWave("fartcharge", "fartcharge.wav");
 	snd.loadWave("water", "water.wav");
 
 	switch (sound)
 	{
-	case S_TREASURE: snd.playSound("treasure");    
+	case S_TREASURE: snd.playSound("treasure");
 		break;
 	case S_MENU : snd.playSound("menu");
 		break;
@@ -1065,6 +1067,10 @@ void playGameSound(SoundType sound)
 	case S_SPARK : snd.playSound("spark");
 		break;
 	case S_WATER : snd.playSound("water");
+		break;
+	case S_FARTCHARGE : snd.playSound("fartcharge");
+		break;
+	case S_FART : snd.playSound("fart");
 		break;
 	}
 }
@@ -2107,6 +2113,7 @@ void update(double dt)
 		chargingUlt = true;
 		if (chargeDelay >= 1.0)
 		{
+			playGameSound(S_FARTCHARGE);
 			AddFart.dmgUpgrade =  AddFart.dmgUpgrade + 1;
 			AddFart.rangeUpgrade = AddFart.rangeUpgrade + 2;
 			chargeDelay = 0;
