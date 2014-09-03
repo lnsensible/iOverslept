@@ -106,7 +106,7 @@ double CDdelay = 0;
 double damageDelay = 0;
 
 
-int PlayerHealth = 3; // Player's HP. Default = 3.
+int PlayerHealth = 5; // Player's HP. Default = 3.
 //Weapons
 extern void Attack();
 extern void updateSkill(std::vector<Skill_Properties>& Skill);
@@ -400,7 +400,7 @@ void updatedeathmenu(double dt)
 
 	if(keyPressed[K_ENTER])
 	{
-		PlayerHealth = 3;
+		PlayerHealth = 5;
 
 		if(charLocation.X == 60)
 		{
@@ -974,7 +974,7 @@ void saveGame()
 		}
 		else
 		{
-			outputData[0][1] = 3;
+			outputData[0][1] = 5;
 		}
 		if(checkLevel!=0)
 		{
@@ -1469,9 +1469,7 @@ void renderHP() // displays amount of HP player still has.
 	}
 	colour(0x0F);
 	gotoXY(25, 26); // Clear HP section for render again
-	std::cout << "          ";
-
-	gotoXY(0, 24);
+	std::cout << "             ";
 }
 void renderEquip() //Displays the Skill you're equipping currently
 {
@@ -1574,7 +1572,7 @@ void renderMoney()
 	std::cout << "Quennies: ";
 	gotoXY(50, 26);
 	std::cout << MoneyCount;
-	std::cout << "\\" << checkLevel; // TO BE REMOVED
+	//std::cout << "\\" << checkLevel; // TO BE REMOVED
 }
 
 void checkForElement()
